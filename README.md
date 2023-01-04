@@ -27,10 +27,10 @@
   * `(Jasypt) -Djasypt.encryptor.password=?????`
 
 ### Source
-* [GitHub](https://github.com/yuncorn/prj_TripMATE)
+* [GitHub](https://github.com/tripmate-manager/TripMATE-api)
 
 ```bash
-git clone https://bitbucket.org/TODO/tripmate-api.git 
+git clone https://github.com/tripmate-manager/TripMATE-api.git 
 ```
 
 ### git 사용자 정보 변경
