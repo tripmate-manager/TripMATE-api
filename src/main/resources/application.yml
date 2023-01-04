@@ -1,0 +1,13 @@
+server:
+  port: 8888
+  servlet:
+    contextPath: /api
+
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ENC(U3nl171TSNtmZAFvPant0xmHTTILGoLb61sKAJFdUzFXwDlHtXuRf4+tNHHBuItjW8rNLSFNh0EjbFWSHojGiQ==)
+    username: ENC(d4aIZ4GBXmQsDJ/0cgBqPg==)
+    password: ENC(TLtR7r7TEmYhIDEsfw9A1Iq32butcgll)
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
