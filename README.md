@@ -24,7 +24,7 @@
 2. Lombok Plugin
   * `File -> Settings -> Build, Excution, Deployment -> Compiler -> Annotation Processors -> Enable Annotation Processing check`
 3. Tomcat VM Option
-  * `(Jasypt) -Djasypt.encryptor.password=안알랴줌`
+  * `(Jasypt) -Djasypt.encryptor.password=안알랴줌(?)`
 
 ### Source
 * [GitHub](https://github.com/tripmate-manager/TripMATE-api)
