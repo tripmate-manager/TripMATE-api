@@ -6,8 +6,8 @@ server:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: ENC(U3nl171TSNtmZAFvPant0xmHTTILGoLb61sKAJFdUzFXwDlHtXuRf4+tNHHBuItjW8rNLSFNh0EjbFWSHojGiQ==)
-    username: ENC(d4aIZ4GBXmQsDJ/0cgBqPg==)
-    password: ENC(TLtR7r7TEmYhIDEsfw9A1Iq32butcgll)
+    url: ENC(R2nqa5S1PLorulyXew3kVAdCJZ0a34DRPj3tnFufgFJcIEls0ORTQZeAHNLikWVrh77/87krS/y/ozHaUcAiVw==)
+    username: ENC(Z3DRbNy1esOpV8b69GI3+A==)
+    password: ENC(Gan03/lHLMOXr7ICa7DUGFWM+QuQFbnu)
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
