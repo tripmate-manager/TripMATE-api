@@ -12,10 +12,6 @@
         <result property="groupCode3" column="GRP_CD3"/>
         <result property="sortSeq" column="SORT_SEQ"/>
         <result property="useYn" column="USE_YN"/>
-        <result property="regNo" column="REG_NO"/>
-        <result property="regDtime" column="REG_DTIME"/>
-        <result property="uptNo" column="UPT_NO"/>
-        <result property="uptDtime" column="UPT_DTIME"/>
     </resultMap>
 
     <select id="selectCommonCodeDetailList" parameterType="String" resultMap="searchCodeListResult">
@@ -27,10 +23,6 @@
              , GRP_CD3
              , SORT_SEQ
              , USE_YN
-             , REG_NO
-             , REG_DTIME
-             , UPT_NO
-             , UPT_DTIME
         FROM ST_COMM_CD_DTL
         WHERE COMM_CD = #{commonCode:VARCHAR}
           AND USE_YN = 'Y'
@@ -46,10 +38,6 @@
              , GRP_CD3
              , SORT_SEQ
              , USE_YN
-             , REG_NO
-             , REG_DTIME
-             , UPT_NO
-             , UPT_DTIME
         FROM ST_COMM_CD_DTL
         WHERE COMM_CD = #{commonCode:VARCHAR}
           AND COMM_DTL_CD = #{commonDetailCode:VARCHAR}
