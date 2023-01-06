@@ -5,7 +5,7 @@
 
 <mapper namespace="com.tripmate.domain.test.dao.mapper.TestDAOMapper">
     <select id="test" resultType="String">
-        SELECT 'aaa'
+        SELECT '{"key":"aaa"}'
         FROM DUAL
     </select>
 
