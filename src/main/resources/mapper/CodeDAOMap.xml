@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tripmate.domain.common.dao.mapper.CodeDAOMapper">
+    <resultMap id="searchCodeListResult" type="com.tripmate.domain.common.vo.CodeVO">
+        <result property="commonCode" column="COMM_CD"/>
+        <result property="commonDetailCode" column="COMM_DTL_CD"/>
+        <result property="commonDetailName" column="COMM_DTL_NM"/>
+        <result property="groupCode1" column="GRP_CD1"/>
+        <result property="groupCode2" column="GRP_CD2"/>
+        <result property="groupCode3" column="GRP_CD3"/>
+        <result property="sortSeq" column="SORT_SEQ"/>
+        <result property="useYn" column="USE_YN"/>
+    </resultMap>
+
+    <select id="selectCommonDetailCodeList" parameterType="String" resultMap="searchCodeListResult">
+        SELECT COMM_CD
+             , COMM_DTL_CD
+             , COMM_DTL_NM
+             , GRP_CD1
+             , GRP_CD2
+             , GRP_CD3
+             , SORT_SEQ
+             , USE_YN
+        FROM ST_COMM_CD_DTL
+        WHERE COMM_CD = #{commonCode:VARCHAR}
+          AND USE_YN = 'Y'
+        ORDER BY SORT_SEQ ASC, COMM_DTL_CD ASC, COMM_DTL_NM ASC
+    </select>
+
+    <select id="selectCommonDetailCode" parameterType="Map" resultMap="searchCodeListResult">
+        SELECT COMM_CD
+             , COMM_DTL_CD
+             , COMM_DTL_NM
+             , GRP_CD1
+             , GRP_CD2
+             , GRP_CD3
+             , SORT_SEQ
+             , USE_YN
+        FROM ST_COMM_CD_DTL
+        WHERE COMM_CD = #{commonCode:VARCHAR}
+          AND COMM_DTL_CD = #{commonDetailCode:VARCHAR}
+          AND USE_YN = 'Y'
+    </select>
+</mapper>
