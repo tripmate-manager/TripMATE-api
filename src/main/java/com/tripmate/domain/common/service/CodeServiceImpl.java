@@ -1,5 +1,6 @@
 package com.tripmate.domain.common.service;
 
+import com.tripmate.domain.common.vo.CodeVO;
 import com.tripmate.domain.common.dao.CodeDAO;
 import com.tripmate.domain.common.dto.CodeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,12 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public List<CodeDTO> getCode(String commonCode) {
-        return codeDAO.selectCommonCodeDetailList(commonCode);
+    public List<CodeVO> getCode(String commonCode) {
+        return codeDAO.selectCommonDetailCodeList(commonCode);
     }
 
     @Override
-    public CodeDTO getCode(String commonCode, String commonDetailCode) {
-        return codeDAO.selectCommonCodeDetail(commonCode, commonDetailCode);
+    public CodeVO getCode(CodeDTO codeDTO) {
+        return codeDAO.selectCommonDetailCode(codeDTO);
     }
 }
