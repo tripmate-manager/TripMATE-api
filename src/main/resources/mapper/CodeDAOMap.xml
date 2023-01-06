@@ -34,7 +34,7 @@
         FROM ST_COMM_CD_DTL
         WHERE COMM_CD = #{commonCode:VARCHAR}
           AND USE_YN = 'Y'
-        ORDER BY SORT_SEQ ASC
+        ORDER BY SORT_SEQ ASC, COMM_DTL_CD ASC, COMM_DTL_NM ASC
     </select>
 
     <select id="selectCommonCodeDetail" parameterType="Map" resultMap="searchCodeListResult">
