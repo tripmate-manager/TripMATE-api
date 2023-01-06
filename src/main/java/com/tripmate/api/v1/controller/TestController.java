@@ -1,17 +1,25 @@
-package com.tripmateapi.controller;
+package com.tripmate.api.v1.controller;
 
-import com.tripmateapi.dto.TestDTO;
-import com.tripmateapi.service.TestService;
+import com.tripmate.domain.test.dto.TestDTO;
+import com.tripmate.domain.test.service.TestService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/test")
+@Slf4j
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/v1/test")
 public class TestController {
-    @Autowired
     private TestService testService;
+
+    @Autowired
+    public TestController(TestService testService) {
+        this.testService = testService;
+    }
 
     @GetMapping("return")
     public TestDTO test() {
