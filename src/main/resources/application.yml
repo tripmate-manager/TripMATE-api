@@ -9,5 +9,24 @@ spring:
     url: ENC(R2nqa5S1PLorulyXew3kVAdCJZ0a34DRPj3tnFufgFJcIEls0ORTQZeAHNLikWVrh77/87krS/y/ozHaUcAiVw==)
     username: ENC(Z3DRbNy1esOpV8b69GI3+A==)
     password: ENC(Gan03/lHLMOXr7ICa7DUGFWM+QuQFbnu)
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
+
+
+springdoc:
+  version: '@project.version@'
+  api-docs:
+    path: /api-docs
+    default-consumes-media-type: application/json
+    default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+  path: /swagger-ui.html
+  disable-swagger-default-url: true
+  display-query-params-without-oauth2: true
+  paths-to-match:
+    - /v1/**
