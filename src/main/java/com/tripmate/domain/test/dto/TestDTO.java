@@ -1,4 +1,4 @@
-package com.tripmateapi.dto;
+package com.tripmate.domain.test.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
