@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TestServiceImpl implements TestService {
-    @Autowired
     private TestDAO testDAO;
+
+    @Autowired
+    public TestServiceImpl(TestDAO testDAO) {
+        this.testDAO = testDAO;
+    }
 
     @Override
     public String test() {

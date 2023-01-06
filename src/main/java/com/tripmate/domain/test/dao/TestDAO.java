@@ -7,8 +7,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class TestDAO {
+    private final SqlSession sqlSession;
+
     @Autowired
-    private SqlSession sqlSession;
+    public TestDAO(SqlSession sqlSession) {
+        this.sqlSession = sqlSession;
+    }
 
     public String test() {
         TestDAOMapper mapper = sqlSession.getMapper(TestDAOMapper.class);
