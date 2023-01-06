@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tripmate.domain.code.dao.mapper.CodeDAOMapper">
+    <resultMap id="searchCodeListResult" type="com.tripmate.domain.code.dto.CodeDTO">
+        <result property="commCd" column="COMM_CD"/>
+        <result property="commDtlCd" column="COMM_DTL_CD"/>
+        <result property="commDtlNm" column="COMM_DTL_NM"/>
+        <result property="grpCd1" column="GRP_CD1"/>
+        <result property="grpCd2" column="GRP_CD2"/>
+        <result property="grpCd3" column="GRP_CD3"/>
+        <result property="sortSeq" column="SORT_SEQ"/>
+        <result property="useYn" column="USE_YN"/>
+        <result property="regNo" column="REG_NO"/>
+        <result property="regDtime" column="REG_DTIME"/>
+        <result property="uptNo" column="UPT_NO"/>
+        <result property="uptDtime" column="UPT_DTIME"/>
+    </resultMap>
+
+    <select id="searchCodeListWithCommCd" resultMap="searchCodeListResult">
+        SELECT COMM_CD
+             , COMM_DTL_CD
+             , COMM_DTL_NM
+             , GRP_CD1
+             , GRP_CD2
+             , GRP_CD3
+             , SORT_SEQ
+             , USE_YN
+             , REG_NO
+             , REG_DTIME
+             , UPT_NO
+             , UPT_DTIME
+        FROM ST_COMM_CD_DTL
+        WHERE COMM_CD = #{commCd}
+          AND USE_YN = 'Y'
+        ORDER BY SORT_SEQ ASC
+    </select>
+
+    <select id="getCodeWithCommCdAndCommDtlCd" resultMap="searchCodeListResult">
+        SELECT COMM_CD
+             , COMM_DTL_CD
+             , COMM_DTL_NM
+             , GRP_CD1
+             , GRP_CD2
+             , GRP_CD3
+             , SORT_SEQ
+             , USE_YN
+             , REG_NO
+             , REG_DTIME
+             , UPT_NO
+             , UPT_DTIME
+        FROM ST_COMM_CD_DTL
+        WHERE COMM_CD = #{commCd}
+          AND COMM_DTL_CD = #{commDtlCd}
+          AND USE_YN = 'Y'
+    </select>
+</mapper>
