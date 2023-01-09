@@ -13,5 +13,6 @@ import lombok.NonNull;
 public class CodeDTO {
     @NonNull
     private String commonCode;
+    @NonNull
     private String commonDetailCode;
 }

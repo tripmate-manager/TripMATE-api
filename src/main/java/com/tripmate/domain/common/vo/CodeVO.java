@@ -14,6 +14,7 @@ public class CodeVO {
     @NonNull
     @Schema(description = "공통코드", example = "MB001")
     private String commonCode;
+    @NonNull
     @Schema(description = "공통코드 상세코드", example = "10")
     private String commonDetailCode;
     @Schema(description = "공통코드 상세코드명", example = "일반회원가입")
