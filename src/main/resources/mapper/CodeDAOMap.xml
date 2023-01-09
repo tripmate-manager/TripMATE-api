@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tripmate.domain.common.dao.mapper.CodeDAOMapper">
-    <resultMap id="searchCodeListResult" type="com.tripmate.domain.common.vo.CodeVO">
+    <resultMap id="searchCodeListResult" type="CodeVO">
         <result property="commonCode" column="COMM_CD"/>
         <result property="commonDetailCode" column="COMM_DTL_CD"/>
         <result property="commonDetailName" column="COMM_DTL_NM"/>
