@@ -30,3 +30,10 @@ springdoc:
   display-query-params-without-oauth2: true
   paths-to-match:
     - /v1/**
+
+logging:
+  level:
+    org.springframework.batch: info
+    jdbc: debug
+    jdbc.sqltiming: info
+    jdbc.resultsettable: info
