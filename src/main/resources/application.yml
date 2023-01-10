@@ -12,6 +12,19 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(Aw8ShjNwMn12bF4ld8d9w777CiYSpgUJ9XmLjJ/jyN+RXo7/eUwaLA==)
+    password: ENC(0bPLCU4y/iWmn1HWlUjr5N5HZVOx5X38p0SpnPtDv/Y=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
 mybatis:
   config-location: classpath:mybatis-config.xml
   mapper-locations: classpath:mapper/**/*.xml
