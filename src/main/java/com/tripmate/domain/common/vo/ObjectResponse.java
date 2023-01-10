@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.util.List;
-
 @Builder
 @Getter
 public class ObjectResponse<T> {
