@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Service
 class MailHandler {
@@ -22,7 +23,7 @@ class MailHandler {
     public MailHandler(JavaMailSender javaMailSender) throws MessagingException {
         this.sender = javaMailSender;
         this.mimeMessage = javaMailSender.createMimeMessage();
-        this.mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        this.mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
     }
 
     public MailHandler(JavaMailSender sender, MimeMessage mimeMessage, MimeMessageHelper mimeMessageHelper) {

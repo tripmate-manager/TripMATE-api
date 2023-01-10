@@ -8,7 +8,7 @@ import javax.mail.MessagingException;
 
 @Service
 public class MailServiceImpl implements MailService {
-    private MailHandler mailHandler;
+    private final MailHandler mailHandler;
 
     @Autowired
     public MailServiceImpl(MailHandler mailHandler) {
