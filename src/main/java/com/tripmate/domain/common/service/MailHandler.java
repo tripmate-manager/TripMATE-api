@@ -18,7 +18,6 @@ class MailHandler {
     private final MimeMessage mimeMessage;
     private final MimeMessageHelper mimeMessageHelper;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     public MailHandler(JavaMailSender javaMailSender) throws MessagingException {
         this.sender = javaMailSender;
