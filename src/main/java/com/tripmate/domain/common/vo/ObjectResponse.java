@@ -18,6 +18,6 @@ public class ObjectResponse<T> {
     @Builder.Default
     @Schema(description = "api response message", example = "success")
     private String message = "success";
-    @Schema(description = "api response data list")
+    @Schema(description = "api response data")
     private T data;
 }
