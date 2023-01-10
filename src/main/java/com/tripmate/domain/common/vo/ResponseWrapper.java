@@ -5,9 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.util.List;
+
 @Builder
 @Getter
-public class ObjectResponse<T> {
+public class ResponseWrapper<T> {
     @NonNull
     @Builder.Default
     @Schema(description = "api response code", example = "200")
@@ -16,6 +18,6 @@ public class ObjectResponse<T> {
     @Builder.Default
     @Schema(description = "api response message", example = "success")
     private String message = "success";
-    @Schema(description = "api response data")
-    private T data;
+    @Schema(description = "api response data list")
+    private List<T> data;
 }
