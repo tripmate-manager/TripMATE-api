@@ -13,11 +13,11 @@ public class ObjectResponse<T> {
     @NonNull
     @Builder.Default
     @Schema(description = "api response code", example = "200")
-    protected String code = "200";
+    private String code = "200";
     @NonNull
     @Builder.Default
     @Schema(description = "api response message", example = "success")
-    protected String message = "success";
+    private String message = "success";
     @Schema(description = "api response data list")
     private T data;
 }
