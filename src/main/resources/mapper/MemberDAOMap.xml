@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tripmate.domain.member.dao.mapper.MemberDAOMapper">
+    <insert id="insertMemberInfo" parameterType="MemberDTO">
+        INSERT INTO MB_MBR_MGMT (MBR_ID,
+                                 MBR_PWD,
+                                 MBR_NM,
+                                 NICK_NM,
+                                 EMAIL,
+                                 GEND_CD,
+                                 BDAY,
+                                 LOGIN_REQ_CNT,
+                                 MBR_STATUS_CD,
+                                 REG_NO,
+                                 REG_DTIME,
+                                 UPT_NO,
+                                 UPT_DTIME)
+        VALUES (#{memberId:VARCHAR},
+                password(#{memberPassword:VARCHAR}),
+                #{memberName:VARCHAR},
+                #{nickName:VARCHAR},
+                #{email:VARCHAR},
+                #{genderCode:VARCHAR},
+                #{birthDay:VARCHAR},
+                0,
+                #{memberStatusCode:VARCHAR},
+                0,
+                now(),
+                0,
+                now())
+    </insert>
+</mapper>
