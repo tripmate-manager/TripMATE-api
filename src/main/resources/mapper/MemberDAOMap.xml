@@ -32,4 +32,10 @@
                 0,
                 now())
     </insert>
+
+    <select id="selectMemberIdCount" parameterType="String" resultType="Integer">
+        SELECT COUNT(*)
+        FROM MB_MBR_MGMT
+        WHERE MBR_ID = #{memberId:VARCHAR}
+    </select>
 </mapper>

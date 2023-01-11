@@ -18,4 +18,9 @@ public class MemberServiceImpl implements MemberService{
     public void signUp(MemberDTO memberDTO) {
         memberDAO.insertMemberInfo(memberDTO);
     }
+
+    @Override
+    public Integer getMemberIdCount(String memberId) {
+        return memberDAO.selectMemberIdCount(memberId);
+    }
 }
