@@ -1,6 +1,5 @@
 package com.tripmate.api.v1.controller;
 
-import com.tripmate.domain.common.vo.CodeVO;
 import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.member.dto.MemberDTO;
 import com.tripmate.domain.member.service.MemberService;
@@ -37,11 +36,27 @@ public class MemberController {
         memberService.signUp(memberDTO);
     }
 
-    @Operation(summary = "아이디 중복 조회", description = "memberId 기준 MB_MBR_MGMT 테이블에서 데이터 카운트 조회")
-    @GetMapping("/{memberId}")
-    public ResponseWrapper<Integer> getCode(@PathVariable(value = "memberId") @Schema(example = "testid") String memberId) {
+    @Operation(summary = "아이디 중복 조회", description = "memberId 기준 MB_MBR_MGMT 테이블에서 회원 카운트 조회")
+    @GetMapping("/idCheck/{memberId}")
+    public ResponseWrapper<Integer> getMemberIdCount(@PathVariable(value = "memberId") @Schema(example = "testid") String memberId) {
         return ResponseWrapper.<Integer>builder()
                 .data(Collections.singletonList(memberService.getMemberIdCount(memberId)))
+                .build();
+    }
+
+    @Operation(summary = "닉네임 중복 조회", description = "memberNickName 기준 MB_MBR_MGMT 테이블에서 회원 카운트 조회")
+    @GetMapping("/nickNameCheck/{memberNickName}")
+    public ResponseWrapper<Integer> getMemberNickNameCount(@PathVariable(value = "memberNickName") @Schema(example = "닉네임") String memberNickName) {
+        return ResponseWrapper.<Integer>builder()
+                .data(Collections.singletonList(memberService.getMemberNickNameCount(memberNickName)))
+                .build();
+    }
+
+    @Operation(summary = "이메일 중복 조회", description = "memberEmail 기준 MB_MBR_MGMT 테이블에서 회원 카운트 조회")
+    @GetMapping("/emailCheck/{memberEmail}")
+    public ResponseWrapper<Integer> getMemberEmailCount(@PathVariable(value = "memberEmail") @Schema(example = "test@test.com") String memberEmail) {
+        return ResponseWrapper.<Integer>builder()
+                .data(Collections.singletonList(memberService.getMemberEmailCount(memberEmail)))
                 .build();
     }
 }

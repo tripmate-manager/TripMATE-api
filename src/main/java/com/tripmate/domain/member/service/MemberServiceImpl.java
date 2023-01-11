@@ -23,4 +23,14 @@ public class MemberServiceImpl implements MemberService{
     public Integer getMemberIdCount(String memberId) {
         return memberDAO.selectMemberIdCount(memberId);
     }
+
+    @Override
+    public Integer getMemberNickNameCount(String memberNickName) {
+        return memberDAO.selectMemberNickNameCount(memberNickName);
+    }
+
+    @Override
+    public Integer getMemberEmailCount(String memberEmail) {
+        return memberDAO.selectMemberEmailCount(memberEmail);
+    }
 }
