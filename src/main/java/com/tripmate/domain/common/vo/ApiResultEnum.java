@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum ApiResultEnum {
-    VALIDATION("8000", "Method Argument Type Mismatch"),
     MESSAGING("8888", "messaging error"),
+    VALIDATION("9000", "Method Argument Type Mismatch"),
     UNKNOWN("9999", "unknown exception");
 
     private final String code;
