@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.tripmate.domain.signup.dao.mapper.MemberDAOMapper">
+<mapper namespace="com.tripmate.domain.member.dao.mapper.MemberDAOMapper">
     <insert id="insertMemberInfo" parameterType="MemberDTO">
         INSERT INTO MB_MBR_MGMT (MBR_ID,
                                  MBR_PWD,

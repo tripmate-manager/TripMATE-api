@@ -1,7 +1,7 @@
 package com.tripmate.api.v1.controller;
 
-import com.tripmate.domain.signup.dto.MemberDTO;
-import com.tripmate.domain.signup.service.MemberService;
+import com.tripmate.domain.member.dto.MemberDTO;
+import com.tripmate.domain.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;

@@ -6,6 +6,6 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.tripmate.domain.common.vo.CodeVO" alias="CodeVO"/>
-        <typeAlias type="com.tripmate.domain.signup.dto.MemberDTO" alias="MemberDTO"/>
+        <typeAlias type="com.tripmate.domain.member.dto.MemberDTO" alias="MemberDTO"/>
     </typeAliases>
 </configuration>
