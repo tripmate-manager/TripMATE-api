@@ -1,7 +1,7 @@
-package com.tripmate.domain.common.service;
+package com.tripmate.domain.signup.service;
 
-import com.tripmate.domain.common.dao.MemberDAO;
-import com.tripmate.domain.common.dto.MemberDTO;
+import com.tripmate.domain.signup.dao.MemberDAO;
+import com.tripmate.domain.signup.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

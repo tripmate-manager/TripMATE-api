@@ -1,7 +1,7 @@
-package com.tripmate.domain.common.dao;
+package com.tripmate.domain.signup.dao;
 
-import com.tripmate.domain.common.dao.mapper.MemberDAOMapper;
-import com.tripmate.domain.common.dto.MemberDTO;
+import com.tripmate.domain.signup.dao.mapper.MemberDAOMapper;
+import com.tripmate.domain.signup.dto.MemberDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

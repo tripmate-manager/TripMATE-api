@@ -1,12 +1,11 @@
 package com.tripmate.api.v1.controller;
 
-import com.tripmate.domain.common.dto.MemberDTO;
-import com.tripmate.domain.common.service.MemberService;
+import com.tripmate.domain.signup.dto.MemberDTO;
+import com.tripmate.domain.signup.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +26,7 @@ public class MemberController {
     }
 
     @Operation(summary = "회원가입", description = "회원 가입")
-    @PostMapping("signup")
+    @PostMapping
     public void signUp(@Valid @RequestBody MemberDTO memberDTO) {
         memberService.signUp(memberDTO);
     }
