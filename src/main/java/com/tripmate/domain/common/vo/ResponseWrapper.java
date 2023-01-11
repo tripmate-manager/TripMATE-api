@@ -12,12 +12,12 @@ import java.util.List;
 public class ResponseWrapper<T> {
     @NonNull
     @Builder.Default
-    @Schema(description = "api response code", example = "200")
-    private String code = "200";
+    @Schema(description = "api response code", example = "0000")
+    private String code = ApiResultEnum.SUCCESS.getCode();
     @NonNull
     @Builder.Default
     @Schema(description = "api response message", example = "success")
-    private String message = "success";
+    private String message = ApiResultEnum.SUCCESS.getMessage();
     @Schema(description = "api response data list")
     private List<T> data;
 }

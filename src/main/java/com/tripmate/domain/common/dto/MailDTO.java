@@ -14,15 +14,15 @@ import javax.validation.constraints.NotBlank;
 @Schema(description = "메일 DTO")
 public class MailDTO {
     @NonNull
-    @NotBlank(message = "메일수신자 주소를 입력하세요.")
+    @NotBlank(message = "메일수신자 주소를 입력하세요")
     @Schema(description = "메일주소", example = "test@test.com")
     private String to;
     @NonNull
-    @NotBlank(message = "메일 제목을 입력하세요.")
+    @NotBlank(message = "메일 제목을 입력하세요")
     @Schema(description = "메일 제목")
     private String subject;
     @NonNull
-    @NotBlank(message = "본문을 입력하세요.")
+    @NotBlank(message = "본문을 입력하세요")
     @Schema(description = "메일 본문")
     private String message;
 }
