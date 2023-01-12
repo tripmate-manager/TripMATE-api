@@ -18,4 +18,16 @@ public class MemberDAO {
     public void insertMemberInfo(MemberDTO memberDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).insertMemberInfo(memberDTO);
     }
+
+    public Integer selectMemberIdCount(String memberId) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectMemberIdCount(memberId);
+    }
+
+    public Integer selectMemberNickNameCount(String memberNickName) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectMemberNickNameCount(memberNickName);
+    }
+
+    public Integer selectMemberEmailCount(String memberEmail) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectMemberEmailCount(memberEmail);
+    }
 }
