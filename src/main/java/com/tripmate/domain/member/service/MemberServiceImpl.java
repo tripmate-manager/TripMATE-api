@@ -22,6 +22,6 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public boolean getDuplicationYn(DuplicationCheckDTO duplicationCheckDTO) {
-        return memberDAO.selectDuplicationCount(duplicationCheckDTO);
+        return memberDAO.selectDuplicationCnt(duplicationCheckDTO);
     }
 }

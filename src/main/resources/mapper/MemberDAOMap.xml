@@ -33,7 +33,7 @@
                 now());
     </insert>
 
-    <select id="selectDuplicationCount" parameterType="DuplicationCheckDTO" resultType="boolean">
+    <select id="selectDuplicationCnt" parameterType="DuplicationCheckDTO" resultType="boolean">
         SELECT CASE WHEN COUNT(*) > 0 THEN 0 ELSE 1 END
         FROM MB_MBR_MGMT
         <choose>
