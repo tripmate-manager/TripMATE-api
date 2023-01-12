@@ -38,9 +38,9 @@ public class MemberController {
         memberService.signUp(memberDTO);
     }
 
-    @Operation(summary = "아이디 중복 조회", description = "이미 사용중인 아이디인지 중복여부를 체크합니다.")
+    @Operation(summary = "아이디 중복 조회", description = "이미 사용중인 아이디인지 중복여부를 체크합니다. (true: 사용 가능한 아이디 / false: 중복된 아이디)")
     @GetMapping("/duplication/memberId")
-    public ResponseWrapper<Boolean> idDuplicationCheck(@RequestParam(value = "memberId") @Schema(example = "회원ID") String memberId) {
+    public ResponseWrapper<Boolean> idDuplicationCheckYn(@RequestParam(value = "memberId") @Schema(example = "회원ID") String memberId) {
         boolean duplicationCnt = memberService.getDuplicationYn(DuplicationCheckDTO.builder()
                 .duplicationMemberInfo(memberId)
                 .duplicationCheckType(ConstCode.DUPLICATION_CHECK_MEMBER_ID)
@@ -51,9 +51,9 @@ public class MemberController {
                 .build();
     }
 
-    @Operation(summary = "닉네임 중복 조회", description = "이미 사용중인 닉네임인지 중복여부를 체크합니다.")
+    @Operation(summary = "닉네임 중복 조회", description = "이미 사용중인 닉네임인지 중복여부를 체크합니다. (true: 사용 가능한 닉네임 / false: 중복된 닉네임)")
     @GetMapping("/duplication/nickName")
-    public ResponseWrapper<Boolean> nickNameDuplicationCheck(@RequestParam(value = "memberNickName") @Schema(example = "닉네임") String nickName) {
+    public ResponseWrapper<Boolean> nickNameDuplicationCheckYn(@RequestParam(value = "memberNickName") @Schema(example = "닉네임") String nickName) {
         boolean duplicationCnt = memberService.getDuplicationYn(DuplicationCheckDTO.builder()
                 .duplicationMemberInfo(nickName)
                 .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
@@ -64,9 +64,9 @@ public class MemberController {
                 .build();
     }
 
-    @Operation(summary = "이메일 중복 조회", description = "이미 사용중인 이메일인지 중복여부를 체크합니다.")
+    @Operation(summary = "이메일 중복 조회", description = "이미 사용중인 이메일인지 중복여부를 체크합니다. (true: 사용 가능한 이메일 / false: 중복된 이메일)")
     @GetMapping("/duplication/email")
-    public ResponseWrapper<Boolean> emailDuplicationCheck(@RequestParam(value = "memberEmail") @Schema(example = "test@test.com") String email) {
+    public ResponseWrapper<Boolean> emailDuplicationCheckYn(@RequestParam(value = "memberEmail") @Schema(example = "test@test.com") String email) {
         boolean duplicationCnt = memberService.getDuplicationYn(DuplicationCheckDTO.builder()
                 .duplicationMemberInfo(email)
                 .duplicationCheckType(ConstCode.DUPLICATION_CHECK_EMAIL)
