@@ -5,5 +5,5 @@ import com.tripmate.domain.member.dto.MemberDTO;
 
 public interface MemberDAOMapper {
     void insertMemberInfo(MemberDTO memberDTO);
-    boolean selectDuplicationCnt(DuplicationCheckDTO duplicationCheckDTO);
+    int selectDuplicationCnt(DuplicationCheckDTO duplicationCheckDTO);
 }

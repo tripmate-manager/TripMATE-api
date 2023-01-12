@@ -20,7 +20,7 @@ public class MemberDAO {
         sqlSession.getMapper(MemberDAOMapper.class).insertMemberInfo(memberDTO);
     }
 
-    public boolean selectDuplicationCnt(DuplicationCheckDTO duplicationCheckDTO) {
+    public int selectDuplicationCnt(DuplicationCheckDTO duplicationCheckDTO) {
         return sqlSession.getMapper(MemberDAOMapper.class).selectDuplicationCnt(duplicationCheckDTO);
     }
 }
