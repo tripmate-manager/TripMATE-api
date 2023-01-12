@@ -30,24 +30,22 @@
                 0,
                 now(),
                 0,
-                now())
+                now());
     </insert>
 
-    <select id="selectMemberIdCount" parameterType="String" resultType="Integer">
-        SELECT COUNT(*)
+    <select id="selectDuplicationCount" parameterType="DuplicationCheckDTO" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN 0 ELSE 1 END
         FROM MB_MBR_MGMT
-        WHERE MBR_ID = #{memberId:VARCHAR}
-    </select>
-
-    <select id="selectMemberNickNameCount" parameterType="String" resultType="Integer">
-        SELECT COUNT(*)
-        FROM MB_MBR_MGMT
-        WHERE NICK_NM = #{nickName:VARCHAR}
-    </select>
-
-    <select id="selectMemberEmailCount" parameterType="String" resultType="Integer">
-        SELECT COUNT(*)
-        FROM MB_MBR_MGMT
-        WHERE EMAIL = #{email:VARCHAR}
+        <choose>
+            <when test="duplicationCheckType == '10'">
+                WHERE MBR_ID = #{duplicationMemberInfo:VARCHAR};
+            </when>
+            <when test="duplicationCheckType == '20'">
+                WHERE NICK_NM = #{duplicationMemberInfo:VARCHAR};
+            </when>
+            <otherwise>
+                WHERE EMAIL = #{duplicationMemberInfo:VARCHAR};
+            </otherwise>
+        </choose>
     </select>
 </mapper>

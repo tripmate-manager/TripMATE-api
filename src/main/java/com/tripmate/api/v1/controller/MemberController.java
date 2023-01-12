@@ -1,6 +1,8 @@
 package com.tripmate.api.v1.controller;
 
+import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.common.vo.ResponseWrapper;
+import com.tripmate.domain.member.dto.DuplicationCheckDTO;
 import com.tripmate.domain.member.dto.MemberDTO;
 import com.tripmate.domain.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,10 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -36,27 +38,42 @@ public class MemberController {
         memberService.signUp(memberDTO);
     }
 
-    @Operation(summary = "아이디 중복 조회", description = "memberId 기준 MB_MBR_MGMT 테이블에서 회원 카운트 조회")
-    @GetMapping("/idCheck/{memberId}")
-    public ResponseWrapper<Integer> getMemberIdCount(@PathVariable(value = "memberId") @Schema(example = "testid") String memberId) {
-        return ResponseWrapper.<Integer>builder()
-                .data(Collections.singletonList(memberService.getMemberIdCount(memberId)))
+    @Operation(summary = "아이디 중복 조회", description = "이미 사용중인 아이디인지 중복여부를 체크합니다.")
+    @GetMapping("/duplication/memberId")
+    public ResponseWrapper<Boolean> idDuplicationCheck(@RequestParam(value = "memberId") @Schema(example = "회원ID") String memberId) {
+        boolean duplicationCnt = memberService.getDuplicationYn(DuplicationCheckDTO.builder()
+                .duplicationMemberInfo(memberId)
+                .duplicationCheckType(ConstCode.DUPLICATION_CHECK_MEMBER_ID)
+                .build());
+
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(duplicationCnt))
                 .build();
     }
 
-    @Operation(summary = "닉네임 중복 조회", description = "memberNickName 기준 MB_MBR_MGMT 테이블에서 회원 카운트 조회")
-    @GetMapping("/nickNameCheck/{memberNickName}")
-    public ResponseWrapper<Integer> getMemberNickNameCount(@PathVariable(value = "memberNickName") @Schema(example = "닉네임") String memberNickName) {
-        return ResponseWrapper.<Integer>builder()
-                .data(Collections.singletonList(memberService.getMemberNickNameCount(memberNickName)))
+    @Operation(summary = "닉네임 중복 조회", description = "이미 사용중인 닉네임인지 중복여부를 체크합니다.")
+    @GetMapping("/duplication/nickName")
+    public ResponseWrapper<Boolean> nickNameDuplicationCheck(@RequestParam(value = "memberNickName") @Schema(example = "닉네임") String nickName) {
+        boolean duplicationCnt = memberService.getDuplicationYn(DuplicationCheckDTO.builder()
+                .duplicationMemberInfo(nickName)
+                .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
+                .build());
+
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(duplicationCnt))
                 .build();
     }
 
-    @Operation(summary = "이메일 중복 조회", description = "memberEmail 기준 MB_MBR_MGMT 테이블에서 회원 카운트 조회")
-    @GetMapping("/emailCheck/{memberEmail}")
-    public ResponseWrapper<Integer> getMemberEmailCount(@PathVariable(value = "memberEmail") @Schema(example = "test@test.com") String memberEmail) {
-        return ResponseWrapper.<Integer>builder()
-                .data(Collections.singletonList(memberService.getMemberEmailCount(memberEmail)))
+    @Operation(summary = "이메일 중복 조회", description = "이미 사용중인 이메일인지 중복여부를 체크합니다.")
+    @GetMapping("/duplication/email")
+    public ResponseWrapper<Boolean> emailDuplicationCheck(@RequestParam(value = "memberEmail") @Schema(example = "test@test.com") String email) {
+        boolean duplicationCnt = memberService.getDuplicationYn(DuplicationCheckDTO.builder()
+                .duplicationMemberInfo(email)
+                .duplicationCheckType(ConstCode.DUPLICATION_CHECK_EMAIL)
+                .build());
+
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(duplicationCnt))
                 .build();
     }
 }

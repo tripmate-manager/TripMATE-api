@@ -1,5 +1,6 @@
 package com.tripmate.domain.member.service;
 
+import com.tripmate.domain.member.dto.DuplicationCheckDTO;
 import com.tripmate.domain.member.dao.MemberDAO;
 import com.tripmate.domain.member.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +20,8 @@ public class MemberServiceImpl implements MemberService{
         memberDAO.insertMemberInfo(memberDTO);
     }
 
-    public Integer getMemberIdCount(String memberId) {
-        return memberDAO.selectMemberIdCount(memberId);
-    }
-
     @Override
-    public Integer getMemberNickNameCount(String memberNickName) {
-        return memberDAO.selectMemberNickNameCount(memberNickName);
-    }
-
-    @Override
-    public Integer getMemberEmailCount(String memberEmail) {
-        return memberDAO.selectMemberEmailCount(memberEmail);
+    public boolean getDuplicationYn(DuplicationCheckDTO duplicationCheckDTO) {
+        return memberDAO.selectDuplicationCount(duplicationCheckDTO);
     }
 }
