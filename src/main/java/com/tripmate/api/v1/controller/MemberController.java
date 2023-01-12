@@ -1,6 +1,8 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.ConstCode;
+import com.tripmate.domain.common.dto.MailDTO;
+import com.tripmate.domain.common.service.MailService;
 import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.member.dto.DuplicationCheckDTO;
 import com.tripmate.domain.member.dto.MemberDTO;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.Collections;
 
@@ -26,16 +29,20 @@ import java.util.Collections;
 @RequestMapping("v1/member")
 public class MemberController {
     private final MemberService memberService;
+    private final MailService mailService;
 
     @Autowired
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, MailService mailService) {
         this.memberService = memberService;
+        this.mailService = mailService;
     }
 
     @Operation(summary = "회원가입", description = "회원 가입")
     @PostMapping
-    public void signUp(@Valid @RequestBody MemberDTO memberDTO) {
-        memberService.signUp(memberDTO);
+    public ResponseWrapper<Integer> signUp(@Valid @RequestBody MemberDTO memberDTO) {
+        return ResponseWrapper.<Integer>builder()
+                .data(Collections.singletonList(memberService.signUp(memberDTO)))
+                .build();
     }
 
     @Operation(summary = "아이디 중복 조회", description = "이미 사용중인 아이디인지 중복여부를 체크합니다. (true: 사용 가능한 아이디 / false: 중복된 아이디)")
@@ -53,7 +60,7 @@ public class MemberController {
 
     @Operation(summary = "닉네임 중복 조회", description = "이미 사용중인 닉네임인지 중복여부를 체크합니다. (true: 사용 가능한 닉네임 / false: 중복된 닉네임)")
     @GetMapping("/duplication/nickName")
-    public ResponseWrapper<Boolean> isNickNameDuplicate(@RequestParam(value = "memberNickName") @Schema(example = "닉네임") String nickName) {
+    public ResponseWrapper<Boolean> isNickNameDuplicate(@RequestParam(value = "nickName") @Schema(example = "닉네임") String nickName) {
         boolean duplication = memberService.isDuplicate(DuplicationCheckDTO.builder()
                 .duplicationMemberInfo(nickName)
                 .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
@@ -66,7 +73,7 @@ public class MemberController {
 
     @Operation(summary = "이메일 중복 조회", description = "이미 사용중인 이메일인지 중복여부를 체크합니다. (true: 사용 가능한 이메일 / false: 중복된 이메일)")
     @GetMapping("/duplication/email")
-    public ResponseWrapper<Boolean> isEmailDuplicate(@RequestParam(value = "memberEmail") @Schema(example = "test@test.com") String email) {
+    public ResponseWrapper<Boolean> isEmailDuplicate(@RequestParam(value = "email") @Schema(example = "test@test.com") String email) {
         boolean duplication = memberService.isDuplicate(DuplicationCheckDTO.builder()
                 .duplicationMemberInfo(email)
                 .duplicationCheckType(ConstCode.DUPLICATION_CHECK_EMAIL)
@@ -74,6 +81,16 @@ public class MemberController {
 
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(duplication))
+                .build();
+    }
+
+    @Operation(summary = "메일 전송", description = "메일 전송 예시")
+    @PostMapping("/sendMail")
+    public ResponseWrapper<String> sendMail(@Valid @RequestBody MailDTO mail) throws MessagingException {
+        mailService.sendMail(mail);
+
+        return ResponseWrapper.<String>builder()
+                .data(Collections.singletonList("--DATA TEST--"))
                 .build();
     }
 }
