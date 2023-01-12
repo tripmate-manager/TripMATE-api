@@ -30,6 +30,22 @@
                 0,
                 now(),
                 0,
-                now())
+                now());
     </insert>
+
+    <select id="selectDuplicationCnt" parameterType="DuplicationCheckDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM MB_MBR_MGMT
+        <choose>
+            <when test="duplicationCheckType == '10'">
+                WHERE MBR_ID = #{duplicationMemberInfo:VARCHAR};
+            </when>
+            <when test="duplicationCheckType == '20'">
+                WHERE NICK_NM = #{duplicationMemberInfo:VARCHAR};
+            </when>
+            <otherwise>
+                WHERE EMAIL = #{duplicationMemberInfo:VARCHAR};
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

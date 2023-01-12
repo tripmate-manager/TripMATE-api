@@ -1,5 +1,6 @@
 package com.tripmate.domain.member.dao;
 
+import com.tripmate.domain.member.dto.DuplicationCheckDTO;
 import com.tripmate.domain.member.dao.mapper.MemberDAOMapper;
 import com.tripmate.domain.member.dto.MemberDTO;
 import org.apache.ibatis.session.SqlSession;
@@ -17,5 +18,9 @@ public class MemberDAO {
 
     public void insertMemberInfo(MemberDTO memberDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).insertMemberInfo(memberDTO);
+    }
+
+    public int selectDuplicationCnt(DuplicationCheckDTO duplicationCheckDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectDuplicationCnt(duplicationCheckDTO);
     }
 }

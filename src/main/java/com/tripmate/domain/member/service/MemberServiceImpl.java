@@ -1,5 +1,6 @@
 package com.tripmate.domain.member.service;
 
+import com.tripmate.domain.member.dto.DuplicationCheckDTO;
 import com.tripmate.domain.member.dao.MemberDAO;
 import com.tripmate.domain.member.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,5 +18,10 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void signUp(MemberDTO memberDTO) {
         memberDAO.insertMemberInfo(memberDTO);
+    }
+
+    @Override
+    public boolean isDuplicate(DuplicationCheckDTO duplicationCheckDTO) {
+        return memberDAO.selectDuplicationCnt(duplicationCheckDTO) < 1;
     }
 }
