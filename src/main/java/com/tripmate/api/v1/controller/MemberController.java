@@ -1,8 +1,6 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.ConstCode;
-import com.tripmate.domain.common.dto.MailDTO;
-import com.tripmate.domain.common.service.MailService;
 import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.member.dto.DuplicationCheckDTO;
 import com.tripmate.domain.member.dto.MemberDTO;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.Collections;
 
@@ -29,15 +26,13 @@ import java.util.Collections;
 @RequestMapping("v1/member")
 public class MemberController {
     private final MemberService memberService;
-    private final MailService mailService;
 
     @Autowired
-    public MemberController(MemberService memberService, MailService mailService) {
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
-        this.mailService = mailService;
     }
 
-    @Operation(summary = "회원가입", description = "회원 가입")
+    @Operation(summary = "회원가입", description = "회원 가입 (회원 번호 반환)")
     @PostMapping
     public ResponseWrapper<Integer> signUp(@Valid @RequestBody MemberDTO memberDTO) {
         return ResponseWrapper.<Integer>builder()
@@ -81,16 +76,6 @@ public class MemberController {
 
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(duplication))
-                .build();
-    }
-
-    @Operation(summary = "메일 전송", description = "메일 전송 예시")
-    @PostMapping("/sendMail")
-    public ResponseWrapper<String> sendMail(@Valid @RequestBody MailDTO mail) throws MessagingException {
-        mailService.sendMail(mail);
-
-        return ResponseWrapper.<String>builder()
-                .data(Collections.singletonList("--DATA TEST--"))
                 .build();
     }
 }
