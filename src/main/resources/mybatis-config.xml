@@ -8,5 +8,6 @@
         <typeAlias type="com.tripmate.domain.common.vo.CodeVO" alias="CodeVO"/>
         <typeAlias type="com.tripmate.domain.member.dto.MemberDTO" alias="MemberDTO"/>
         <typeAlias type="com.tripmate.domain.member.dto.DuplicationCheckDTO" alias="DuplicationCheckDTO"/>
+        <typeAlias type="com.tripmate.domain.member.dto.MemberMailDTO" alias="MemberMailDTO"/>
     </typeAliases>
 </configuration>

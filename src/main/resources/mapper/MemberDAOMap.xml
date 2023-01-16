@@ -51,4 +51,23 @@
             </otherwise>
         </choose>
     </select>
+
+    <insert id="insertEmailInfo" parameterType="MemberMailDTO">
+        INSERT INTO MB_AUTH_EMAIL_MGMT (MBR_NO,
+                                        RECV_EMAIL,
+                                        EMAIL_AUTH_KEY,
+                                        EMAIL_TP_CD,
+                                        REG_NO,
+                                        REG_DTIME,
+                                        UPT_NO,
+                                        UPT_DTIME)
+        VALUES ((SELECT MBR_NO FROM MB_MBR_MGMT WHERE EMAIL = #{email:VARCHAR}),
+                #{email:VARCHAR},
+                #{key:VARCHAR},
+                #{mailTypeCode:VARCHAR},
+                0,
+                now(),
+                0,
+                now());
+    </insert>
 </mapper>
