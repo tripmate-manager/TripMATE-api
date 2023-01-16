@@ -70,4 +70,15 @@
                 0,
                 now());
     </insert>
+
+    <update id="updateSignUpEmailConfirm" parameterType="MemberMailDTO">
+        <selectKey keyProperty="memberNo" keyColumn="MBR_NO" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        UPDATE MB_MBR_MGMT MMM SET MMM.MBR_STATUS_CD = IF(#{key:VARCHAR} = (
+			SELECT MAEM.EMAIL_AUTH_KEY
+			FROM MB_AUTH_EMAIL_MGMT MAEM
+			WHERE MAEM.RECV_EMAIL = #{email:VARCHAR}
+			ORDER BY UPT_DTIME DESC LIMIT 1), '20', '10') WHERE MMM.EMAIL = #{email:VARCHAR};
+    </update>
 </mapper>

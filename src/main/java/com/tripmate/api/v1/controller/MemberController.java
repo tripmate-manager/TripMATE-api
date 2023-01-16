@@ -6,6 +6,7 @@ import com.tripmate.domain.common.service.MailService;
 import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.member.dto.DuplicationCheckDTO;
 import com.tripmate.domain.member.dto.MemberDTO;
+import com.tripmate.domain.member.dto.MemberMailDTO;
 import com.tripmate.domain.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -96,6 +97,20 @@ public class MemberController {
         boolean duplication = memberService.isDuplicate(DuplicationCheckDTO.builder()
                 .duplicationMemberInfo(email)
                 .duplicationCheckType(ConstCode.DUPLICATION_CHECK_EMAIL)
+                .build());
+
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(duplication))
+                .build();
+    }
+
+    @Operation(summary = "회원가입 인증메일 확인", description = "회원가입 인증메일을 처리합니다. (true: 인증완료 / false: 미인증처리)")
+    @GetMapping("signUpMailConfirm")
+    public ResponseWrapper<Boolean> signUpMailConfirm(@RequestParam(value = "email") @Schema(example = "test@test.com") String email,
+                                                      @RequestParam(value = "key") @Schema(example = "인증키") String key) {
+        boolean duplication = memberService.signUpMailConfirm(MemberMailDTO.builder()
+                .email(email)
+                .key(key)
                 .build());
 
         return ResponseWrapper.<Boolean>builder()

@@ -29,4 +29,8 @@ public class MemberDAO {
     public void insertEmailInfo(MemberMailDTO memberMailDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).insertEmailInfo(memberMailDTO);
     }
+
+    public int updateSignUpEmailConfirm(MemberMailDTO memberMailDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateSignUpEmailConfirm(memberMailDTO);
+    }
 }
