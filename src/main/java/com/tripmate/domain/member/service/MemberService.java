@@ -4,6 +4,6 @@ import com.tripmate.domain.member.dto.DuplicationCheckDTO;
 import com.tripmate.domain.member.dto.MemberDTO;
 
 public interface MemberService {
-    void signUp(MemberDTO memberDTO);
+    int signUp(MemberDTO memberDTO);
     boolean isDuplicate(DuplicationCheckDTO duplicationCheckDTO);
 }

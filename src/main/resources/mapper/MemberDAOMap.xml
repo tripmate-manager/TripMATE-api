@@ -5,6 +5,9 @@
 
 <mapper namespace="com.tripmate.domain.member.dao.mapper.MemberDAOMapper">
     <insert id="insertMemberInfo" parameterType="MemberDTO">
+        <selectKey keyProperty="memberNo" keyColumn="MBR_NO" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         INSERT INTO MB_MBR_MGMT (MBR_ID,
                                  MBR_PWD,
                                  MBR_NM,

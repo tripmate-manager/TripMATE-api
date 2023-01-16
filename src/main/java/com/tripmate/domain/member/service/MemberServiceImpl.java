@@ -16,8 +16,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void signUp(MemberDTO memberDTO) {
-        memberDAO.insertMemberInfo(memberDTO);
+    public int signUp(MemberDTO memberDTO) {
+        return memberDAO.insertMemberInfo(memberDTO);
     }
 
     @Override

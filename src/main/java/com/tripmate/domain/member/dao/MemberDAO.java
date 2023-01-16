@@ -16,8 +16,9 @@ public class MemberDAO {
         this.sqlSession = sqlSession;
     }
 
-    public void insertMemberInfo(MemberDTO memberDTO) {
+    public int insertMemberInfo(MemberDTO memberDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).insertMemberInfo(memberDTO);
+        return memberDTO.getMemberNo();
     }
 
     public int selectDuplicationCnt(DuplicationCheckDTO duplicationCheckDTO) {
