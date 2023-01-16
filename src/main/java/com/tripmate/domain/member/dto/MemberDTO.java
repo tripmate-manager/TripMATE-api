@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.springframework.context.annotation.PropertySource;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
@@ -19,7 +18,6 @@ import javax.validation.constraints.Size;
 @Getter
 @Schema(description = "회원가입 Request DTO")
 public class MemberDTO {
-    @NonNull
     @Hidden
     private int memberNo;
     @NonNull
@@ -59,7 +57,6 @@ public class MemberDTO {
     @Schema(description = "생년월일", pattern = "yyyyMMdd", example = "19980101")
     private String birthDay;
 
-    @NonNull
     @Pattern(regexp = "^[123]0$", message = "성별코드는 10, 20, 30만 입력 가능합니다.")
     @Schema(description = "회원상태코드(10: 인증완료, 20: 인증대기, 30: 탈퇴", example = "10")
     private String memberStatusCode;
