@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 public class MemberDTO {
     @Hidden
     private int memberNo;
+
     @NonNull
     @Pattern(regexp="^[0-9a-zA-Z]{5,20}$",
             message = "영문, 숫자로 이루어진 5자 ~ 20자의 아이디만 입력 가능합니다.")

@@ -23,7 +23,7 @@ import java.util.Collections;
 @Slf4j
 @RestController
 @Tag(name = "회원 API", description = "Member API")
-@RequestMapping("v1/member")
+@RequestMapping("v1/members")
 public class MemberController {
     private final MemberService memberService;
 
