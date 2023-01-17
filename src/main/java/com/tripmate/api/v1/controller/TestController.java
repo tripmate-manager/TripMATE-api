@@ -59,7 +59,7 @@ public class TestController {
     @Operation(summary = "메일전송", description = "메일전송 예시")
     @PostMapping("sendMail")
     public ResponseWrapper<String> sendMail(@Valid @RequestBody MailDTO mail) throws MessagingException {
-        mailService.sendSignUpMail(mail);
+        mailService.sendMail(mail);
 
         return ResponseWrapper.<String>builder()
                               .data(Collections.singletonList("--DATA TEST--"))

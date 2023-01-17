@@ -41,23 +41,17 @@ public class MemberController {
     @Operation(summary = "회원가입", description = "회원 가입 및 인증 메일 전송 (return: 회원 번호)")
     @PostMapping
     public ResponseWrapper<Integer> signUp(@Valid @RequestBody MemberDTO memberDTO) {
-        int signUpResult = 0;
+        int signUpResult = memberService.signUp(memberDTO);
 
-        try {
-            signUpResult = memberService.signUp(memberDTO);
-
-            if (signUpResult > 0) {
-                MailDTO mailDTO = MailDTO.builder()
-                        .email(memberDTO.getEmail())
-                        .build();
-                try {
-                    mailService.sendSignUpMail(mailDTO);
-                } catch (MessagingException e) {
-                    log.error(e.getMessage(), e);
-                }
+        if (signUpResult > 0) {
+            MailDTO mailDTO = MailDTO.builder()
+                    .to(memberDTO.getEmail())
+                    .build();
+            try {
+                mailService.sendSignUpMail(mailDTO);
+            } catch (MessagingException e) {
+                log.error(e.getMessage(), e);
             }
-        } catch (NullPointerException e) {
-            log.error(e.getMessage(), e);
         }
 
         return ResponseWrapper.<Integer>builder()

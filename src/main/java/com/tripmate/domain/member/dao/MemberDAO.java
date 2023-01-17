@@ -19,6 +19,7 @@ public class MemberDAO {
 
     public int insertMemberInfo(MemberDTO memberDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).insertMemberInfo(memberDTO);
+        
         return memberDTO.getMemberNo();
     }
 
@@ -32,6 +33,7 @@ public class MemberDAO {
 
     public int updateSignUpEmailConfirm(MemberMailDTO memberMailDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).updateSignUpEmailConfirm(memberMailDTO);
+
         return memberMailDTO.getMemberNo();
     }
 }
