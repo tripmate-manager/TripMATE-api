@@ -2,6 +2,7 @@ package com.tripmate.domain.common.service;
 
 import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
+import com.tripmate.domain.common.Encrypt;
 import com.tripmate.domain.common.dto.MailDTO;
 import com.tripmate.domain.member.dao.MemberDAO;
 import com.tripmate.domain.member.dto.MemberMailDTO;
@@ -9,10 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Random;
 
 @Service
 public class MailServiceImpl implements MailService {

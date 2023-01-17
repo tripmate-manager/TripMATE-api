@@ -27,7 +27,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public boolean signUpMailConfirm(MemberMailDTO memberMailDTO) {
-        return memberDAO.updateSignUpEmailConfirm(memberMailDTO) > 0;
+    public void signUpMailConfirm(MemberMailDTO memberMailDTO) {
+        memberDAO.updateSignUpEmailConfirm(memberMailDTO);
     }
 }

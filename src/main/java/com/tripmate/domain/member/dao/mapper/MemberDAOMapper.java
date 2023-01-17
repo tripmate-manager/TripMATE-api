@@ -8,5 +8,5 @@ public interface MemberDAOMapper {
     int insertMemberInfo(MemberDTO memberDTO);
     int selectDuplicationCnt(DuplicationCheckDTO duplicationCheckDTO);
     void insertEmailInfo(MemberMailDTO memberMailDTO);
-    int updateSignUpEmailConfirm(MemberMailDTO memberMailDTO);
+    void updateSignUpEmailConfirm(MemberMailDTO memberMailDTO);
 }

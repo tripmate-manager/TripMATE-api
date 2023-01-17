@@ -11,8 +11,6 @@ import lombok.NonNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberMailDTO {
-    private int memberNo;
-
     @NonNull
     private String email;
 

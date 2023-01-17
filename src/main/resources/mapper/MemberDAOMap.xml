@@ -73,21 +73,14 @@
 
     <update id="updateSignUpEmailConfirm" parameterType="MemberMailDTO">
         UPDATE MB_MBR_MGMT MMM
-        SET MMM.MBR_STATUS_CD = IF(#{key:VARCHAR} = (
-			SELECT MAEM.EMAIL_AUTH_KEY
-			FROM MB_AUTH_EMAIL_MGMT MAEM
-			WHERE MAEM.RECV_EMAIL = #{email:VARCHAR}
-			AND MAEM.EMAIL_TP_CD = #{mailTypeCode:VARCHAR}
-			ORDER BY UPT_DTIME DESC LIMIT 1), '20', '10'),
-            MMM.UPT_NO = 0,
-            MMM.UPT_DTIME = now()
-        WHERE MMM.EMAIL = #{email:VARCHAR};
-        <selectKey keyColumn="MBR_NO" keyProperty="memberNo" resultType="int" order="AFTER">
-            SELECT MBR_NO
-            FROM MB_MBR_MGMT
-            WHERE 1 = 1
-            AND	EMAIL = #{email:VARCHAR}
-            AND MBR_STATUS_CD = '20';
-        </selectKey>
+            INNER JOIN MB_AUTH_EMAIL_MGMT MAEM
+        ON MMM.MBR_NO = MAEM.MBR_NO
+            SET MMM.MBR_STATUS_CD = IF(#{key:VARCHAR} = (
+                SELECT MAEM.EMAIL_AUTH_KEY
+                FROM MB_AUTH_EMAIL_MGMT MAEM
+                WHERE MAEM.RECV_EMAIL = #{email:VARCHAR}
+                ORDER BY UPT_DTIME DESC LIMIT 1), '20', '10'),
+                MMM.UPT_NO = 0,
+                MMM.UPT_DTIME = now();
     </update>
 </mapper>

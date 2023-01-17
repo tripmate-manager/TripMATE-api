@@ -1,4 +1,4 @@
-package com.tripmate.domain.common.service;
+package com.tripmate.domain.common;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
