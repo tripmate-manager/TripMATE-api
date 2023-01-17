@@ -31,6 +31,7 @@ public class MemberDAO {
     }
 
     public int updateSignUpEmailConfirm(MemberMailDTO memberMailDTO) {
-        return sqlSession.getMapper(MemberDAOMapper.class).updateSignUpEmailConfirm(memberMailDTO);
+        sqlSession.getMapper(MemberDAOMapper.class).updateSignUpEmailConfirm(memberMailDTO);
+        return memberMailDTO.getMemberNo();
     }
 }

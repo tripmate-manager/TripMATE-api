@@ -108,13 +108,14 @@ public class MemberController {
     @GetMapping("signUpMailConfirm")
     public ResponseWrapper<Boolean> signUpMailConfirm(@RequestParam(value = "email") @Schema(example = "test@test.com") String email,
                                                       @RequestParam(value = "key") @Schema(example = "인증키") String key) {
-        boolean duplication = memberService.signUpMailConfirm(MemberMailDTO.builder()
+        boolean signUpMailConfirmResult = memberService.signUpMailConfirm(MemberMailDTO.builder()
                 .email(email)
                 .key(key)
+                .mailTypeCode(ConstCode.EMAIL_TYPE_CODE_JOIN)
                 .build());
 
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(duplication))
+                .data(Collections.singletonList(signUpMailConfirmResult))
                 .build();
     }
 }
