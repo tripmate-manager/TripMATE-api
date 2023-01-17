@@ -26,7 +26,8 @@ public class MailServiceImpl implements MailService {
 
         String mailContents = "<h3>TripMATE 회원가입 인증 메일</h3>" +
                 "<h4>아래 링크를 클릭하여 인증을 완료해주세요.</h4><br>" +
-                "<a href='http://localhost:8080/members/signUp/emailConfirm?email=" + mailDTO.getEmail() +
+                "<a href='" + ConstCode.TRIPMATE_DOMAIN + ConstCode.JOIN_EMAIL_PATH +
+                "?email=" + mailDTO.getEmail() +
                 "&key=" + key +
                 "' target='_blenk'>이메일 인증하기</a>";
 
