@@ -79,7 +79,7 @@
                 SELECT MAEM.EMAIL_AUTH_KEY
                 FROM MB_AUTH_EMAIL_MGMT MAEM
                 WHERE MAEM.RECV_EMAIL = #{email:VARCHAR}
-                ORDER BY UPT_DTIME DESC LIMIT 1), '20', '10'),
+                ORDER BY UPT_DTIME DESC LIMIT 1), '10', '20'),
                 MMM.UPT_NO = 0,
                 MMM.UPT_DTIME = now();
     </update>

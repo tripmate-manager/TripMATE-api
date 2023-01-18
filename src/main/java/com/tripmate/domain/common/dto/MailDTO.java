@@ -20,13 +20,9 @@ public class MailDTO {
     @Schema(description = "메일주소", example = "test@test.com")
     private String to;
 
-    @NonNull
-    @NotBlank(message = "메일 제목을 입력하세요")
     @Schema(description = "메일 제목")
     private String subject;
 
-    @NonNull
-    @NotBlank(message = "본문을 입력하세요")
     @Schema(description = "메일 본문")
     private String message;
 }
