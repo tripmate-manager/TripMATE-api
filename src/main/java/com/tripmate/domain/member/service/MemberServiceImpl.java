@@ -4,6 +4,7 @@ import com.tripmate.domain.member.dto.DuplicationCheckDTO;
 import com.tripmate.domain.member.dao.MemberDAO;
 import com.tripmate.domain.member.dto.MemberDTO;
 import com.tripmate.domain.member.dto.MemberMailDTO;
+import com.tripmate.domain.member.dto.SignInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +30,10 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void signUpMailConfirm(MemberMailDTO memberMailDTO) {
         memberDAO.updateSignUpEmailConfirm(memberMailDTO);
+    }
+
+    @Override
+    public MemberDTO signIn(SignInDTO signInDTO) {
+        return memberDAO.selectSignInMemberInfo(signInDTO);
     }
 }

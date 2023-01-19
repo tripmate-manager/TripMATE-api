@@ -39,7 +39,7 @@ public class MemberDTO {
     private String memberName;
 
     @NonNull
-    @Pattern(regexp = "^[가-힣0-9a-zA-Z~!@#$%^&*()_+|<>?:{}]{1,20}$", message = "한영자 숫자 기호 입력 가능하며 1~20자의 닉네임만 입력 가능합니다.")
+    @Pattern(regexp = "^[가-힣0-9a-zA-Z~!@#$%^&*()_+|<>?:{}]{1,20}$", message = "한영자, 숫자, 기호 입력 가능하며 1~20자의 닉네임만 입력 가능합니다.")
     @Schema(description = "닉네임", example = "닉네임")
     private String nickName;
 
@@ -54,12 +54,15 @@ public class MemberDTO {
     private String genderCode;
 
     @NonNull
-    @Pattern(regexp = "^\\d{4}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$", message="생년월일은 'yyyyMMdd' 형태로 입력가능합니다.")
+    @Pattern(regexp = "^(19|20)\\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$", message="생년월일은 'yyyyMMdd' 형태로 입력가능합니다.")
     @Schema(description = "생년월일", pattern = "yyyyMMdd", example = "19980101")
     private String birthDay;
 
     @Pattern(regexp = "^[123]0$", message = "회원상태코드는 10, 20, 30만 입력 가능합니다.")
     @Schema(description = "회원상태코드(10: 인증완료, 20: 인증대기, 30: 탈퇴", example = "10")
     private String memberStatusCode;
+
+    @Hidden
+    private String signInRequestCnt;
 }
 
