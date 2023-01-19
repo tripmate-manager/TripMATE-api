@@ -39,8 +39,8 @@ public class MemberDTO {
     private String memberName;
 
     @NonNull
+    @Pattern(regexp = "^[가-힣0-9a-zA-Z~!@#$%^&*()_+|<>?:{}]{1,20}$", message = "한영자 숫자 기호 입력 가능하며 1~20자의 닉네임만 입력 가능합니다.")
     @Schema(description = "닉네임", example = "닉네임")
-    @Size(min = 1, max = 20)
     private String nickName;
 
     @NonNull
@@ -58,7 +58,7 @@ public class MemberDTO {
     @Schema(description = "생년월일", pattern = "yyyyMMdd", example = "19980101")
     private String birthDay;
 
-    @Pattern(regexp = "^[123]0$", message = "성별코드는 10, 20, 30만 입력 가능합니다.")
+    @Pattern(regexp = "^[123]0$", message = "회원상태코드는 10, 20, 30만 입력 가능합니다.")
     @Schema(description = "회원상태코드(10: 인증완료, 20: 인증대기, 30: 탈퇴", example = "10")
     private String memberStatusCode;
 }

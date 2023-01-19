@@ -51,4 +51,36 @@
             </otherwise>
         </choose>
     </select>
+
+    <insert id="insertEmailInfo" parameterType="MemberMailDTO">
+        INSERT INTO MB_AUTH_EMAIL_MGMT (MBR_NO,
+                                        RECV_EMAIL,
+                                        EMAIL_AUTH_KEY,
+                                        EMAIL_TP_CD,
+                                        REG_NO,
+                                        REG_DTIME,
+                                        UPT_NO,
+                                        UPT_DTIME)
+        VALUES ((SELECT MBR_NO FROM MB_MBR_MGMT WHERE EMAIL = #{email:VARCHAR}),
+                #{email:VARCHAR},
+                #{key:VARCHAR},
+                #{mailTypeCode:VARCHAR},
+                0,
+                now(),
+                0,
+                now());
+    </insert>
+
+    <update id="updateSignUpEmailConfirm" parameterType="MemberMailDTO">
+        UPDATE MB_MBR_MGMT MMM
+            INNER JOIN MB_AUTH_EMAIL_MGMT MAEM
+        ON MMM.MBR_NO = MAEM.MBR_NO
+            SET MMM.MBR_STATUS_CD = IF(#{key:VARCHAR} = (
+                SELECT MAEM.EMAIL_AUTH_KEY
+                FROM MB_AUTH_EMAIL_MGMT MAEM
+                WHERE MAEM.RECV_EMAIL = #{email:VARCHAR}
+                ORDER BY UPT_DTIME DESC LIMIT 1), '10', '20'),
+                MMM.UPT_NO = 0,
+                MMM.UPT_DTIME = now();
+    </update>
 </mapper>
