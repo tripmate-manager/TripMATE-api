@@ -39,8 +39,8 @@ public class MemberDTO {
     private String memberName;
 
     @NonNull
+    @Pattern(regexp = "^[가-힣0-9a-zA-Z~!@#$%^&*()_+|<>?:{}]{1,20}$", message = "한영자 숫자 기호 입력 가능하며 1~20자의 닉네임만 입력 가능합니다.")
     @Schema(description = "닉네임", example = "닉네임")
-    @Size(min = 1, max = 20)
     private String nickName;
 
     @NonNull
