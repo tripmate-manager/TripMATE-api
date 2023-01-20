@@ -1,5 +1,6 @@
 package com.tripmate.api;
 
+import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.vo.ApiResultEnum;
 import com.tripmate.domain.common.vo.ResponseWrapper;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,6 +20,14 @@ public class GlobalExceptionHandler {
                               .message(ApiResultEnum.VALIDATION.getMessage() + " [" + e.getAllErrors()
                                                                                        .get(0)
                                                                                        .getDefaultMessage() + "]")
+                              .build();
+    }
+
+    @ExceptionHandler(WrongParameterException.class)
+    public ResponseWrapper<String> handleValidException(WrongParameterException e) {
+        return ResponseWrapper.<String>builder()
+                              .code(ApiResultEnum.WRONG_PARAMETER.getCode())
+                              .message(ApiResultEnum.WRONG_PARAMETER.getMessage() + " [" + e.getMessage() + "]")
                               .build();
     }
 
