@@ -7,6 +7,7 @@ public enum ApiResultEnum {
     SUCCESS("0000", "success"),
     MESSAGING("8888", "messaging error"),
     VALIDATION("9000", "Method Argument Type Mismatch"),
+    WRONG_PARAMETER("9001", "wrong parameter value"),
     UNKNOWN("9999", "unknown exception");
 
     private final String code;
