@@ -64,24 +64,18 @@ public class MemberController {
     }
 
     @Operation(summary = "아이디 중복 조회", description = "이미 사용중인 아이디인지 중복여부를 체크합니다. (true: 사용 가능한 아이디 / false: 중복된 아이디)")
-    @GetMapping("duplication/memberId")
+    @GetMapping("duplication/id")
     public ResponseWrapper<Boolean> isMemberIdDuplicate(@RequestParam(value = "memberId") @Schema(example = "회원ID") String memberId) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(memberService.isDuplicate(DuplicationCheckDTO.builder()
-                        .duplicationMemberInfo(memberId)
-                        .duplicationCheckType(ConstCode.DUPLICATION_CHECK_MEMBER_ID)
-                        .build())))
+                .data(Collections.singletonList(isDuplicate(memberId, ConstCode.DUPLICATION_CHECK_MEMBER_ID)))
                 .build();
     }
 
     @Operation(summary = "닉네임 중복 조회", description = "이미 사용중인 닉네임인지 중복여부를 체크합니다. (true: 사용 가능한 닉네임 / false: 중복된 닉네임)")
-    @GetMapping("duplication/nickName")
+    @GetMapping("duplication/nick-name")
     public ResponseWrapper<Boolean> isNickNameDuplicate(@RequestParam(value = "nickName") @Schema(example = "닉네임") String nickName) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(memberService.isDuplicate(DuplicationCheckDTO.builder()
-                        .duplicationMemberInfo(nickName)
-                        .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
-                        .build())))
+                .data(Collections.singletonList(isDuplicate(nickName, ConstCode.DUPLICATION_CHECK_NICK_NAME)))
                 .build();
     }
 
@@ -89,15 +83,19 @@ public class MemberController {
     @GetMapping("duplication/email")
     public ResponseWrapper<Boolean> isEmailDuplicate(@RequestParam(value = "email") @Schema(example = "test@test.com") String email) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(memberService.isDuplicate(DuplicationCheckDTO.builder()
-                        .duplicationMemberInfo(email)
-                        .duplicationCheckType(ConstCode.DUPLICATION_CHECK_EMAIL)
-                        .build())))
+                .data(Collections.singletonList(isDuplicate(email, ConstCode.DUPLICATION_CHECK_EMAIL)))
                 .build();
     }
 
+    private boolean isDuplicate(String value, String type) {
+        return memberService.isDuplicate(DuplicationCheckDTO.builder()
+                                                            .duplicationMemberInfo(value)
+                                                            .duplicationCheckType(type)
+                                                            .build());
+    }
+
     @Operation(summary = "회원가입 인증메일 확인", description = "회원가입 인증메일을 처리합니다. (true: 인증완료 / false: 미인증처리)")
-    @GetMapping("signUpMailConfirm")
+    @GetMapping("signup-mail-confirm")
     public ResponseWrapper signUpMailConfirm(@RequestParam(value = "email") @Schema(example = "test@test.com") @NonNull @Email String email,
                                                       @RequestParam(value = "key") @Schema(example = "인증키") @NonNull @Size(max = 100) String key) {
         memberService.signUpMailConfirm(MemberMailDTO.builder()
