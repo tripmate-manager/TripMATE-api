@@ -86,10 +86,10 @@ public class MemberController {
                 .build();
     }
 
-    private boolean isDuplicate(String memberId, String duplicationCheckMemberId) {
+    private boolean isDuplicate(String value, String type) {
         return memberService.isDuplicate(DuplicationCheckDTO.builder()
-                                                            .duplicationMemberInfo(memberId)
-                                                            .duplicationCheckType(duplicationCheckMemberId)
+                                                            .duplicationMemberInfo(value)
+                                                            .duplicationCheckType(type)
                                                             .build());
     }
 
