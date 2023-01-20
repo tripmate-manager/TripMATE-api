@@ -99,10 +99,4 @@
         WHERE MBR_ID = #{memberId:VARCHAR}
           AND MBR_PWD = password(#{memberPassword:VARCHAR});
     </select>
-
-    <select id="updateSignInRequestCnt" parameterType="int">
-        UPDATE MB_MBR_MGMT
-        SET LOGIN_REQ_CNT = LOGIN_REQ_CNT + 1
-        WHERE MBR_NO = #{memberNo:VARCHAR};
-    </select>
 </mapper>
