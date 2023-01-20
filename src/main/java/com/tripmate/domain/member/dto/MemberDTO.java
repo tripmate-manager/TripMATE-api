@@ -54,7 +54,7 @@ public class MemberDTO {
     private String genderCode;
 
     @NonNull
-    @Pattern(regexp = "^\\d{4}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$", message="생년월일은 'yyyyMMdd' 형태로 입력가능합니다.")
+    @Pattern(regexp = "^(19|20)\\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$", message="생년월일은 'yyyyMMdd' 형태로 입력가능합니다.")
     @Schema(description = "생년월일", pattern = "yyyyMMdd", example = "19980101")
     private String birthDay;
 
