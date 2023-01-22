@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public boolean isDuplicate(DuplicationCheckDTO duplicationCheckDTO) {
-        return memberDAO.selectDuplicationCnt(duplicationCheckDTO) < 1;
+        return memberDAO.selectDuplicationCnt(duplicationCheckDTO) > 0;
     }
 
     @Override
