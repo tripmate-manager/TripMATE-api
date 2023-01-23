@@ -1,9 +1,9 @@
-package com.tripmate.domain.member.dao.mapper;
+package com.tripmate.domain.members.dao.mapper;
 
-import com.tripmate.domain.member.dto.DuplicationCheckDTO;
-import com.tripmate.domain.member.dto.MemberDTO;
-import com.tripmate.domain.member.dto.MemberMailDTO;
-import com.tripmate.domain.member.dto.SignInDTO;
+import com.tripmate.domain.members.dto.DuplicationCheckDTO;
+import com.tripmate.domain.members.dto.MemberDTO;
+import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.SignInDTO;
 
 public interface MemberDAOMapper {
     int insertMemberInfo(MemberDTO memberDTO);

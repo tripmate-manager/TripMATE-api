@@ -4,8 +4,8 @@ import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.common.Encrypt;
 import com.tripmate.domain.common.dto.MailDTO;
-import com.tripmate.domain.member.dao.MemberDAO;
-import com.tripmate.domain.member.dto.MemberMailDTO;
+import com.tripmate.domain.members.dao.MemberDAO;
+import com.tripmate.domain.members.dto.MemberMailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

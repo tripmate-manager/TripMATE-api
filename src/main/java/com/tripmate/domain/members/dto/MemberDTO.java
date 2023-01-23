@@ -1,4 +1,4 @@
-package com.tripmate.domain.member.dto;
+package com.tripmate.domain.members.dto;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,7 +10,6 @@ import lombok.NonNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @Builder
 @NoArgsConstructor

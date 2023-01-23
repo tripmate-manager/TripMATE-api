@@ -1,12 +1,12 @@
-package com.tripmate.domain.member.service;
+package com.tripmate.domain.members.service;
 
 import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.ConstCode;
-import com.tripmate.domain.member.dao.MemberDAO;
-import com.tripmate.domain.member.dto.DuplicationCheckDTO;
-import com.tripmate.domain.member.dto.MemberDTO;
-import com.tripmate.domain.member.dto.MemberMailDTO;
-import com.tripmate.domain.member.dto.SignInDTO;
+import com.tripmate.domain.members.dao.MemberDAO;
+import com.tripmate.domain.members.dto.DuplicationCheckDTO;
+import com.tripmate.domain.members.dto.MemberDTO;
+import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.SignInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
