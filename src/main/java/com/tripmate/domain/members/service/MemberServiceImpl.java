@@ -9,9 +9,10 @@ import com.tripmate.domain.members.dto.MemberMailDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
     private final MemberDAO memberDAO;
 
     @Autowired
@@ -22,23 +23,23 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public int signUp(MemberDTO memberDTO) {
         if (!isDuplicate(DuplicationCheckDTO.builder()
-                                            .duplicationMemberInfo(memberDTO.getMemberId())
-                                            .duplicationCheckType(ConstCode.DUPLICATION_CHECK_MEMBER_ID)
-                                            .build())) {
+                .duplicationMemberInfo(memberDTO.getMemberId())
+                .duplicationCheckType(ConstCode.DUPLICATION_CHECK_MEMBER_ID)
+                .build())) {
             throw new WrongParameterException("이미 등록된 ID입니다.");
         }
 
         if (!isDuplicate(DuplicationCheckDTO.builder()
-                                            .duplicationMemberInfo(memberDTO.getEmail())
-                                            .duplicationCheckType(ConstCode.DUPLICATION_CHECK_EMAIL)
-                                            .build())) {
+                .duplicationMemberInfo(memberDTO.getEmail())
+                .duplicationCheckType(ConstCode.DUPLICATION_CHECK_EMAIL)
+                .build())) {
             throw new WrongParameterException("이미 등록된 메일주소 입니다.");
         }
 
         if (!isDuplicate(DuplicationCheckDTO.builder()
-                                            .duplicationMemberInfo(memberDTO.getNickName())
-                                            .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
-                                            .build())) {
+                .duplicationMemberInfo(memberDTO.getNickName())
+                .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
+                .build())) {
             throw new WrongParameterException("이미 등록된 닉네임 입니다.");
         }
 
@@ -57,6 +58,21 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public MemberDTO signIn(SignInDTO signInDTO) {
-        return memberDAO.selectSignInMemberInfo(signInDTO);
+        MemberDTO memberDTO = memberDAO.selectSignInMemberInfo(signInDTO);
+
+        if (!ObjectUtils.isEmpty(memberDTO) && memberDTO.getLogInRequestCnt() < 5) {
+            signInDTO.setLogInSuccess(true);
+        } else {
+            MemberDTO memberDTO1 = memberDAO.selectSignInRequestCnt(signInDTO);
+
+            if (!ObjectUtils.isEmpty(memberDTO1) && memberDTO1.getLogInRequestCnt() >= 5) {
+                memberDTO = memberDTO1;
+            }
+            signInDTO.setLogInSuccess(false);
+        }
+
+        memberDAO.updateLoginRequestCnt(signInDTO);
+
+        return memberDTO;
     }
 }

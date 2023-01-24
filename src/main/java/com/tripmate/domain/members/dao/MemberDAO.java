@@ -39,4 +39,11 @@ public class MemberDAO {
     public MemberDTO selectSignInMemberInfo(SignInDTO signInDTO) {
         return sqlSession.getMapper(MemberDAOMapper.class).selectSignInMemberInfo(signInDTO);
     }
+
+    public void updateLoginRequestCnt(SignInDTO signInDTO) {
+        sqlSession.getMapper(MemberDAOMapper.class).updateLoginRequestCnt(signInDTO);
+    }
+    public MemberDTO selectSignInRequestCnt(SignInDTO signInDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectLogInRequestCnt(signInDTO);
+    }
 }

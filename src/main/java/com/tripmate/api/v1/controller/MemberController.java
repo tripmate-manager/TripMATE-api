@@ -109,7 +109,7 @@ public class MemberController {
 
     @Operation(summary = "로그인 요청", description = "로그인 처리합니다. (return: 회원 정보)")
     @PostMapping("signIn")
-    public ResponseWrapper<MemberDTO> signIn(@Valid @RequestBody SignInDTO signInDTO) {
+    public ResponseWrapper<MemberDTO> signIn(@RequestBody SignInDTO signInDTO) {
         return ResponseWrapper.<MemberDTO>builder()
                 .data(Collections.singletonList(memberService.signIn(signInDTO)))
                 .build();

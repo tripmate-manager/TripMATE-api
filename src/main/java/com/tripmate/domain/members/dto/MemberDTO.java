@@ -2,11 +2,12 @@ package com.tripmate.domain.members.dto;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
@@ -15,6 +16,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Schema(description = "회원가입 Request DTO")
 public class MemberDTO {
     @Hidden
@@ -23,7 +25,7 @@ public class MemberDTO {
     @NonNull
     @Pattern(regexp="^[0-9a-zA-Z]{5,20}$",
             message = "영문, 숫자로 이루어진 5자 ~ 20자의 아이디만 입력 가능합니다.")
-    @Schema(description = "아이디", example = "testid")
+    @Schema(description = "아이디", example = "회원ID")
     private String memberId;
 
     @NonNull
@@ -62,6 +64,6 @@ public class MemberDTO {
     private String memberStatusCode;
 
     @Hidden
-    private String signInRequestCnt;
+    private int logInRequestCnt;
 }
 

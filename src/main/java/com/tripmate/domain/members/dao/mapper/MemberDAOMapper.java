@@ -11,4 +11,6 @@ public interface MemberDAOMapper {
     void insertEmailInfo(MemberMailDTO memberMailDTO);
     void updateSignUpEmailConfirm(MemberMailDTO memberMailDTO);
     MemberDTO selectSignInMemberInfo(SignInDTO signInDTO);
+    void updateLoginRequestCnt(SignInDTO signInDTO);
+    MemberDTO selectLogInRequestCnt(SignInDTO signInDTO);
 }
