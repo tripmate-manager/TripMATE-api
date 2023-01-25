@@ -88,6 +88,10 @@ public class MemberServiceImpl implements MemberService {
             }
         }
 
+        if (ObjectUtils.isEmpty(memberDTO)) {
+            throw new WrongParameterException("일치하는 회원 정보가 존재하지 않습니다.");
+        }
+
         return memberDTO;
     }
 }
