@@ -94,7 +94,7 @@
                 EMAIL AS email,
                 GEND_CD AS genderCode,
                 BDAY AS birthDay,
-                LOGIN_REQ_CNT AS logInRequestCnt,
+                LOGIN_REQ_CNT AS signInRequestCnt,
                 MBR_STATUS_CD AS memberStatusCode
         FROM MB_MBR_MGMT
         WHERE MBR_ID = #{memberId:VARCHAR}
@@ -102,21 +102,19 @@
     </select>
 
     <select id="selectSignInRequestCnt" parameterType="SignInDTO" resultType="MemberDTO">
-        SELECT LOGIN_REQ_CNT AS logInRequestCnt
+        SELECT MBR_NO AS memberNo,
+                MBR_ID AS memberId,
+                MBR_PWD AS memberPassword,
+                LOGIN_REQ_CNT AS signInRequestCnt
         FROM MB_MBR_MGMT
         WHERE MBR_ID = #{memberId:VARCHAR};
     </select>
     
     <update id="updateSignInRequestCnt" parameterType="SignInDTO">
         UPDATE MB_MBR_MGMT
-        SET <if test="signInSuccess == false">
-                LOGIN_REQ_CNT = LOGIN_REQ_CNT + 1,
-            </if>
-            <if test="signInSuccess == true">
-                LOGIN_REQ_CNT = 0,
-            </if>
+        SET LOGIN_REQ_CNT = #{signInRequestCnt:NUMERIC},
             UPT_NO = 0,
             UPT_DTIME = now()
-        WHERE MBR_ID = #{memberId:VARCHAR};
+        WHERE MBR_NO = #{memberNo:NUMERIC};
     </update>
 </mapper>

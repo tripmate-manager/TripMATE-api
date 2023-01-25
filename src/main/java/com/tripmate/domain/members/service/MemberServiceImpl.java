@@ -1,6 +1,7 @@
 package com.tripmate.domain.members.service;
 
 import com.tripmate.common.exception.WrongParameterException;
+import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
@@ -60,18 +61,32 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO signIn(SignInDTO signInDTO) {
         MemberDTO memberDTO = memberDAO.selectSignInMemberInfo(signInDTO);
 
-        if (!ObjectUtils.isEmpty(memberDTO) && memberDTO.getSignInRequestCnt() < 5) {
-            signInDTO.setSignInSuccess(true);
+        if (!ObjectUtils.isEmpty(memberDTO) && memberDTO.getSignInRequestCnt() < Const.SIGNIN_LIMIT_CNT) {
+            signInDTO = SignInDTO.builder()
+                    .memberNo(memberDTO.getMemberNo())
+                    .memberId(memberDTO.getMemberId())
+                    .memberPassword(memberDTO.getMemberPassword())
+                    .signInRequestCnt(0)
+                    .build();
+            memberDAO.updateSignInRequestCnt(signInDTO);
         } else {
             MemberDTO memberDTO1 = memberDAO.selectSignInRequestCnt(signInDTO);
 
-            if (!ObjectUtils.isEmpty(memberDTO1) && memberDTO1.getSignInRequestCnt() >= 5) {
-                memberDTO = memberDTO1;
-            }
-            signInDTO.setSignInSuccess(false);
-        }
+            if (!ObjectUtils.isEmpty(memberDTO1)) {
+                if (memberDTO1.getSignInRequestCnt() >= Const.SIGNIN_LIMIT_CNT) {
+                    memberDTO = memberDTO1;
+                } else {
+                    signInDTO = SignInDTO.builder()
+                            .memberNo(memberDTO1.getMemberNo())
+                            .memberId(memberDTO1.getMemberId())
+                            .memberPassword(memberDTO1.getMemberPassword())
+                            .signInRequestCnt(memberDTO1.getSignInRequestCnt() + 1)
+                            .build();
 
-        memberDAO.updateSignInRequestCnt(signInDTO);
+                    memberDAO.updateSignInRequestCnt(signInDTO);
+                }
+            }
+        }
 
         return memberDTO;
     }
