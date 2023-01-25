@@ -60,18 +60,18 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO signIn(SignInDTO signInDTO) {
         MemberDTO memberDTO = memberDAO.selectSignInMemberInfo(signInDTO);
 
-        if (!ObjectUtils.isEmpty(memberDTO) && memberDTO.getLogInRequestCnt() < 5) {
-            signInDTO.setLogInSuccess(true);
+        if (!ObjectUtils.isEmpty(memberDTO) && memberDTO.getSignInRequestCnt() < 5) {
+            signInDTO.setSignInSuccess(true);
         } else {
             MemberDTO memberDTO1 = memberDAO.selectSignInRequestCnt(signInDTO);
 
-            if (!ObjectUtils.isEmpty(memberDTO1) && memberDTO1.getLogInRequestCnt() >= 5) {
+            if (!ObjectUtils.isEmpty(memberDTO1) && memberDTO1.getSignInRequestCnt() >= 5) {
                 memberDTO = memberDTO1;
             }
-            signInDTO.setLogInSuccess(false);
+            signInDTO.setSignInSuccess(false);
         }
 
-        memberDAO.updateLoginRequestCnt(signInDTO);
+        memberDAO.updateSignInRequestCnt(signInDTO);
 
         return memberDTO;
     }

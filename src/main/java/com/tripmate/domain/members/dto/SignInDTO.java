@@ -31,5 +31,5 @@ public class SignInDTO {
     private String memberPassword;
 
     @Hidden
-    private boolean logInSuccess;
+    private boolean signInSuccess;
 }

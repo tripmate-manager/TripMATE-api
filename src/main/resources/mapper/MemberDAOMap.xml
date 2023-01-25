@@ -101,18 +101,18 @@
           AND MBR_PWD = password(#{memberPassword:VARCHAR});
     </select>
 
-    <select id="selectLogInRequestCnt" parameterType="SignInDTO" resultType="MemberDTO">
+    <select id="selectSignInRequestCnt" parameterType="SignInDTO" resultType="MemberDTO">
         SELECT LOGIN_REQ_CNT AS logInRequestCnt
         FROM MB_MBR_MGMT
         WHERE MBR_ID = #{memberId:VARCHAR};
     </select>
     
-    <update id="updateLoginRequestCnt" parameterType="SignInDTO">
+    <update id="updateSignInRequestCnt" parameterType="SignInDTO">
         UPDATE MB_MBR_MGMT
-        SET <if test="logInSuccess == false">
+        SET <if test="signInSuccess == false">
                 LOGIN_REQ_CNT = LOGIN_REQ_CNT + 1,
             </if>
-            <if test="logInSuccess == true">
+            <if test="signInSuccess == true">
                 LOGIN_REQ_CNT = 0,
             </if>
             UPT_NO = 0,

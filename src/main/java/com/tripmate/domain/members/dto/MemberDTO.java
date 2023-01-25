@@ -64,6 +64,6 @@ public class MemberDTO {
     private String memberStatusCode;
 
     @Hidden
-    private int logInRequestCnt;
+    private int signInRequestCnt;
 }
 
