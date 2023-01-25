@@ -22,21 +22,21 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public int signUp(MemberDTO memberDTO) {
-        if (!isDuplicate(DuplicationCheckDTO.builder()
+        if (isDuplicate(DuplicationCheckDTO.builder()
                 .duplicationMemberInfo(memberDTO.getMemberId())
                 .duplicationCheckType(ConstCode.DUPLICATION_CHECK_MEMBER_ID)
                 .build())) {
             throw new WrongParameterException("이미 등록된 ID입니다.");
         }
 
-        if (!isDuplicate(DuplicationCheckDTO.builder()
+        if (isDuplicate(DuplicationCheckDTO.builder()
                 .duplicationMemberInfo(memberDTO.getEmail())
                 .duplicationCheckType(ConstCode.DUPLICATION_CHECK_EMAIL)
                 .build())) {
             throw new WrongParameterException("이미 등록된 메일주소 입니다.");
         }
 
-        if (!isDuplicate(DuplicationCheckDTO.builder()
+        if (isDuplicate(DuplicationCheckDTO.builder()
                 .duplicationMemberInfo(memberDTO.getNickName())
                 .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
                 .build())) {
