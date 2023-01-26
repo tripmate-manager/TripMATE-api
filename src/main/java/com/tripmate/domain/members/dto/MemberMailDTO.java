@@ -1,4 +1,4 @@
-package com.tripmate.domain.member.dto;
+package com.tripmate.domain.members.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

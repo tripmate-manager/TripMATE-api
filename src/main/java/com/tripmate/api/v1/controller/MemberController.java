@@ -4,10 +4,11 @@ import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.common.dto.MailDTO;
 import com.tripmate.domain.common.service.MailService;
 import com.tripmate.domain.common.vo.ResponseWrapper;
-import com.tripmate.domain.member.dto.DuplicationCheckDTO;
-import com.tripmate.domain.member.dto.MemberDTO;
-import com.tripmate.domain.member.dto.MemberMailDTO;
-import com.tripmate.domain.member.service.MemberService;
+import com.tripmate.domain.members.dto.DuplicationCheckDTO;
+import com.tripmate.domain.members.dto.MemberDTO;
+import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.SignInDTO;
+import com.tripmate.domain.members.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -104,6 +105,14 @@ public class MemberController {
                 .build());
 
         return ResponseWrapper.builder().build();
+    }
+
+    @Operation(summary = "로그인 요청", description = "로그인 처리합니다. (return: 회원 정보)")
+    @PostMapping("signIn")
+    public ResponseWrapper<MemberDTO> signIn(@Valid @RequestBody SignInDTO signInDTO) {
+        return ResponseWrapper.<MemberDTO>builder()
+                .data(Collections.singletonList(memberService.signIn(signInDTO)))
+                .build();
     }
 }
 

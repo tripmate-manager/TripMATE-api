@@ -5,9 +5,10 @@
 
 <configuration>
     <typeAliases>
-        <typeAlias type="com.tripmate.domain.member.dto.DuplicationCheckDTO" alias="DuplicationCheckDTO"/>
-        <typeAlias type="com.tripmate.domain.member.dto.MemberDTO" alias="MemberDTO"/>
-        <typeAlias type="com.tripmate.domain.member.dto.MemberMailDTO" alias="MemberMailDTO"/>
+        <typeAlias type="com.tripmate.domain.members.dto.DuplicationCheckDTO" alias="DuplicationCheckDTO"/>
+        <typeAlias type="com.tripmate.domain.members.dto.MemberDTO" alias="MemberDTO"/>
+        <typeAlias type="com.tripmate.domain.members.dto.MemberMailDTO" alias="MemberMailDTO"/>
         <typeAlias type="com.tripmate.domain.common.vo.CodeVO" alias="CodeVO"/>
+        <typeAlias type="com.tripmate.domain.members.dto.SignInDTO" alias="SignInDTO"/>
     </typeAliases>
 </configuration>

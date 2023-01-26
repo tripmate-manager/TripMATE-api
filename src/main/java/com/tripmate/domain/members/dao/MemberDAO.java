@@ -1,9 +1,10 @@
-package com.tripmate.domain.member.dao;
+package com.tripmate.domain.members.dao;
 
-import com.tripmate.domain.member.dto.DuplicationCheckDTO;
-import com.tripmate.domain.member.dao.mapper.MemberDAOMapper;
-import com.tripmate.domain.member.dto.MemberDTO;
-import com.tripmate.domain.member.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.DuplicationCheckDTO;
+import com.tripmate.domain.members.dao.mapper.MemberDAOMapper;
+import com.tripmate.domain.members.dto.MemberDTO;
+import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.SignInDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -33,5 +34,16 @@ public class MemberDAO {
 
     public void updateSignUpEmailConfirm(MemberMailDTO memberMailDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).updateSignUpEmailConfirm(memberMailDTO);
+    }
+
+    public MemberDTO selectSignInMemberInfo(SignInDTO signInDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectSignInMemberInfo(signInDTO);
+    }
+
+    public void updateSignInRequestCnt(SignInDTO signInDTO) {
+        sqlSession.getMapper(MemberDAOMapper.class).updateSignInRequestCnt(signInDTO);
+    }
+    public MemberDTO selectSignInRequestCnt(SignInDTO signInDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectSignInRequestCnt(signInDTO);
     }
 }
