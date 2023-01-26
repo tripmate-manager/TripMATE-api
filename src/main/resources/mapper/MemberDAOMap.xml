@@ -103,8 +103,6 @@
 
     <select id="selectSignInRequestCnt" parameterType="SignInDTO" resultType="MemberDTO">
         SELECT MBR_NO AS memberNo,
-                MBR_ID AS memberId,
-                MBR_PWD AS memberPassword,
                 LOGIN_REQ_CNT AS signInRequestCnt
         FROM MB_MBR_MGMT
         WHERE MBR_ID = #{memberId:VARCHAR};

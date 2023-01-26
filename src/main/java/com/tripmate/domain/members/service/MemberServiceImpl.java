@@ -59,28 +59,24 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDTO signIn(SignInDTO signInDTO) {
-        MemberDTO memberDTO = memberDAO.selectSignInMemberInfo(signInDTO);
+        MemberDTO signInMemberDTO = memberDAO.selectSignInMemberInfo(signInDTO);
 
-        if (!ObjectUtils.isEmpty(memberDTO) && memberDTO.getSignInRequestCnt() < Const.SIGNIN_LIMIT_CNT) {
+        if (!ObjectUtils.isEmpty(signInMemberDTO) && signInMemberDTO.getSignInRequestCnt() < Const.SIGNIN_LIMIT_CNT) {
             signInDTO = SignInDTO.builder()
-                    .memberNo(memberDTO.getMemberNo())
-                    .memberId(memberDTO.getMemberId())
-                    .memberPassword(memberDTO.getMemberPassword())
+                    .memberNo(signInMemberDTO.getMemberNo())
                     .signInRequestCnt(0)
                     .build();
             memberDAO.updateSignInRequestCnt(signInDTO);
         } else {
-            MemberDTO memberDTO1 = memberDAO.selectSignInRequestCnt(signInDTO);
+            MemberDTO checkIdExistDTO = memberDAO.selectSignInRequestCnt(signInDTO);
 
-            if (!ObjectUtils.isEmpty(memberDTO1)) {
-                if (memberDTO1.getSignInRequestCnt() >= Const.SIGNIN_LIMIT_CNT) {
-                    memberDTO = memberDTO1;
+            if (!ObjectUtils.isEmpty(checkIdExistDTO)) {
+                if (checkIdExistDTO.getSignInRequestCnt() >= Const.SIGNIN_LIMIT_CNT) {
+                    signInMemberDTO = checkIdExistDTO;
                 } else {
                     signInDTO = SignInDTO.builder()
-                            .memberNo(memberDTO1.getMemberNo())
-                            .memberId(memberDTO1.getMemberId())
-                            .memberPassword(memberDTO1.getMemberPassword())
-                            .signInRequestCnt(memberDTO1.getSignInRequestCnt() + 1)
+                            .memberNo(checkIdExistDTO.getMemberNo())
+                            .signInRequestCnt(checkIdExistDTO.getSignInRequestCnt() + 1)
                             .build();
 
                     memberDAO.updateSignInRequestCnt(signInDTO);
@@ -88,10 +84,10 @@ public class MemberServiceImpl implements MemberService {
             }
         }
 
-        if (ObjectUtils.isEmpty(memberDTO)) {
+        if (ObjectUtils.isEmpty(signInMemberDTO)) {
             throw new WrongParameterException("일치하는 회원 정보가 존재하지 않습니다.");
         }
 
-        return memberDTO;
+        return signInMemberDTO;
     }
 }
