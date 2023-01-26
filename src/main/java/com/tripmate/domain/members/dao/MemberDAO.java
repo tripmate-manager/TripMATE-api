@@ -1,7 +1,7 @@
 package com.tripmate.domain.members.dao;
 
-import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dao.mapper.MemberDAOMapper;
+import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
@@ -43,7 +43,12 @@ public class MemberDAO {
     public void updateSignInRequestCnt(SignInDTO signInDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).updateSignInRequestCnt(signInDTO);
     }
+
     public MemberDTO selectSignInRequestCnt(SignInDTO signInDTO) {
         return sqlSession.getMapper(MemberDAOMapper.class).selectSignInRequestCnt(signInDTO);
+    }
+
+    public String selectFindId(MemberDTO memberDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectFindId(memberDTO);
     }
 }

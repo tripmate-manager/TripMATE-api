@@ -11,6 +11,7 @@ import com.tripmate.domain.members.dto.SignInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -89,5 +90,14 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return signInMemberDTO;
+    }
+
+    @Override
+    public String findId(MemberDTO memberDTO) {
+        String memberId = memberDAO.selectFindId(memberDTO);
+        if (!StringUtils.hasText(memberId)) {
+            throw new WrongParameterException("일치하는 회원 정보가 존재하지 않습니다.");
+        }
+        return memberId;
     }
 }

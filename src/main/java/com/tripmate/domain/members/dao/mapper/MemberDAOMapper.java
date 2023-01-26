@@ -13,4 +13,5 @@ public interface MemberDAOMapper {
     MemberDTO selectSignInMemberInfo(SignInDTO signInDTO);
     void updateSignInRequestCnt(SignInDTO signInDTO);
     MemberDTO selectSignInRequestCnt(SignInDTO signInDTO);
+    String selectFindId(MemberDTO memberDTO);
 }
