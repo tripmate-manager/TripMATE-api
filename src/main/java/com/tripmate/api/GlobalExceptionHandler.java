@@ -1,5 +1,6 @@
 package com.tripmate.api;
 
+import com.tripmate.common.exception.NoResultException;
 import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.vo.ApiResultEnum;
 import com.tripmate.domain.common.vo.ResponseWrapper;
@@ -45,5 +46,13 @@ public class GlobalExceptionHandler {
                               .code(ApiResultEnum.UNKNOWN.getCode())
                               .message(ApiResultEnum.UNKNOWN.getMessage())
                               .build();
+    }
+
+    @ExceptionHandler(NoResultException.class)
+    public ResponseWrapper<String> handleNoResultException(NoResultException e) {
+        return ResponseWrapper.<String>builder()
+                .code(ApiResultEnum.NO_RESULT.getCode())
+                .message(e.getMessage())
+                .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.tripmate.domain.members.service;
 
+import com.tripmate.common.exception.NoResultException;
 import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
@@ -86,7 +87,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         if (ObjectUtils.isEmpty(signInMemberDTO)) {
-            throw new WrongParameterException("일치하는 회원 정보가 존재하지 않습니다.");
+            throw new NoResultException("등록되지 않은 아이디이거나, 아이디 혹은 비밀번호를 잘못 입력했습니다.");
         }
 
         return signInMemberDTO;
@@ -96,7 +97,7 @@ public class MemberServiceImpl implements MemberService {
     public String findId(MemberDTO memberDTO) {
         String memberId = memberDAO.selectFindId(memberDTO);
         if (!StringUtils.hasText(memberId)) {
-            throw new WrongParameterException("일치하는 회원 정보가 존재하지 않습니다.");
+            throw new NoResultException("존재하지 않는 회원 정보입니다.");
         }
         return memberId;
     }

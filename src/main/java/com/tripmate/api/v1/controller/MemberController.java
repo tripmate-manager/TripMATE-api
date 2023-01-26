@@ -108,7 +108,7 @@ public class MemberController {
     }
 
     @Operation(summary = "로그인 요청", description = "로그인 처리합니다. (return: 회원 정보)")
-    @PostMapping("signIn")
+    @PostMapping("sign-in")
     public ResponseWrapper<MemberDTO> signIn(@Valid @RequestBody SignInDTO signInDTO) {
         return ResponseWrapper.<MemberDTO>builder()
                 .data(Collections.singletonList(memberService.signIn(signInDTO)))
@@ -116,7 +116,7 @@ public class MemberController {
     }
 
     @Operation(summary = "아이디찾기", description = "입력한 이름과 이메일에 부합하는 아이디를 찾습니다. (return: 아이디)")
-    @GetMapping("/findId")
+    @GetMapping("find-id")
     public ResponseWrapper<String> findId(@RequestParam(value = "memberName") @Schema(example = "회원 이름") @NotBlank @Max(20) String memberName,
                                           @RequestParam(value = "email") @Schema(example = "이메일") @NotBlank @Email String email) {
         return ResponseWrapper.<String>builder()
