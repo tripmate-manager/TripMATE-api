@@ -115,4 +115,11 @@
             UPT_DTIME = now()
         WHERE MBR_NO = #{memberNo:NUMERIC};
     </update>
+
+    <select id="selectFindId" parameterType="MemberDTO" resultType="String">
+        SELECT MBR_ID
+        FROM MB_MBR_MGMT
+        WHERE MBR_NM = #{memberName:VARCHAR}
+          AND EMAIL = #{email:VARCHAR}
+    </select>
 </mapper>

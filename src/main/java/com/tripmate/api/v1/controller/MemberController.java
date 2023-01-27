@@ -12,9 +12,9 @@ import com.tripmate.domain.members.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 
@@ -32,6 +33,7 @@ import java.util.Collections;
 @RestController
 @Tag(name = "회원 API", description = "Member API")
 @RequestMapping("v1/members")
+@Validated
 public class MemberController {
     private final MemberService memberService;
     private final MailService mailService;
@@ -65,7 +67,7 @@ public class MemberController {
 
     @Operation(summary = "아이디 중복 조회", description = "이미 사용중인 아이디인지 중복여부를 체크합니다. (true: 사용 가능한 아이디 / false: 중복된 아이디)")
     @GetMapping("duplication/id")
-    public ResponseWrapper<Boolean> isMemberIdDuplicate(@RequestParam(value = "memberId") @Schema(example = "회원ID") String memberId) {
+    public ResponseWrapper<Boolean> isMemberIdDuplicate(@RequestParam(value = "memberId") @Schema(example = "회원ID") @NotBlank @Size(min = 5, max = 20)String memberId) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(isDuplicate(memberId, ConstCode.DUPLICATION_CHECK_MEMBER_ID)))
                 .build();
@@ -73,7 +75,7 @@ public class MemberController {
 
     @Operation(summary = "닉네임 중복 조회", description = "이미 사용중인 닉네임인지 중복여부를 체크합니다. (true: 사용 가능한 닉네임 / false: 중복된 닉네임)")
     @GetMapping("duplication/nick-name")
-    public ResponseWrapper<Boolean> isNickNameDuplicate(@RequestParam(value = "nickName") @Schema(example = "닉네임") String nickName) {
+    public ResponseWrapper<Boolean> isNickNameDuplicate(@RequestParam(value = "nickName") @Schema(example = "닉네임") @NotBlank @Size(max = 20) String nickName) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(isDuplicate(nickName, ConstCode.DUPLICATION_CHECK_NICK_NAME)))
                 .build();
@@ -81,7 +83,7 @@ public class MemberController {
 
     @Operation(summary = "이메일 중복 조회", description = "이미 사용중인 이메일인지 중복여부를 체크합니다. (true: 사용 가능한 이메일 / false: 중복된 이메일)")
     @GetMapping("duplication/email")
-    public ResponseWrapper<Boolean> isEmailDuplicate(@RequestParam(value = "email") @Schema(example = "test@test.com") String email) {
+    public ResponseWrapper<Boolean> isEmailDuplicate(@RequestParam(value = "email") @Schema(example = "test@test.com") @NotBlank @Email String email) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(isDuplicate(email, ConstCode.DUPLICATION_CHECK_EMAIL)))
                 .build();
@@ -96,8 +98,8 @@ public class MemberController {
 
     @Operation(summary = "회원가입 인증메일 확인", description = "회원가입 인증메일을 처리합니다. (true: 인증완료 / false: 미인증처리)")
     @GetMapping("signup-mail-confirm")
-    public ResponseWrapper signUpMailConfirm(@RequestParam(value = "email") @Schema(example = "test@test.com") @NonNull @Email String email,
-                                                      @RequestParam(value = "key") @Schema(example = "인증키") @NonNull @Size(max = 100) String key) {
+    public ResponseWrapper signUpMailConfirm(@RequestParam(value = "email") @Schema(example = "test@test.com") @NotBlank @Email String email,
+                                                      @RequestParam(value = "key") @Schema(example = "인증키") @NotBlank @Size(max = 100) String key) {
         memberService.signUpMailConfirm(MemberMailDTO.builder()
                 .email(email)
                 .key(key)
@@ -108,10 +110,21 @@ public class MemberController {
     }
 
     @Operation(summary = "로그인 요청", description = "로그인 처리합니다. (return: 회원 정보)")
-    @PostMapping("signIn")
+    @PostMapping("sign-in")
     public ResponseWrapper<MemberDTO> signIn(@Valid @RequestBody SignInDTO signInDTO) {
         return ResponseWrapper.<MemberDTO>builder()
                 .data(Collections.singletonList(memberService.signIn(signInDTO)))
+                .build();
+    }
+
+    @Operation(summary = "아이디찾기", description = "입력한 이름과 이메일에 부합하는 아이디를 찾습니다. (return: 아이디)")
+    @GetMapping("find-id")
+    public ResponseWrapper<String> findId(@RequestParam(value = "memberName") @NotBlank @Size(min = 2, max = 20) @Schema(example = "회원 이름") String memberName,
+                                          @RequestParam(value = "email") @NotBlank @Email @Schema(example = "이메일") String email) {
+        return ResponseWrapper.<String>builder()
+                .data(Collections.singletonList(memberService.findId(MemberDTO.builder()
+                        .memberName(memberName)
+                        .email(email).build())))
                 .build();
     }
 }

@@ -10,4 +10,5 @@ public interface MemberService {
     boolean isDuplicate(DuplicationCheckDTO duplicationCheckDTO);
     void signUpMailConfirm(MemberMailDTO memberMailDTO);
     MemberDTO signIn(SignInDTO signInDTO);
+    String findId(MemberDTO memberDTO);
 }
