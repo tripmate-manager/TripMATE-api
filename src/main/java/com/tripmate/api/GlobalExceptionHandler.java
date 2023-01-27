@@ -28,8 +28,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
         WrongParameterException.class
-        , MissingServletRequestParameterException.class,
-            ConstraintViolationException.class
+        , MissingServletRequestParameterException.class
+            , ConstraintViolationException.class
     })
     public ResponseWrapper<String> handleValidException(Exception e) {
         return ResponseWrapper.<String>builder()
