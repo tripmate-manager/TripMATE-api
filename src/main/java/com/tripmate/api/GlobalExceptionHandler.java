@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.mail.MessagingException;
+import javax.validation.ConstraintViolationException;
 
 @RestControllerAdvice(annotations = RestController.class)
 public class GlobalExceptionHandler {
@@ -27,7 +28,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
         WrongParameterException.class
-        , MissingServletRequestParameterException.class
+        , MissingServletRequestParameterException.class,
+            ConstraintViolationException.class
     })
     public ResponseWrapper<String> handleValidException(Exception e) {
         return ResponseWrapper.<String>builder()
