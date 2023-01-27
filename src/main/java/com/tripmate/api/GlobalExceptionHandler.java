@@ -27,8 +27,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
-        WrongParameterException.class
-        , MissingServletRequestParameterException.class
+            WrongParameterException.class
+            , MissingServletRequestParameterException.class
             , ConstraintViolationException.class
     })
     public ResponseWrapper<String> handleValidException(Exception e) {
