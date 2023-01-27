@@ -5,6 +5,7 @@ import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.vo.ApiResultEnum;
 import com.tripmate.domain.common.vo.ResponseWrapper;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,8 +25,11 @@ public class GlobalExceptionHandler {
                               .build();
     }
 
-    @ExceptionHandler(WrongParameterException.class)
-    public ResponseWrapper<String> handleValidException(WrongParameterException e) {
+    @ExceptionHandler({
+        WrongParameterException.class
+        , MissingServletRequestParameterException.class
+    })
+    public ResponseWrapper<String> handleValidException(Exception e) {
         return ResponseWrapper.<String>builder()
                               .code(ApiResultEnum.WRONG_PARAMETER.getCode())
                               .message(ApiResultEnum.WRONG_PARAMETER.getMessage() + " [" + e.getMessage() + "]")
@@ -41,7 +45,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseWrapper<String> handleException() {
+    public ResponseWrapper<String> handleException(Exception e) {
         return ResponseWrapper.<String>builder()
                               .code(ApiResultEnum.UNKNOWN.getCode())
                               .message(ApiResultEnum.UNKNOWN.getMessage())
