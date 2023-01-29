@@ -51,4 +51,19 @@ public class MemberDAO {
     public String selectFindId(MemberDTO memberDTO) {
         return sqlSession.getMapper(MemberDAOMapper.class).selectFindId(memberDTO);
     }
+
+    public void updateMemberPassword(MemberDTO memberDTO) {
+        sqlSession.getMapper(MemberDAOMapper.class).updateMemberPassword(memberDTO);
+    }
+
+    public Integer selectFindPassword(MemberMailDTO memberMailDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectFindPassword(memberMailDTO);
+    }
+
+    public int selectAuthEmailCnt(MemberMailDTO memberMailDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectAuthEmailCnt(memberMailDTO);
+    }
+    public void updateEmailInfo(MemberMailDTO memberMailDTO) {
+        sqlSession.getMapper(MemberDAOMapper.class).updateEmailInfo(memberMailDTO);
+    }
 }
