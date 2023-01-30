@@ -76,15 +76,15 @@
             INNER JOIN MB_AUTH_EMAIL_MGMT MAEM
             ON MMM.MBR_NO = MAEM.MBR_NO
         SET <if test="mailTypeCode == '10'">
-                MMM.MBR_STATUS_CD = '10'
+                MMM.MBR_STATUS_CD = '10',
             </if>
             <if test="mailTypeCode == '20'">
-                MMM.MBR_EMAIL = MAEM.RECV_EMAIL
+                MMM.EMAIL = MAEM.RECV_EMAIL,
             </if>
             MMM.UPT_NO = 0,
             MMM.UPT_DTIME = now()
         WHERE MAEM.EMAIL_AUTH_KEY = #{key:VARCHAR}
-        AND MAEM.EMAIL_TP_CD = #{mailTypeCode:VARCHAR});
+        AND MAEM.EMAIL_TP_CD = #{mailTypeCode:VARCHAR};
     </update>
 
     <select id="selectSignInMemberInfo" parameterType="SignInDTO" resultType="MemberDTO">

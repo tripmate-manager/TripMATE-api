@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @Schema(description = "메일 DTO")
 public class MemberMailDTO {
-    @NonNull
+
     @NotBlank(message = "메일수신자 주소를 입력하세요")
     @Schema(description = "메일주소", example = "test@test.com")
     @Email

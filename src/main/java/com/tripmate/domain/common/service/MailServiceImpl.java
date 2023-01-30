@@ -67,8 +67,15 @@ public class MailServiceImpl implements MailService {
         Integer memberNo = memberDAO.selectFindPassword(memberMailDTO);
 
         if (memberNo != null) {
-            //TODO: 임시비밀번호 생성 메서드 추가
-            String password = "";
+            Encrypt encrypt = new Encrypt();
+
+            String encryptString = encrypt.getEncrypt(encrypt.getSalt(), Const.SERVICE_NAME);
+
+            String[] specailSymbols = {".", "*", "!", "?", "$"};
+            double random = Math.random();
+            int index = (int) Math.round(random * (specailSymbols.length - 1));
+
+            String password = encryptString.substring(0, 8) + specailSymbols[index];
 
             String mailContents = "<h3>TripMATE 임시 비밀번호 발급 메일</h3>" +
                     "<h4>아래 임시 비밀번호를 사용해 로그인 해주세요.</h4><br>" +
@@ -76,7 +83,7 @@ public class MailServiceImpl implements MailService {
                     "<h5>로그인 후 비밀번호를 변경하세요.</h5>";
 
             mailHandler.setTo(memberMailDTO.getTo());
-            mailHandler.setSubject("TripMATE 회원가입 인증 메일입니다.");
+            mailHandler.setSubject("TripMATE 임시 비밀번호 발급 메일입니다.");
             mailHandler.setText(mailContents, true);
             mailHandler.send();
 
