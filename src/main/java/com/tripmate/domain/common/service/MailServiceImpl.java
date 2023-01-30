@@ -64,18 +64,18 @@ public class MailServiceImpl implements MailService {
     }
 
     public void sendPasswordMail(MemberMailDTO memberMailDTO) throws MessagingException {
-        Integer memberNo = memberDAO.selectFindPassword(memberMailDTO);
+        int memberNo = memberDAO.selectFindPasswordMbrNo(memberMailDTO);
 
-        if (memberNo != null) {
+        if (memberNo > 0) {
             Encrypt encrypt = new Encrypt();
 
             String encryptString = encrypt.getEncrypt(encrypt.getSalt(), Const.SERVICE_NAME);
 
-            String[] specailSymbols = {".", "*", "!", "?", "$"};
+            String[] specialSymbols = {".", "*", "!", "?", "$"};
             double random = Math.random();
-            int index = (int) Math.round(random * (specailSymbols.length - 1));
+            int index = (int) Math.round(random * (specialSymbols.length - 1));
 
-            String password = encryptString.substring(0, 8) + specailSymbols[index];
+            String password = encryptString.substring(0, 8) + specialSymbols[index];
 
             String mailContents = "<h3>TripMATE 임시 비밀번호 발급 메일</h3>" +
                     "<h4>아래 임시 비밀번호를 사용해 로그인 해주세요.</h4><br>" +

@@ -40,10 +40,10 @@
         SELECT COUNT(*)
         FROM MB_MBR_MGMT
         <choose>
-            <when test="duplicationCheckType == '10'">
+            <when test="duplicationCheckType != null and '10'.toString() eq duplicationCheckType">
                 WHERE MBR_ID = #{duplicationMemberInfo:VARCHAR};
             </when>
-            <when test="duplicationCheckType == '20'">
+            <when test="duplicationCheckType != null and '20'.toString() eq duplicationCheckType">
                 WHERE NICK_NM = #{duplicationMemberInfo:VARCHAR};
             </when>
             <otherwise>
@@ -75,13 +75,13 @@
         UPDATE MB_MBR_MGMT MMM
             INNER JOIN MB_AUTH_EMAIL_MGMT MAEM
             ON MMM.MBR_NO = MAEM.MBR_NO
-        SET <if test="mailTypeCode == '10'">
+        SET <if test="mailTypeCode != null and '10'.toString() eq mailTypeCode">
                 MMM.MBR_STATUS_CD = '10',
             </if>
-            <if test="mailTypeCode == '20'">
+            <if test="mailTypeCode != null and '20'.toString() eq mailTypeCode">
                 MMM.EMAIL = MAEM.RECV_EMAIL,
             </if>
-            MMM.UPT_NO = 0,
+            MMM.UPT_NO = MAEM.MBR_NO,
             MMM.UPT_DTIME = now()
         WHERE MAEM.EMAIL_AUTH_KEY = #{key:VARCHAR}
         AND MAEM.EMAIL_TP_CD = #{mailTypeCode:VARCHAR};
@@ -125,8 +125,8 @@
           AND EMAIL = #{email:VARCHAR};
     </select>
 
-    <select id="selectFindPassword" parameterType="MemberMailDTO" resultType="Integer">
-        SELECT MBR_NO
+    <select id="selectFindPasswordMbrNo" parameterType="MemberMailDTO" resultType="int">
+        SELECT CASE WHEN SUM(MBR_NO) IS NULL THEN 0 ELSE MBR_NO END
         FROM MB_MBR_MGMT
         WHERE MBR_ID = #{memberId:VARCHAR}
           AND EMAIL = #{to:VARCHAR};
@@ -135,7 +135,7 @@
     <update id="updateMemberPassword" parameterType="MemberDTO">
         UPDATE MB_MBR_MGMT
         SET MBR_PWD = password(#{memberPassword:VARCHAR}),
-            UPT_NO = 0,
+            UPT_NO = #{memberNo:VARCHAR},
             UPT_DTIME = now()
         WHERE MBR_NO = #{memberNo:VARCHAR};
     </update>
@@ -152,14 +152,12 @@
     <update id="updateEmailInfo" parameterType="MemberMailDTO">
         UPDATE MB_AUTH_EMAIL_MGMT
         SET EMAIL_AUTH_KEY = #{key:VARCHAR},
-            <if test="mailTypeCode == '20'">
+            <if test="mailTypeCode != null and '20'.toString() eq mailTypeCode">
                 RECV_EMAIL = #{to:VARCHAR}
             </if>
-            UPT_NO = 0,
+            UPT_NO = (SELECT MBR_NO FROM MB_MBR_MGMT WHERE MBR_ID = #{memberId:VARCHAR}),
             UPT_DTIME = now()
-        WHERE MBR_NO = (SELECT MBR_NO
-                        FROM MB_MBR_MGMT
-                        WHERE MBR_ID = #{memberId:VARCHAR})
+        WHERE MBR_NO = (SELECT MBR_NO FROM MB_MBR_MGMT WHERE MBR_ID = #{memberId:VARCHAR})
         AND EMAIL_TP_CD = #{mailTypeCode:VARCHAR};
     </update>
 </mapper>
