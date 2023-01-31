@@ -7,6 +7,6 @@ import javax.mail.MessagingException;
 
 public interface MailService {
     void sendMail(MailDTO mailDTO) throws MessagingException;
-    void sendCertificationMail(MemberMailDTO memberMailDTO) throws MessagingException;
-    void sendPasswordMail(MemberMailDTO memberMailDTO) throws MessagingException;
+    boolean sendCertificationMail(MemberMailDTO memberMailDTO) throws MessagingException;
+    boolean sendPasswordMail(MemberMailDTO memberMailDTO) throws MessagingException;
 }

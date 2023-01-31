@@ -133,18 +133,18 @@ public class MemberController {
 
     @Operation(summary = "인증메일 전송", description = "인증 메일을 전송합니다.")
     @PostMapping("send-mail/certification")
-    public ResponseWrapper sendCertificationMail(@Valid @RequestBody MemberMailDTO memberMailDTO) throws MessagingException {
-        mailService.sendCertificationMail(memberMailDTO);
-
-        return ResponseWrapper.builder().build();
+    public ResponseWrapper<Boolean> sendCertificationMail(@Valid @RequestBody MemberMailDTO memberMailDTO) throws MessagingException {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(mailService.sendCertificationMail(memberMailDTO)))
+                .build();
     }
 
     @Operation(summary = "임시비밀번호 메일 전송", description = "임시 비밀번호를 메일로 전송합니다.")
     @PostMapping("send-mail/password")
-    public ResponseWrapper sendPasswordMail(@Valid @RequestBody MemberMailDTO memberMailDTO) throws MessagingException {
-        mailService.sendPasswordMail(memberMailDTO);
-
-        return ResponseWrapper.builder().build();
+    public ResponseWrapper<Boolean> sendPasswordMail(@Valid @RequestBody MemberMailDTO memberMailDTO) throws MessagingException {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(mailService.sendPasswordMail(memberMailDTO)))
+                .build();
     }
 }
 

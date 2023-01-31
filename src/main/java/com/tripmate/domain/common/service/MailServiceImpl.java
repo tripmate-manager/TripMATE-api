@@ -7,11 +7,17 @@ import com.tripmate.domain.common.dto.MailDTO;
 import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
+@Slf4j
 @Service
 public class MailServiceImpl implements MailService {
     private final MailHandler mailHandler;
@@ -31,23 +37,31 @@ public class MailServiceImpl implements MailService {
         mailHandler.send();
     }
 
-    public void sendCertificationMail(MemberMailDTO memberMailDTO) throws MessagingException {
+    public boolean sendCertificationMail(MemberMailDTO memberMailDTO) throws MessagingException {
         Encrypt encrypt = new Encrypt();
-
         String key = encrypt.getEncrypt(encrypt.getSalt(), Const.SERVICE_NAME);
 
-        String mailContents = "<h3>TripMATE 회원가입 인증 메일</h3>" +
-                "<h4>아래 링크를 클릭하여 인증을 완료해주세요.</h4><br>" +
-                "<a href='" + Const.JOIN_EMAIL_URL +
+        String mailContents;
+        try {
+            mailContents = readMailTemplate("certificationMail.html");
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
+        String certificationUrl = Const.JOIN_EMAIL_URL +
                 "?memberId=" + memberMailDTO.getMemberId() +
                 "&key=" + key +
-                "&mailTypeCode=" + memberMailDTO.getMailTypeCode() +
-                "' target='_blenk'>이메일 인증하기</a>";
+                "&mailTypeCode=" + memberMailDTO.getMailTypeCode();
+        mailContents = mailContents.replace("%certificationUrl%", certificationUrl);
 
-        mailHandler.setTo(memberMailDTO.getTo());
-        mailHandler.setSubject("TripMATE 회원가입 인증 메일입니다.");
-        mailHandler.setText(mailContents, true);
-        mailHandler.send();
+        try {
+            mailHandler.setTo(memberMailDTO.getTo());
+            mailHandler.setSubject("TripMATE 회원가입 인증 메일입니다.");
+            mailHandler.setText(mailContents, true);
+            mailHandler.send();
+        } catch (MessagingException e) {
+            throw new MessagingException("메일 전송 중 오류가 발생하였습니다.");
+        }
 
         MemberMailDTO mailInfoDTO = MemberMailDTO.builder()
                 .memberId(memberMailDTO.getMemberId())
@@ -61,14 +75,15 @@ public class MailServiceImpl implements MailService {
         } else {
             memberDAO.insertEmailInfo(mailInfoDTO);
         }
+
+        return true;
     }
 
-    public void sendPasswordMail(MemberMailDTO memberMailDTO) throws MessagingException {
+    public boolean sendPasswordMail(MemberMailDTO memberMailDTO) throws MessagingException {
         int memberNo = memberDAO.selectFindPasswordMbrNo(memberMailDTO);
 
         if (memberNo > 0) {
             Encrypt encrypt = new Encrypt();
-
             String encryptString = encrypt.getEncrypt(encrypt.getSalt(), Const.SERVICE_NAME);
 
             String[] specialSymbols = {".", "*", "!", "?", "$"};
@@ -77,15 +92,23 @@ public class MailServiceImpl implements MailService {
 
             String password = encryptString.substring(0, 8) + specialSymbols[index];
 
-            String mailContents = "<h3>TripMATE 임시 비밀번호 발급 메일</h3>" +
-                    "<h4>아래 임시 비밀번호를 사용해 로그인 해주세요.</h4><br>" +
-                    "<h5>" + password + "</h5><br>" +
-                    "<h5>로그인 후 비밀번호를 변경하세요.</h5>";
+            String mailContents;
+            try {
+                mailContents = readMailTemplate("temporaryPasswordMail.html");
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
+                return false;
+            }
+            mailContents = mailContents.replace("%password%", password);
 
-            mailHandler.setTo(memberMailDTO.getTo());
-            mailHandler.setSubject("TripMATE 임시 비밀번호 발급 메일입니다.");
-            mailHandler.setText(mailContents, true);
-            mailHandler.send();
+            try {
+                mailHandler.setTo(memberMailDTO.getTo());
+                mailHandler.setSubject("TripMATE 임시 비밀번호 발급 메일입니다.");
+                mailHandler.setText(mailContents, true);
+                mailHandler.send();
+            } catch (MessagingException e) {
+                throw new MessagingException("메일 전송 중 오류가 발생하였습니다.");
+            }
 
             MemberDTO memberDTO = MemberDTO.builder()
                     .memberNo(memberNo)
@@ -96,5 +119,22 @@ public class MailServiceImpl implements MailService {
         } else {
             throw new NoResultException("존재하지 않는 회원 정보입니다.");
         }
+
+        return true;
+    }
+
+    private String readMailTemplate(String fileName) throws IOException {
+        String mailContents = "";
+        String path = System.getProperty("user.dir") + Const.MAIL_TEMPLATES_PATH + fileName;
+
+        File file = new File(path);
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String line;
+        while ((line = br.readLine()) != null) {
+            mailContents += line;
+        }
+
+        return mailContents;
     }
 }
