@@ -2,6 +2,7 @@ package com.tripmate.domain.members.service;
 
 import com.tripmate.common.exception.NoResultException;
 import com.tripmate.common.exception.WrongParameterException;
+import com.tripmate.domain.ChangePasswordDTO;
 import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.members.dao.MemberDAO;
@@ -69,6 +70,10 @@ public class MemberServiceImpl implements MemberService {
                     .signInRequestCnt(0)
                     .build();
             memberDAO.updateSignInRequestCnt(signInDTO);
+
+            if (ConstCode.MEMBER_STATUS_CODE_ISSUE_TEMPORARY_PASSWORD.equals(signInMemberDTO.getMemberStatusCode())) {
+                memberDAO.updateSignInMemberStatus(signInDTO);
+            }
         } else {
             MemberDTO checkIdExistDTO = memberDAO.selectSignInRequestCnt(signInDTO);
 
@@ -103,12 +108,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean changePassword(MemberDTO memberDTO) {
-        return memberDAO.updateMemberPassword(memberDTO);
-    }
+    public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
+        MemberDTO signInDTO = memberDAO.selectSignInMemberInfo(SignInDTO.builder()
+                .memberId(changePasswordDTO.getMemberId())
+                .memberPassword(changePasswordDTO.getMemberPassword())
+                .build());
 
-    @Override
-    public boolean changeEmail(MemberDTO memberDTO) {
-        return memberDAO.updateMemberEmail(memberDTO);
+        if (ObjectUtils.isEmpty(signInDTO)) {
+            throw new NoResultException("현재 비밀번호를 잘못 입력하였습니다.");
+        } else {
+            memberDAO.updateMemberPassword(changePasswordDTO);
+        }
+
+        return true;
     }
 }

@@ -118,6 +118,14 @@
         WHERE MBR_NO = #{memberNo:NUMERIC};
     </update>
 
+    <update id="updateSignInMemberStatus" parameterType="SignInDTO">
+        UPDATE MB_MBR_MGMT
+        SET MBR_STATUS_CD = '10',
+            UPT_NO = 0,
+            UPT_DTIME = now()
+        WHERE MBR_NO = #{memberNo:NUMERIC};
+    </update>
+
     <select id="selectFindId" parameterType="MemberDTO" resultType="String">
         SELECT MBR_ID
         FROM MB_MBR_MGMT
@@ -155,7 +163,7 @@
         UPDATE MB_AUTH_EMAIL_MGMT
         SET EMAIL_AUTH_KEY = #{key:VARCHAR},
             <if test="mailTypeCode != null and '20'.toString() eq mailTypeCode">
-                RECV_EMAIL = #{to:VARCHAR}
+                RECV_EMAIL = #{to:VARCHAR},
             </if>
             UPT_NO = (SELECT MBR_NO FROM MB_MBR_MGMT WHERE MBR_ID = #{memberId:VARCHAR}),
             UPT_DTIME = now()

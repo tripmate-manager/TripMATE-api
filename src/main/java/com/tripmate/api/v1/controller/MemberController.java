@@ -1,5 +1,6 @@
 package com.tripmate.api.v1.controller;
 
+import com.tripmate.domain.ChangePasswordDTO;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.common.service.MailService;
 import com.tripmate.domain.common.vo.ResponseWrapper;
@@ -15,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -151,17 +151,9 @@ public class MemberController {
 
     @Operation(summary = "비밀번호 변경", description = "회원 비밀번호 정보를 변경합니다.")
     @PutMapping("/change-password")
-    public ResponseWrapper<Boolean> changePassword(@Valid @RequestBody MemberDTO memberDTO) {
+    public ResponseWrapper<Boolean> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(memberService.changePassword(memberDTO)))
-                .build();
-    }
-
-    @Operation(summary = "이메일 변경", description = "회원 이메일 정보를 변경합니다.")
-    @PutMapping("/change-email")
-    public ResponseWrapper<Boolean> changeEmail(@Valid @RequestBody MemberDTO memberDTO) {
-        return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(memberService.changeEmail(memberDTO)))
+                .data(Collections.singletonList(memberService.changePassword(changePasswordDTO)))
                 .build();
     }
 }

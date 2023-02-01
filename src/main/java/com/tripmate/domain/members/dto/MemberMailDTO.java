@@ -30,8 +30,7 @@ public class MemberMailDTO {
     @Schema(description = "메일 본문")
     private String message;
 
-
-    private String memberNo;
+    private int memberNo;
 
     @Pattern(regexp="^[0-9a-zA-Z]{5,20}$",
             message = "영문, 숫자로 이루어진 5자 ~ 20자의 아이디만 입력 가능합니다.")
