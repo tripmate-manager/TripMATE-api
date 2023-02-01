@@ -7,5 +7,5 @@ public interface Const {
     String JOIN_EMAIL_URL       = "http://" + TRIPMATE_DOMAIN + JOIN_EMAIL_PATH;
 
     int SIGNIN_LIMIT_CNT        = 5;
-    String MAIL_TEMPLATES_PATH       = "/src/main/resources/templates/";
+    String MAIL_TEMPLATES_PATH       = "mailTemplates/";
 }

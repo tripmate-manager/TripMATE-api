@@ -9,6 +9,8 @@ import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -125,9 +127,8 @@ public class MailServiceImpl implements MailService {
 
     private String readMailTemplate(String fileName) throws IOException {
         String mailContents = "";
-        String path = System.getProperty("user.dir") + Const.MAIL_TEMPLATES_PATH + fileName;
 
-        File file = new File(path);
+        File file = new ClassPathResource(Const.MAIL_TEMPLATES_PATH + fileName).getFile();
         BufferedReader br = new BufferedReader(new FileReader(file));
 
         String line;
