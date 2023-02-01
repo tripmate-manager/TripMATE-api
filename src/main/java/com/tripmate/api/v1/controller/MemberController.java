@@ -15,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,7 +71,7 @@ public class MemberController {
 
     @Operation(summary = "아이디 중복 조회", description = "이미 사용중인 아이디인지 중복여부를 체크합니다. (true: 사용 가능한 아이디 / false: 중복된 아이디)")
     @GetMapping("duplication/id")
-    public ResponseWrapper<Boolean> isMemberIdDuplicate(@RequestParam(value = "memberId") @Schema(example = "회원ID") @NotBlank @Size(min = 5, max = 20)String memberId) {
+    public ResponseWrapper<Boolean> isMemberIdDuplicate(@RequestParam(value = "memberId") @Schema(example = "회원ID") @NotBlank @Size(min = 5, max = 20) String memberId) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(isDuplicate(memberId, ConstCode.DUPLICATION_CHECK_MEMBER_ID)))
                 .build();
@@ -93,9 +95,9 @@ public class MemberController {
 
     private boolean isDuplicate(String value, String type) {
         return memberService.isDuplicate(DuplicationCheckDTO.builder()
-                                                            .duplicationMemberInfo(value)
-                                                            .duplicationCheckType(type)
-                                                            .build());
+                .duplicationMemberInfo(value)
+                .duplicationCheckType(type)
+                .build());
     }
 
     @Operation(summary = "회원가입 인증메일 확인", description = "회원가입 인증메일을 처리합니다. (true: 인증완료 / false: 미인증처리)")
@@ -144,6 +146,22 @@ public class MemberController {
     public ResponseWrapper<Boolean> sendPasswordMail(@Valid @RequestBody MemberMailDTO memberMailDTO) throws MessagingException {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(mailService.sendPasswordMail(memberMailDTO)))
+                .build();
+    }
+
+    @Operation(summary = "비밀번호 변경", description = "회원 비밀번호 정보를 변경합니다.")
+    @PutMapping("/change-password")
+    public ResponseWrapper<Boolean> changePassword(@Valid @RequestBody MemberDTO memberDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(memberService.changePassword(memberDTO)))
+                .build();
+    }
+
+    @Operation(summary = "이메일 변경", description = "회원 이메일 정보를 변경합니다.")
+    @PutMapping("/change-email")
+    public ResponseWrapper<Boolean> changeEmail(@Valid @RequestBody MemberDTO memberDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(memberService.changeEmail(memberDTO)))
                 .build();
     }
 }

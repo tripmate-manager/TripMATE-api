@@ -1,7 +1,9 @@
 package com.tripmate.domain.common.service;
 
 import com.tripmate.common.exception.NoResultException;
+import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.Const;
+import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.common.Encrypt;
 import com.tripmate.domain.common.dto.MailDTO;
 import com.tripmate.domain.members.dao.MemberDAO;
@@ -10,8 +12,8 @@ import com.tripmate.domain.members.dto.MemberMailDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.mail.MessagingException;
 import java.io.BufferedReader;
@@ -82,9 +84,13 @@ public class MailServiceImpl implements MailService {
     }
 
     public boolean sendPasswordMail(MemberMailDTO memberMailDTO) throws MessagingException {
-        int memberNo = memberDAO.selectFindPasswordMbrNo(memberMailDTO);
+        MemberDTO findPasswordMemberInfoDTO = memberDAO.selectFindPasswordMemberInfo(memberMailDTO);
 
-        if (memberNo > 0) {
+        if (!ObjectUtils.isEmpty(findPasswordMemberInfoDTO)) {
+            if (ConstCode.MEMBER_STATUS_CODE_TEMPORARY.equals(findPasswordMemberInfoDTO.getMemberStatusCode())) {
+                throw new WrongParameterException("임시회원인 경우 비밀번호 발급이 불가합니다.");
+            }
+
             Encrypt encrypt = new Encrypt();
             String encryptString = encrypt.getEncrypt(encrypt.getSalt(), Const.SERVICE_NAME);
 
@@ -113,11 +119,11 @@ public class MailServiceImpl implements MailService {
             }
 
             MemberDTO memberDTO = MemberDTO.builder()
-                    .memberNo(memberNo)
+                    .memberNo(findPasswordMemberInfoDTO.getMemberNo())
                     .memberPassword(password)
                     .build();
 
-            memberDAO.updateMemberPassword(memberDTO);
+            memberDAO.updateMemberTemporaryPassword(memberDTO);
         } else {
             throw new NoResultException("존재하지 않는 회원 정보입니다.");
         }

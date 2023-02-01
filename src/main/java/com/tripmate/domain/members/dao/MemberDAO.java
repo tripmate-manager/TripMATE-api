@@ -52,18 +52,27 @@ public class MemberDAO {
         return sqlSession.getMapper(MemberDAOMapper.class).selectFindId(memberDTO);
     }
 
-    public void updateMemberPassword(MemberDTO memberDTO) {
-        sqlSession.getMapper(MemberDAOMapper.class).updateMemberPassword(memberDTO);
+    public void updateMemberTemporaryPassword(MemberDTO memberDTO) {
+        sqlSession.getMapper(MemberDAOMapper.class).updateMemberTemporaryPassword(memberDTO);
     }
 
-    public int selectFindPasswordMbrNo(MemberMailDTO memberMailDTO) {
-        return sqlSession.getMapper(MemberDAOMapper.class).selectFindPasswordMbrNo(memberMailDTO);
+    public MemberDTO selectFindPasswordMemberInfo(MemberMailDTO memberMailDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectFindPasswordMemberInfo(memberMailDTO);
     }
 
     public int selectAuthEmailCnt(MemberMailDTO memberMailDTO) {
         return sqlSession.getMapper(MemberDAOMapper.class).selectAuthEmailCnt(memberMailDTO);
     }
+
     public void updateEmailInfo(MemberMailDTO memberMailDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).updateEmailInfo(memberMailDTO);
+    }
+
+    public boolean updateMemberPassword(MemberDTO memberDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateMemberPassword(memberDTO);
+    }
+
+    public boolean updateMemberEmail(MemberDTO memberDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateMemberEmail(memberDTO);
     }
 }

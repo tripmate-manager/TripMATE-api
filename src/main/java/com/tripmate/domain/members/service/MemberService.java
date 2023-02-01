@@ -11,4 +11,6 @@ public interface MemberService {
     void signUpMailConfirm(MemberMailDTO memberMailDTO);
     MemberDTO signIn(SignInDTO signInDTO);
     String findId(MemberDTO memberDTO);
+    boolean changePassword(MemberDTO memberDTO);
+    boolean changeEmail(MemberDTO memberDTO);
 }

@@ -101,4 +101,14 @@ public class MemberServiceImpl implements MemberService {
         }
         return memberId;
     }
+
+    @Override
+    public boolean changePassword(MemberDTO memberDTO) {
+        return memberDAO.updateMemberPassword(memberDTO);
+    }
+
+    @Override
+    public boolean changeEmail(MemberDTO memberDTO) {
+        return memberDAO.updateMemberEmail(memberDTO);
+    }
 }

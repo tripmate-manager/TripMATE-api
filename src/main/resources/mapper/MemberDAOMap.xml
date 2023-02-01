@@ -125,16 +125,18 @@
           AND EMAIL = #{email:VARCHAR};
     </select>
 
-    <select id="selectFindPasswordMbrNo" parameterType="MemberMailDTO" resultType="int">
-        SELECT CASE WHEN SUM(MBR_NO) IS NULL THEN 0 ELSE MBR_NO END
+    <select id="selectFindPasswordMemberInfo" parameterType="MemberMailDTO" resultType="MemberDTO">
+        SELECT MBR_NO AS memberNo,
+               MBR_STATUS_CD AS memberStatusCode
         FROM MB_MBR_MGMT
         WHERE MBR_ID = #{memberId:VARCHAR}
           AND EMAIL = #{to:VARCHAR};
     </select>
 
-    <update id="updateMemberPassword" parameterType="MemberDTO">
+    <update id="updateMemberTemporaryPassword" parameterType="MemberDTO">
         UPDATE MB_MBR_MGMT
         SET MBR_PWD = password(#{memberPassword:VARCHAR}),
+            MBR_STATUS_CD = '40',
             UPT_NO = #{memberNo:VARCHAR},
             UPT_DTIME = now()
         WHERE MBR_NO = #{memberNo:VARCHAR};
@@ -159,5 +161,21 @@
             UPT_DTIME = now()
         WHERE MBR_NO = (SELECT MBR_NO FROM MB_MBR_MGMT WHERE MBR_ID = #{memberId:VARCHAR})
         AND EMAIL_TP_CD = #{mailTypeCode:VARCHAR};
+    </update>
+
+    <update id="updateMemberPassword" parameterType="MemberDTO">
+        UPDATE MB_MBR_MGMT
+        SET MBR_PWD = password(#{memberPassword:VARCHAR}),
+            UPT_NO = #{memberNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE MBR_NO = #{memberNo:VARCHAR};
+    </update>
+
+    <update id="updateMemberEmail" parameterType="MemberDTO">
+        UPDATE MB_MBR_MGMT
+        SET MBR_PWD = password(#{email:VARCHAR}),
+            UPT_NO = #{memberNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE MBR_NO = #{memberNo:VARCHAR};
     </update>
 </mapper>

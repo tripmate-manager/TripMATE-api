@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     public ResponseWrapper<String> handleValidException(Exception e) {
         return ResponseWrapper.<String>builder()
                               .code(ApiResultEnum.WRONG_PARAMETER.getCode())
-                              .message(ApiResultEnum.WRONG_PARAMETER.getMessage() + " [" + e.getMessage() + "]")
+                              .message(e.getMessage())
                               .build();
     }
 
