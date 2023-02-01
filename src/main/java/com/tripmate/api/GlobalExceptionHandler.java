@@ -39,10 +39,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MessagingException.class)
-    public ResponseWrapper<String> handleMessagingException() {
+    public ResponseWrapper<String> handleMessagingException(Exception e) {
         return ResponseWrapper.<String>builder()
                               .code(ApiResultEnum.MESSAGING.getCode())
-                              .message(ApiResultEnum.MESSAGING.getMessage())
+                              .message(e.getMessage())
                               .build();
     }
 

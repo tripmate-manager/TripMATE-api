@@ -1,7 +1,6 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.ConstCode;
-import com.tripmate.domain.common.dto.MailDTO;
 import com.tripmate.domain.common.service.MailService;
 import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
@@ -26,6 +25,7 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 
@@ -50,11 +50,13 @@ public class MemberController {
         int signUpResult = memberService.signUp(memberDTO);
 
         if (signUpResult > 0) {
-            MailDTO mailDTO = MailDTO.builder()
+            MemberMailDTO memberMailDTO = MemberMailDTO.builder()
                     .to(memberDTO.getEmail())
+                    .memberId(memberDTO.getMemberId())
+                    .mailTypeCode(ConstCode.EMAIL_TYPE_CODE_JOIN)
                     .build();
             try {
-                mailService.sendSignUpMail(mailDTO);
+                sendCertificationMail(memberMailDTO);
             } catch (MessagingException e) {
                 log.error(e.getMessage(), e);
             }
@@ -98,12 +100,13 @@ public class MemberController {
 
     @Operation(summary = "회원가입 인증메일 확인", description = "회원가입 인증메일을 처리합니다. (true: 인증완료 / false: 미인증처리)")
     @GetMapping("signup-mail-confirm")
-    public ResponseWrapper signUpMailConfirm(@RequestParam(value = "email") @Schema(example = "test@test.com") @NotBlank @Email String email,
-                                                      @RequestParam(value = "key") @Schema(example = "인증키") @NotBlank @Size(max = 100) String key) {
+    public ResponseWrapper signUpMailConfirm(@RequestParam(value = "memberId") @Schema(example = "회원ID") @NotBlank @Size(min = 5, max = 20) String memberId,
+                                             @RequestParam(value = "key") @Schema(example = "인증키") @NotBlank @Size(max = 100) String key,
+                                             @RequestParam(value = "mailTypeCode") @Schema(example = "10") @NotBlank @Pattern(regexp = "^[12]0$") String mailTypeCode) {
         memberService.signUpMailConfirm(MemberMailDTO.builder()
-                .email(email)
+                .memberId(memberId)
                 .key(key)
-                .mailTypeCode(ConstCode.EMAIL_TYPE_CODE_JOIN)
+                .mailTypeCode(mailTypeCode)
                 .build());
 
         return ResponseWrapper.builder().build();
@@ -125,6 +128,22 @@ public class MemberController {
                 .data(Collections.singletonList(memberService.findId(MemberDTO.builder()
                         .memberName(memberName)
                         .email(email).build())))
+                .build();
+    }
+
+    @Operation(summary = "인증메일 전송", description = "인증 메일을 전송합니다.")
+    @PostMapping("send-mail/certification")
+    public ResponseWrapper<Boolean> sendCertificationMail(@Valid @RequestBody MemberMailDTO memberMailDTO) throws MessagingException {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(mailService.sendCertificationMail(memberMailDTO)))
+                .build();
+    }
+
+    @Operation(summary = "임시비밀번호 메일 전송", description = "임시 비밀번호를 메일로 전송합니다.")
+    @PostMapping("send-mail/password")
+    public ResponseWrapper<Boolean> sendPasswordMail(@Valid @RequestBody MemberMailDTO memberMailDTO) throws MessagingException {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(mailService.sendPasswordMail(memberMailDTO)))
                 .build();
     }
 }
