@@ -9,6 +9,7 @@ public enum ApiResultEnum {
     VALIDATION("9000", "Method Argument Type Mismatch"),
     WRONG_PARAMETER("9001", "wrong parameter value"),
     NO_RESULT("9002", "result not found"),
+    GUIDE_MESSAGE("9003", "guide message"),
 
     UNKNOWN("9999", "unknown exception");
 

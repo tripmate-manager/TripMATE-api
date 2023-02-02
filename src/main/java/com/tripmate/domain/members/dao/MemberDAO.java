@@ -76,8 +76,4 @@ public class MemberDAO {
     public void updateMemberPassword(ChangePasswordDTO changePasswordDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).updateMemberPassword(changePasswordDTO);
     }
-
-    public boolean updateMemberEmail(MemberDTO memberDTO) {
-        return sqlSession.getMapper(MemberDAOMapper.class).updateMemberEmail(memberDTO);
-    }
 }

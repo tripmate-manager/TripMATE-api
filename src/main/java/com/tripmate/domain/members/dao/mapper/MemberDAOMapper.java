@@ -21,5 +21,4 @@ public interface MemberDAOMapper {
     int selectAuthEmailCnt(MemberMailDTO memberMailDTO);
     void updateEmailInfo(MemberMailDTO memberMailDTO);
     boolean updateMemberPassword(ChangePasswordDTO changePasswordDTO);
-    boolean updateMemberEmail(MemberDTO memberDTO);
 }

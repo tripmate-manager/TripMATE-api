@@ -171,17 +171,9 @@
         AND EMAIL_TP_CD = #{mailTypeCode:VARCHAR};
     </update>
 
-    <update id="updateMemberPassword" parameterType="MemberDTO">
+    <update id="updateMemberPassword" parameterType="ChangePasswordDTO">
         UPDATE MB_MBR_MGMT
         SET MBR_PWD = password(#{newMemberPassword:VARCHAR}),
-            UPT_NO = #{memberNo:VARCHAR},
-            UPT_DTIME = now()
-        WHERE MBR_NO = #{memberNo:VARCHAR};
-    </update>
-
-    <update id="updateMemberEmail" parameterType="MemberDTO">
-        UPDATE MB_MBR_MGMT
-        SET MBR_PWD = password(#{email:VARCHAR}),
             UPT_NO = #{memberNo:VARCHAR},
             UPT_DTIME = now()
         WHERE MBR_NO = #{memberNo:VARCHAR};
