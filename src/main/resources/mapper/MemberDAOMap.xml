@@ -110,17 +110,12 @@
         WHERE MBR_ID = #{memberId:VARCHAR};
     </select>
     
-    <update id="updateSignInRequestCnt" parameterType="SignInDTO">
+    <update id="updateSignInReqCntAndMbrStatusCd" parameterType="SignInDTO">
         UPDATE MB_MBR_MGMT
         SET LOGIN_REQ_CNT = #{signInRequestCnt:NUMERIC},
-            UPT_NO = 0,
-            UPT_DTIME = now()
-        WHERE MBR_NO = #{memberNo:NUMERIC};
-    </update>
-
-    <update id="updateSignInMemberStatus" parameterType="SignInDTO">
-        UPDATE MB_MBR_MGMT
-        SET MBR_STATUS_CD = '10',
+        <if test="memberStatusCode != null and '40'.toString() eq memberStatusCode">
+            MBR_STATUS_CD = '10',
+        </if>
             UPT_NO = 0,
             UPT_DTIME = now()
         WHERE MBR_NO = #{memberNo:NUMERIC};
@@ -141,7 +136,7 @@
           AND EMAIL = #{to:VARCHAR};
     </select>
 
-    <update id="updateMemberTemporaryPassword" parameterType="MemberDTO">
+    <update id="updateMbrPwdAndStatusCd" parameterType="MemberDTO">
         UPDATE MB_MBR_MGMT
         SET MBR_PWD = password(#{memberPassword:VARCHAR}),
             MBR_STATUS_CD = '40',

@@ -12,12 +12,11 @@ public interface MemberDAOMapper {
     void insertEmailInfo(MemberMailDTO memberMailDTO);
     void updateSignUpEmailConfirm(MemberMailDTO memberMailDTO);
     MemberDTO selectSignInMemberInfo(SignInDTO signInDTO);
-    void updateSignInRequestCnt(SignInDTO signInDTO);
-    void updateSignInMemberStatus(SignInDTO signInDTO);
+    void updateSignInReqCntAndMbrStatusCd(SignInDTO signInDTO);
     MemberDTO selectSignInRequestCnt(SignInDTO signInDTO);
     String selectFindId(MemberDTO memberDTO);
     MemberDTO selectFindPasswordMemberInfo(MemberMailDTO memberMailDTO);
-    void updateMemberTemporaryPassword(MemberDTO memberDTO);
+    void updateMbrPwdAndStatusCd(MemberDTO memberDTO);
     int selectAuthEmailCnt(MemberMailDTO memberMailDTO);
     void updateEmailInfo(MemberMailDTO memberMailDTO);
     boolean updateMemberPassword(ChangePasswordDTO changePasswordDTO);

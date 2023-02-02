@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -32,4 +31,8 @@ public class SignInDTO {
 
     @Hidden
     private int signInRequestCnt;
+
+    @Pattern(regexp = "^[1234]0$", message = "회원상태코드는 10, 20, 30, 40만 입력 가능합니다.")
+    @Schema(description = "회원상태코드(10: 인증완료, 20: 인증대기, 30: 탈퇴, 40: 임시비밀번호발급회원", example = "10")
+    private String memberStatusCode;
 }

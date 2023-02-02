@@ -123,7 +123,7 @@ public class MailServiceImpl implements MailService {
                     .memberPassword(password)
                     .build();
 
-            memberDAO.updateMemberTemporaryPassword(memberDTO);
+            memberDAO.updateMemberPasswordAndStatusCode(memberDTO);
         } else {
             throw new NoResultException("존재하지 않는 회원 정보입니다.");
         }

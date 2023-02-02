@@ -67,12 +67,10 @@ public class MemberServiceImpl implements MemberService {
             signInDTO = SignInDTO.builder()
                     .memberNo(signInMemberDTO.getMemberNo())
                     .signInRequestCnt(0)
+                    .memberStatusCode(signInMemberDTO.getMemberStatusCode())
                     .build();
-            memberDAO.updateSignInRequestCnt(signInDTO);
 
-            if (ConstCode.MEMBER_STATUS_CODE_ISSUE_TEMPORARY_PASSWORD.equals(signInMemberDTO.getMemberStatusCode())) {
-                memberDAO.updateSignInMemberStatus(signInDTO);
-            }
+            memberDAO.updateSignInRequestCntAndStatusCode(signInDTO);
         } else {
             MemberDTO checkIdExistDTO = memberDAO.selectSignInRequestCnt(signInDTO);
 
@@ -85,7 +83,7 @@ public class MemberServiceImpl implements MemberService {
                             .signInRequestCnt(checkIdExistDTO.getSignInRequestCnt() + 1)
                             .build();
 
-                    memberDAO.updateSignInRequestCnt(signInDTO);
+                    memberDAO.updateSignInRequestCntAndStatusCode(signInDTO);
                 }
             }
         }
@@ -108,17 +106,24 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
-        MemberDTO signInDTO = memberDAO.selectSignInMemberInfo(SignInDTO.builder()
+        MemberDTO memberIdExistCheckDTO = memberDAO.selectSignInMemberInfo(SignInDTO.builder()
                 .memberId(changePasswordDTO.getMemberId())
-                .memberPassword(changePasswordDTO.getMemberPassword())
                 .build());
 
-        if (signInDTO == null) {
-            throw new NoResultException("현재 비밀번호를 잘못 입력하였습니다.");
-        } else {
+        if (memberIdExistCheckDTO != null) {
+            MemberDTO signInDTO = memberDAO.selectSignInMemberInfo(SignInDTO.builder()
+                    .memberId(changePasswordDTO.getMemberId())
+                    .memberPassword(changePasswordDTO.getMemberPassword())
+                    .build());
+
+            if (signInDTO == null) {
+                throw new NoResultException("현재 비밀번호를 잘못 입력하였습니다.");
+            }
             memberDAO.updateMemberPassword(changePasswordDTO);
+        } else {
+            throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
         }
 
-        return true;
+            return true;
+        }
     }
-}
