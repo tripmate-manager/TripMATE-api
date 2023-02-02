@@ -106,7 +106,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
-        MemberDTO memberIdExistCheckDTO = memberDAO.selectSignInMemberInfo(SignInDTO.builder()
+        MemberDTO memberIdExistCheckDTO = memberDAO.selectSignInRequestCnt(SignInDTO.builder()
                 .memberId(changePasswordDTO.getMemberId())
                 .build());
 
