@@ -57,8 +57,8 @@ public class MemberDTO {
     @Schema(description = "생년월일", pattern = "yyyyMMdd", example = "19980101")
     private String birthDay;
 
-    @Pattern(regexp = "^[123]0$", message = "회원상태코드는 10, 20, 30만 입력 가능합니다.")
-    @Schema(description = "회원상태코드(10: 인증완료, 20: 인증대기, 30: 탈퇴", example = "10")
+    @Pattern(regexp = "^[1234]0$", message = "회원상태코드는 10, 20, 30, 40만 입력 가능합니다.")
+    @Schema(description = "회원상태코드(10: 인증완료, 20: 인증대기, 30: 탈퇴, 40: 임시비밀번호발급회원", example = "10")
     private String memberStatusCode;
 
     @Hidden

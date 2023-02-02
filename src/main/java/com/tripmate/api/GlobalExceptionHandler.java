@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(GuideMessageException.class)
-    public ResponseWrapper<String> handleGuideMessageException(NoResultException e) {
+    public ResponseWrapper<String> handleGuideMessageException(GuideMessageException e) {
         return ResponseWrapper.<String>builder()
                 .code(ApiResultEnum.GUIDE_MESSAGE.getCode())
                 .message(e.getMessage())
