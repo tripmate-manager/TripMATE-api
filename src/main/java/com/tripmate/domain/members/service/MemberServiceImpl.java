@@ -2,10 +2,10 @@ package com.tripmate.domain.members.service;
 
 import com.tripmate.common.exception.NoResultException;
 import com.tripmate.common.exception.WrongParameterException;
-import com.tripmate.domain.ChangePasswordDTO;
 import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.members.dao.MemberDAO;
+import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;

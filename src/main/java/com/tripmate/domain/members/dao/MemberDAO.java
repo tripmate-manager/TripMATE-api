@@ -1,7 +1,7 @@
 package com.tripmate.domain.members.dao;
 
-import com.tripmate.domain.ChangePasswordDTO;
 import com.tripmate.domain.members.dao.mapper.MemberDAOMapper;
+import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;

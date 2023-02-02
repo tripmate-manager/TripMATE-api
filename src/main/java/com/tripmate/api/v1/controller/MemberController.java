@@ -1,9 +1,9 @@
 package com.tripmate.api.v1.controller;
 
-import com.tripmate.domain.ChangePasswordDTO;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.common.service.MailService;
 import com.tripmate.domain.common.vo.ResponseWrapper;
+import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
@@ -100,8 +100,8 @@ public class MemberController {
                 .build());
     }
 
-    @Operation(summary = "회원가입 인증메일 확인", description = "회원가입 인증메일을 처리합니다. (true: 인증완료 / false: 미인증처리)")
-    @GetMapping("signup-mail-confirm")
+    @Operation(summary = "인증메일 확인", description = "메일 인증을 처리합니다. (true: 인증완료 / false: 미인증처리)")
+    @GetMapping("certification-mail-confirm")
     public ResponseWrapper signUpMailConfirm(@RequestParam(value = "memberId") @Schema(example = "회원ID") @NotBlank @Size(min = 5, max = 20) String memberId,
                                              @RequestParam(value = "key") @Schema(example = "인증키") @NotBlank @Size(max = 100) String key,
                                              @RequestParam(value = "mailTypeCode") @Schema(example = "10") @NotBlank @Pattern(regexp = "^[12]0$") String mailTypeCode) {

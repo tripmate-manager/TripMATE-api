@@ -1,4 +1,4 @@
-package com.tripmate.domain;
+package com.tripmate.domain.members.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,6 @@ public class ChangePasswordDTO {
 
     private int memberNo;
 
-    @NotBlank(message = "아이디를 입력해주세요.")
     @Pattern(regexp = "^[0-9a-zA-Z]{5,20}$",
             message = "영문, 숫자로 이루어진 5자 ~ 20자의 아이디만 입력 가능합니다.")
     @Schema(description = "아이디", example = "회원ID")

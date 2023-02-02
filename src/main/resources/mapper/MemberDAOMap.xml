@@ -173,7 +173,7 @@
 
     <update id="updateMemberPassword" parameterType="MemberDTO">
         UPDATE MB_MBR_MGMT
-        SET MBR_PWD = password(#{memberPassword:VARCHAR}),
+        SET MBR_PWD = password(#{newMemberPassword:VARCHAR}),
             UPT_NO = #{memberNo:VARCHAR},
             UPT_DTIME = now()
         WHERE MBR_NO = #{memberNo:VARCHAR};
