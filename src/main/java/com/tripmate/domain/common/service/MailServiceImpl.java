@@ -85,7 +85,9 @@ public class MailServiceImpl implements MailService {
     public boolean sendPasswordMail(MemberMailDTO memberMailDTO) throws MessagingException {
         MemberDTO findPasswordMemberInfoDTO = memberDAO.selectMemberNoAndStatusCode(memberMailDTO);
 
-        if (findPasswordMemberInfoDTO != null) {
+        if (findPasswordMemberInfoDTO == null) {
+            throw new NoResultException("존재하지 않는 회원 정보입니다.");
+        } else {
             if (ConstCode.MEMBER_STATUS_CODE_TEMPORARY.equals(findPasswordMemberInfoDTO.getMemberStatusCode())) {
                 throw new GuideMessageException("임시회원인 경우 비밀번호 발급이 불가합니다.");
             }
@@ -123,8 +125,6 @@ public class MailServiceImpl implements MailService {
                     .build();
 
             memberDAO.updateMemberPasswordAndStatusCode(memberDTO);
-        } else {
-            throw new NoResultException("존재하지 않는 회원 정보입니다.");
         }
 
         return true;

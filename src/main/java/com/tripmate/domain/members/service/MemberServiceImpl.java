@@ -110,7 +110,10 @@ public class MemberServiceImpl implements MemberService {
                 .memberId(changePasswordDTO.getMemberId())
                 .build());
 
-        if (memberIdExistCheckDTO != null) {
+
+        if (memberIdExistCheckDTO == null) {
+            throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
+        } else {
             MemberDTO signInDTO = memberDAO.selectSignInMemberInfo(SignInDTO.builder()
                     .memberId(changePasswordDTO.getMemberId())
                     .memberPassword(changePasswordDTO.getMemberPassword())
@@ -120,10 +123,8 @@ public class MemberServiceImpl implements MemberService {
                 throw new NoResultException("현재 비밀번호를 잘못 입력하였습니다.");
             }
             memberDAO.updateMemberPassword(changePasswordDTO);
-        } else {
-            throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
         }
 
-            return true;
-        }
+        return true;
     }
+}
