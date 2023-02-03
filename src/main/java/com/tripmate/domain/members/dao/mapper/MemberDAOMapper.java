@@ -14,8 +14,8 @@ public interface MemberDAOMapper {
     MemberDTO selectSignInMemberInfo(SignInDTO signInDTO);
     void updateSignInReqCntAndMbrStatusCd(SignInDTO signInDTO);
     MemberDTO selectSignInRequestCnt(SignInDTO signInDTO);
-    String selectFindId(MemberDTO memberDTO);
-    MemberDTO selectFindPasswordMemberInfo(MemberMailDTO memberMailDTO);
+    String selectMbrIdWithMbrNmAndEmail(MemberDTO memberDTO);
+    MemberDTO selectMbrNoAndStatusCd(MemberMailDTO memberMailDTO);
     void updateMbrPwdAndStatusCd(MemberDTO memberDTO);
     int selectAuthEmailCnt(MemberMailDTO memberMailDTO);
     void updateEmailInfo(MemberMailDTO memberMailDTO);

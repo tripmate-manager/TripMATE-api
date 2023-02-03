@@ -2,7 +2,6 @@ package com.tripmate.domain.common.service;
 
 import com.tripmate.common.exception.GuideMessageException;
 import com.tripmate.common.exception.NoResultException;
-import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.common.Encrypt;
@@ -84,7 +83,7 @@ public class MailServiceImpl implements MailService {
     }
 
     public boolean sendPasswordMail(MemberMailDTO memberMailDTO) throws MessagingException {
-        MemberDTO findPasswordMemberInfoDTO = memberDAO.selectFindPasswordMemberInfo(memberMailDTO);
+        MemberDTO findPasswordMemberInfoDTO = memberDAO.selectMemberNoAndStatusCode(memberMailDTO);
 
         if (findPasswordMemberInfoDTO != null) {
             if (ConstCode.MEMBER_STATUS_CODE_TEMPORARY.equals(findPasswordMemberInfoDTO.getMemberStatusCode())) {

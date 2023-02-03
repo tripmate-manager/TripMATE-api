@@ -97,7 +97,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String findId(MemberDTO memberDTO) {
-        String memberId = memberDAO.selectFindId(memberDTO);
+        String memberId = memberDAO.selectMemberIdWithNameAndEmail(memberDTO);
         if (!StringUtils.isEmpty(memberId)) {
             throw new NoResultException("존재하지 않는 회원 정보입니다.");
         }

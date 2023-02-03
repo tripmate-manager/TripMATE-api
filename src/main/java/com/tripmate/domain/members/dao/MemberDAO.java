@@ -49,16 +49,16 @@ public class MemberDAO {
         return sqlSession.getMapper(MemberDAOMapper.class).selectSignInRequestCnt(signInDTO);
     }
 
-    public String selectFindId(MemberDTO memberDTO) {
-        return sqlSession.getMapper(MemberDAOMapper.class).selectFindId(memberDTO);
+    public String selectMemberIdWithNameAndEmail(MemberDTO memberDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectMbrIdWithMbrNmAndEmail(memberDTO);
     }
 
     public void updateMemberPasswordAndStatusCode(MemberDTO memberDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).updateMbrPwdAndStatusCd(memberDTO);
     }
 
-    public MemberDTO selectFindPasswordMemberInfo(MemberMailDTO memberMailDTO) {
-        return sqlSession.getMapper(MemberDAOMapper.class).selectFindPasswordMemberInfo(memberMailDTO);
+    public MemberDTO selectMemberNoAndStatusCode(MemberMailDTO memberMailDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectMbrNoAndStatusCd(memberMailDTO);
     }
 
     public int selectAuthEmailCnt(MemberMailDTO memberMailDTO) {

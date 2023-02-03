@@ -121,14 +121,14 @@
         WHERE MBR_NO = #{memberNo:NUMERIC};
     </update>
 
-    <select id="selectFindId" parameterType="MemberDTO" resultType="String">
+    <select id="selectMbrIdWithMbrNmAndEmail" parameterType="MemberDTO" resultType="String">
         SELECT MBR_ID
         FROM MB_MBR_MGMT
         WHERE MBR_NM = #{memberName:VARCHAR}
           AND EMAIL = #{email:VARCHAR};
     </select>
 
-    <select id="selectFindPasswordMemberInfo" parameterType="MemberMailDTO" resultType="MemberDTO">
+    <select id="selectMbrNoAndStatusCd" parameterType="MemberMailDTO" resultType="MemberDTO">
         SELECT MBR_NO AS memberNo,
                MBR_STATUS_CD AS memberStatusCode
         FROM MB_MBR_MGMT
