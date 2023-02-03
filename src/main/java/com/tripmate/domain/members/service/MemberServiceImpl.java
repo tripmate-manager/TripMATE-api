@@ -5,14 +5,14 @@ import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.members.dao.MemberDAO;
+import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -63,16 +63,18 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO signIn(SignInDTO signInDTO) {
         MemberDTO signInMemberDTO = memberDAO.selectSignInMemberInfo(signInDTO);
 
-        if (!ObjectUtils.isEmpty(signInMemberDTO) && signInMemberDTO.getSignInRequestCnt() < Const.SIGNIN_LIMIT_CNT) {
+        if (signInMemberDTO != null && signInMemberDTO.getSignInRequestCnt() < Const.SIGNIN_LIMIT_CNT) {
             signInDTO = SignInDTO.builder()
                     .memberNo(signInMemberDTO.getMemberNo())
                     .signInRequestCnt(0)
+                    .memberStatusCode(signInMemberDTO.getMemberStatusCode())
                     .build();
-            memberDAO.updateSignInRequestCnt(signInDTO);
+
+            memberDAO.updateSignInRequestCntAndStatusCode(signInDTO);
         } else {
             MemberDTO checkIdExistDTO = memberDAO.selectSignInRequestCnt(signInDTO);
 
-            if (!ObjectUtils.isEmpty(checkIdExistDTO)) {
+            if (checkIdExistDTO != null) {
                 if (checkIdExistDTO.getSignInRequestCnt() >= Const.SIGNIN_LIMIT_CNT) {
                     signInMemberDTO = checkIdExistDTO;
                 } else {
@@ -81,12 +83,12 @@ public class MemberServiceImpl implements MemberService {
                             .signInRequestCnt(checkIdExistDTO.getSignInRequestCnt() + 1)
                             .build();
 
-                    memberDAO.updateSignInRequestCnt(signInDTO);
+                    memberDAO.updateSignInRequestCntAndStatusCode(signInDTO);
                 }
             }
         }
 
-        if (ObjectUtils.isEmpty(signInMemberDTO)) {
+        if (signInMemberDTO == null) {
             throw new NoResultException("등록되지 않은 아이디이거나, 아이디 혹은 비밀번호를 잘못 입력했습니다.");
         }
 
@@ -95,10 +97,33 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String findId(MemberDTO memberDTO) {
-        String memberId = memberDAO.selectFindId(memberDTO);
-        if (!StringUtils.hasText(memberId)) {
+        String memberId = memberDAO.selectMemberIdWithNameAndEmail(memberDTO);
+        if (!StringUtils.isEmpty(memberId)) {
             throw new NoResultException("존재하지 않는 회원 정보입니다.");
         }
         return memberId;
+    }
+
+    @Override
+    public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
+        MemberDTO memberIdExistCheckDTO = memberDAO.selectSignInRequestCnt(SignInDTO.builder()
+                .memberId(changePasswordDTO.getMemberId())
+                .build());
+
+        if (memberIdExistCheckDTO == null) {
+            throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
+        }
+
+        MemberDTO signInDTO = memberDAO.selectSignInMemberInfo(SignInDTO.builder()
+                .memberId(changePasswordDTO.getMemberId())
+                .memberPassword(changePasswordDTO.getMemberPassword())
+                .build());
+
+        if (signInDTO == null) {
+            throw new NoResultException("현재 비밀번호를 잘못 입력하였습니다.");
+        }
+        memberDAO.updateMemberPassword(changePasswordDTO);
+
+        return true;
     }
 }

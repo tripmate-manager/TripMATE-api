@@ -1,5 +1,6 @@
 package com.tripmate.domain.members.dao.mapper;
 
+import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
@@ -11,11 +12,12 @@ public interface MemberDAOMapper {
     void insertEmailInfo(MemberMailDTO memberMailDTO);
     void updateSignUpEmailConfirm(MemberMailDTO memberMailDTO);
     MemberDTO selectSignInMemberInfo(SignInDTO signInDTO);
-    void updateSignInRequestCnt(SignInDTO signInDTO);
+    void updateSignInReqCntAndMbrStatusCd(SignInDTO signInDTO);
     MemberDTO selectSignInRequestCnt(SignInDTO signInDTO);
-    String selectFindId(MemberDTO memberDTO);
-    int selectFindPasswordMbrNo(MemberMailDTO memberMailDTO);
-    void updateMemberPassword(MemberDTO memberDTO);
+    String selectMbrIdWithMbrNmAndEmail(MemberDTO memberDTO);
+    MemberDTO selectMbrNoAndStatusCd(MemberMailDTO memberMailDTO);
+    void updateMbrPwdAndStatusCd(MemberDTO memberDTO);
     int selectAuthEmailCnt(MemberMailDTO memberMailDTO);
     void updateEmailInfo(MemberMailDTO memberMailDTO);
+    boolean updateMemberPassword(ChangePasswordDTO changePasswordDTO);
 }

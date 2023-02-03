@@ -1,6 +1,7 @@
 package com.tripmate.domain.members.dao;
 
 import com.tripmate.domain.members.dao.mapper.MemberDAOMapper;
+import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
@@ -40,30 +41,35 @@ public class MemberDAO {
         return sqlSession.getMapper(MemberDAOMapper.class).selectSignInMemberInfo(signInDTO);
     }
 
-    public void updateSignInRequestCnt(SignInDTO signInDTO) {
-        sqlSession.getMapper(MemberDAOMapper.class).updateSignInRequestCnt(signInDTO);
+    public void updateSignInRequestCntAndStatusCode(SignInDTO signInDTO) {
+        sqlSession.getMapper(MemberDAOMapper.class).updateSignInReqCntAndMbrStatusCd(signInDTO);
     }
 
     public MemberDTO selectSignInRequestCnt(SignInDTO signInDTO) {
         return sqlSession.getMapper(MemberDAOMapper.class).selectSignInRequestCnt(signInDTO);
     }
 
-    public String selectFindId(MemberDTO memberDTO) {
-        return sqlSession.getMapper(MemberDAOMapper.class).selectFindId(memberDTO);
+    public String selectMemberIdWithNameAndEmail(MemberDTO memberDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectMbrIdWithMbrNmAndEmail(memberDTO);
     }
 
-    public void updateMemberPassword(MemberDTO memberDTO) {
-        sqlSession.getMapper(MemberDAOMapper.class).updateMemberPassword(memberDTO);
+    public void updateMemberPasswordAndStatusCode(MemberDTO memberDTO) {
+        sqlSession.getMapper(MemberDAOMapper.class).updateMbrPwdAndStatusCd(memberDTO);
     }
 
-    public int selectFindPasswordMbrNo(MemberMailDTO memberMailDTO) {
-        return sqlSession.getMapper(MemberDAOMapper.class).selectFindPasswordMbrNo(memberMailDTO);
+    public MemberDTO selectMemberNoAndStatusCode(MemberMailDTO memberMailDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectMbrNoAndStatusCd(memberMailDTO);
     }
 
     public int selectAuthEmailCnt(MemberMailDTO memberMailDTO) {
         return sqlSession.getMapper(MemberDAOMapper.class).selectAuthEmailCnt(memberMailDTO);
     }
+
     public void updateEmailInfo(MemberMailDTO memberMailDTO) {
         sqlSession.getMapper(MemberDAOMapper.class).updateEmailInfo(memberMailDTO);
+    }
+
+    public void updateMemberPassword(ChangePasswordDTO changePasswordDTO) {
+        sqlSession.getMapper(MemberDAOMapper.class).updateMemberPassword(changePasswordDTO);
     }
 }
