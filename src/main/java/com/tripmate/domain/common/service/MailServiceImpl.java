@@ -87,45 +87,46 @@ public class MailServiceImpl implements MailService {
 
         if (findPasswordMemberInfoDTO == null) {
             throw new NoResultException("존재하지 않는 회원 정보입니다.");
-        } else {
-            if (ConstCode.MEMBER_STATUS_CODE_TEMPORARY.equals(findPasswordMemberInfoDTO.getMemberStatusCode())) {
-                throw new GuideMessageException("임시회원인 경우 비밀번호 발급이 불가합니다.");
-            }
-
-            Encrypt encrypt = new Encrypt();
-            String encryptString = encrypt.getEncrypt(encrypt.getSalt(), Const.SERVICE_NAME);
-
-            String[] specialSymbols = {".", "*", "!", "?", "$"};
-            double random = Math.random();
-            int index = (int) Math.round(random * (specialSymbols.length - 1));
-
-            String password = encryptString.substring(0, 8) + specialSymbols[index];
-
-            String mailContents;
-            try {
-                mailContents = readMailTemplate("temporaryPasswordMail.html");
-            } catch (IOException e) {
-                log.error(e.getMessage(), e);
-                return false;
-            }
-            mailContents = mailContents.replace("%password%", password);
-
-            try {
-                mailHandler.setTo(memberMailDTO.getTo());
-                mailHandler.setSubject("TripMATE 임시 비밀번호 발급 메일입니다.");
-                mailHandler.setText(mailContents, true);
-                mailHandler.send();
-            } catch (MessagingException e) {
-                throw new MessagingException("메일 전송 중 오류가 발생하였습니다.");
-            }
-
-            MemberDTO memberDTO = MemberDTO.builder()
-                    .memberNo(findPasswordMemberInfoDTO.getMemberNo())
-                    .memberPassword(password)
-                    .build();
-
-            memberDAO.updateMemberPasswordAndStatusCode(memberDTO);
         }
+
+        if (ConstCode.MEMBER_STATUS_CODE_TEMPORARY.equals(findPasswordMemberInfoDTO.getMemberStatusCode())) {
+            throw new GuideMessageException("임시회원인 경우 비밀번호 발급이 불가합니다.");
+        }
+
+        Encrypt encrypt = new Encrypt();
+        String encryptString = encrypt.getEncrypt(encrypt.getSalt(), Const.SERVICE_NAME);
+
+        String[] specialSymbols = {".", "*", "!", "?", "$"};
+        double random = Math.random();
+        int index = (int) Math.round(random * (specialSymbols.length - 1));
+
+        String password = encryptString.substring(0, 8) + specialSymbols[index];
+
+        String mailContents;
+        try {
+            mailContents = readMailTemplate("temporaryPasswordMail.html");
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
+        mailContents = mailContents.replace("%password%", password);
+
+        try {
+            mailHandler.setTo(memberMailDTO.getTo());
+            mailHandler.setSubject("TripMATE 임시 비밀번호 발급 메일입니다.");
+            mailHandler.setText(mailContents, true);
+            mailHandler.send();
+        } catch (MessagingException e) {
+            throw new MessagingException("메일 전송 중 오류가 발생하였습니다.");
+        }
+
+        MemberDTO memberDTO = MemberDTO.builder()
+                .memberNo(findPasswordMemberInfoDTO.getMemberNo())
+                .memberPassword(password)
+                .build();
+
+        memberDAO.updateMemberPasswordAndStatusCode(memberDTO);
+
 
         return true;
     }
