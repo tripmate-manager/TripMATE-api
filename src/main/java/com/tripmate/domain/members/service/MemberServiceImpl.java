@@ -126,4 +126,15 @@ public class MemberServiceImpl implements MemberService {
 
         return true;
     }
+
+    @Override
+    public boolean withdraw(SignInDTO signInDTO) {
+        MemberDTO memberDTO = memberDAO.selectSignInMemberInfo(signInDTO);
+
+        if (memberDTO == null) {
+            throw new NoResultException("잘못된 비밀번호입니다.");
+        }
+
+        return memberDAO.updateWithdrawMemberInfo(signInDTO) == 1;
+    }
 }
