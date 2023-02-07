@@ -72,6 +72,11 @@
     </insert>
 
     <update id="updateSignUpEmailConfirm" parameterType="MemberMailDTO">
+        <selectKey keyProperty="to" keyColumn="EMAIL" resultType="String" order="AFTER">
+            SELECT EMAIL
+            FROM MB_MBR_MGMT
+            WHERE MBR_ID = #{memberId:VARCHAR}
+        </selectKey>
         UPDATE MB_MBR_MGMT MMM
             INNER JOIN MB_AUTH_EMAIL_MGMT MAEM
             ON MMM.MBR_NO = MAEM.MBR_NO
@@ -166,7 +171,7 @@
         AND EMAIL_TP_CD = #{mailTypeCode:VARCHAR};
     </update>
 
-    <update id="updateMemberPassword" parameterType="ChangePasswordDTO">
+    <update id="updateMbrPwd" parameterType="ChangePasswordDTO">
         UPDATE MB_MBR_MGMT
         SET MBR_PWD = password(#{newMemberPassword:VARCHAR}),
             UPT_NO = #{memberNo:VARCHAR},

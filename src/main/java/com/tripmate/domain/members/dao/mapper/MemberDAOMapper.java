@@ -10,7 +10,7 @@ public interface MemberDAOMapper {
     int insertMemberInfo(MemberDTO memberDTO);
     int selectDuplicationCnt(DuplicationCheckDTO duplicationCheckDTO);
     void insertEmailInfo(MemberMailDTO memberMailDTO);
-    void updateSignUpEmailConfirm(MemberMailDTO memberMailDTO);
+    int updateSignUpEmailConfirm(MemberMailDTO memberMailDTO);
     MemberDTO selectSignInMemberInfo(SignInDTO signInDTO);
     void updateSignInReqCntAndMbrStatusCd(SignInDTO signInDTO);
     MemberDTO selectSignInRequestCnt(SignInDTO signInDTO);
@@ -19,6 +19,6 @@ public interface MemberDAOMapper {
     void updateMbrPwdAndStatusCd(MemberDTO memberDTO);
     int selectAuthEmailCnt(MemberMailDTO memberMailDTO);
     void updateEmailInfo(MemberMailDTO memberMailDTO);
-    boolean updateMemberPassword(ChangePasswordDTO changePasswordDTO);
+    int updateMbrPwd(ChangePasswordDTO changePasswordDTO);
     int updateWithdrawMemberInfo(SignInDTO signInDTO);
 }
