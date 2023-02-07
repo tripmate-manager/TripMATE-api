@@ -5,7 +5,6 @@ import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
-import com.tripmate.domain.members.dto.MypageInfoDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +33,8 @@ public class MemberDAO {
         sqlSession.getMapper(MemberDAOMapper.class).insertEmailInfo(memberMailDTO);
     }
 
-    public void updateSignUpEmailConfirm(MemberMailDTO memberMailDTO) {
-        sqlSession.getMapper(MemberDAOMapper.class).updateSignUpEmailConfirm(memberMailDTO);
+    public int updateSignUpEmailConfirm(MemberMailDTO memberMailDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateSignUpEmailConfirm(memberMailDTO);
     }
 
     public MemberDTO selectSignInMemberInfo(SignInDTO signInDTO) {
@@ -70,8 +69,8 @@ public class MemberDAO {
         sqlSession.getMapper(MemberDAOMapper.class).updateEmailInfo(memberMailDTO);
     }
 
-    public void updateMemberPassword(ChangePasswordDTO changePasswordDTO) {
-        sqlSession.getMapper(MemberDAOMapper.class).updateMemberPassword(changePasswordDTO);
+    public int updateMemberPassword(ChangePasswordDTO changePasswordDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateMbrPwd(changePasswordDTO);
     }
 
     public int updateWithdrawMemberInfo(SignInDTO signInDTO) {
