@@ -118,12 +118,9 @@ public class MemberServiceImpl implements MemberService {
             throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
         }
 
-        MemberDTO signInDTO = memberDAO.selectSignInMemberInfo(SignInDTO.builder()
-                .memberId(changePasswordDTO.getMemberId())
-                .memberPassword(changePasswordDTO.getMemberPassword())
-                .build());
+        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(changePasswordDTO.getMemberNo());
 
-        if (signInDTO == null) {
+        if (memberDTO == null) {
             throw new NoResultException("현재 비밀번호를 잘못 입력하였습니다.");
         }
 
@@ -132,7 +129,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean withdraw(SignInDTO signInDTO) {
-        MemberDTO memberDTO = memberDAO.selectSignInMemberInfo(signInDTO);
+        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(signInDTO.getMemberNo());
 
         if (memberDTO == null) {
             throw new NoResultException("잘못된 비밀번호입니다.");

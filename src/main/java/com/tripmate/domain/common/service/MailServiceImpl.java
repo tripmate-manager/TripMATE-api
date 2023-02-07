@@ -51,7 +51,7 @@ public class MailServiceImpl implements MailService {
             log.error(e.getMessage(), e);
             return false;
         }
-        String certificationUrl = Const.JOIN_EMAIL_URL +
+        String certificationUrl = Const.CERTIFICATION_EMAIL_URL +
                 "?memberId=" + memberMailDTO.getMemberId() +
                 "&key=" + key +
                 "&mailTypeCode=" + memberMailDTO.getMailTypeCode();

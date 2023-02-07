@@ -21,4 +21,5 @@ public interface MemberDAOMapper {
     void updateEmailInfo(MemberMailDTO memberMailDTO);
     int updateMbrPwd(ChangePasswordDTO changePasswordDTO);
     int updateWithdrawMemberInfo(SignInDTO signInDTO);
+    MemberDTO selectMemberInfoWithMbrNo(int memberNo);
 }

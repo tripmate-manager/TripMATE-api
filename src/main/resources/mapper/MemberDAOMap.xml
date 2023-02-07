@@ -181,10 +181,8 @@
 
     <update id="updateWithdrawMemberInfo" parameterType="SignInDTO">
         UPDATE MB_MBR_MGMT
-        SET MBR_ID = "",
-            MBR_PWD = "",
+        SET MBR_PWD = "",
             MBR_NM = "",
-            NICK_NM = "",
             GEND_CD = "",
             BDAY = "",
             LOGIN_REQ_CNT = 0,
@@ -193,4 +191,19 @@
             UPT_DTIME = now()
         WHERE MBR_NO = #{memberNo:VARCHAR};
     </update>
+
+    <select id="selectMemberInfoWithMbrNo" parameterType="int" resultType="MemberDTO">
+        SELECT MBR_NO AS memberNo,
+               MBR_ID AS memberId,
+               MBR_PWD AS memberPassword,
+               MBR_NM AS memberName,
+               NICK_NM AS nickName,
+               EMAIL AS email,
+               GEND_CD AS genderCode,
+               BDAY AS birthDay,
+               LOGIN_REQ_CNT AS signInRequestCnt,
+               MBR_STATUS_CD AS memberStatusCode
+        FROM MB_MBR_MGMT
+        WHERE MBR_NO = #{memberNo:VARCHAR};
+    </select>
 </mapper>

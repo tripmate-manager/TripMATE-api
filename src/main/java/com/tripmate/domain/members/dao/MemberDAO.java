@@ -76,4 +76,8 @@ public class MemberDAO {
     public int updateWithdrawMemberInfo(SignInDTO signInDTO) {
         return sqlSession.getMapper(MemberDAOMapper.class).updateWithdrawMemberInfo(signInDTO);
     }
+
+    public MemberDTO selectMemberInfoWithMemberNo(int memberNo) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectMemberInfoWithMbrNo(memberNo);
+    }
 }
