@@ -7,7 +7,6 @@ import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
-import com.tripmate.domain.members.dto.MypageInfoDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 import com.tripmate.domain.members.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
