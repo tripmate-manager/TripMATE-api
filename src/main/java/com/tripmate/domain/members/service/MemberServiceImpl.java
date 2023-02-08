@@ -141,23 +141,25 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MypageDTO updateMemberInfo(MypageDTO mypageDTO) {
-        if (isDuplicate(DuplicationCheckDTO.builder()
-                .duplicationMemberInfo(mypageDTO.getNickName())
-                .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
-                .build())) {
-            throw new WrongParameterException("이미 등록된 닉네임 입니다.");
+        if (!mypageDTO.getNickName().equals(memberDAO.selectMemberInfoWithMemberNo(mypageDTO.getMemberNo()).getNickName())) {
+            if (isDuplicate(DuplicationCheckDTO.builder()
+                    .duplicationMemberInfo(mypageDTO.getNickName())
+                    .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
+                    .build())) {
+                throw new WrongParameterException("이미 등록된 닉네임 입니다.");
+            }
         }
 
         if (memberDAO.updateMemberInfo(mypageDTO) != 1) {
             throw new GuideMessageException("회원정보 변경 처리 중 오류가 발생하였습니다.");
         }
 
-        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(mypageDTO.getMemberNo());
+        MemberDTO updateMemberInfoResult = memberDAO.selectMemberInfoWithMemberNo(mypageDTO.getMemberNo());
 
         return MypageDTO.builder()
-                .memberNo(memberDTO.getMemberNo())
-                .nickName(memberDTO.getNickName())
-                .birthDay(memberDTO.getBirthDay())
-                .genderCode(memberDTO.getGenderCode()).build();
+                .memberNo(updateMemberInfoResult.getMemberNo())
+                .nickName(updateMemberInfoResult.getNickName())
+                .birthDay(updateMemberInfoResult.getBirthDay())
+                .genderCode(updateMemberInfoResult.getGenderCode()).build();
     }
 }
