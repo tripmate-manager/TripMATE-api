@@ -74,15 +74,15 @@ public class MemberDAO {
         return sqlSession.getMapper(MemberDAOMapper.class).updateMbrPwd(changePasswordDTO);
     }
 
-    public int updateWithdrawMemberInfo(SignInDTO signInDTO) {
-        return sqlSession.getMapper(MemberDAOMapper.class).updateWithdrawMemberInfo(signInDTO);
+    public int updateWithdrawMemberInfo(int memberNo) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateWithdrawMemberInfo(memberNo);
     }
 
     public MemberDTO selectMemberInfoWithMemberNo(int memberNo) {
         return sqlSession.getMapper(MemberDAOMapper.class).selectMemberInfoWithMbrNo(memberNo);
     }
 
-    public int updateMypageMemberInfo(MypageDTO mypageDTO) {
-        return sqlSession.getMapper(MemberDAOMapper.class).updateMypageMemberInfo(mypageDTO);
+    public int updateMemberInfo(MypageDTO mypageDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateMemberInfo(mypageDTO);
     }
 }

@@ -21,7 +21,7 @@ public interface MemberDAOMapper {
     int selectAuthEmailCnt(MemberMailDTO memberMailDTO);
     void updateEmailInfo(MemberMailDTO memberMailDTO);
     int updateMbrPwd(ChangePasswordDTO changePasswordDTO);
-    int updateWithdrawMemberInfo(SignInDTO signInDTO);
+    int updateWithdrawMemberInfo(int memberNo);
     MemberDTO selectMemberInfoWithMbrNo(int memberNo);
-    int updateMypageMemberInfo(MypageDTO mypageDTO);
+    int updateMemberInfo(MypageDTO mypageDTO);
 }
