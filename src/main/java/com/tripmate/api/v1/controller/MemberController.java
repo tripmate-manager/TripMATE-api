@@ -164,7 +164,7 @@ public class MemberController {
 
     @Operation(summary = "회원탈퇴", description = "회원 탈퇴 처리합니다.")
     @DeleteMapping("/{memberNo}")
-    public ResponseWrapper<Boolean> withDraw(@PathVariable(value = "memberNo") @Schema(example = "회원번호") int memberNo) {
+    public ResponseWrapper<Boolean> withdraw(@PathVariable(value = "memberNo") @Schema(example = "회원번호") int memberNo) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(memberService.updateWithdrawMemberInfo(memberNo)))
                 .build();
