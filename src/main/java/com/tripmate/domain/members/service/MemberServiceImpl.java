@@ -1,5 +1,6 @@
 package com.tripmate.domain.members.service;
 
+import com.tripmate.common.exception.GuideMessageException;
 import com.tripmate.common.exception.NoResultException;
 import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.Const;
@@ -55,8 +56,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void signUpMailConfirm(MemberMailDTO memberMailDTO) {
-        memberDAO.updateSignUpEmailConfirm(memberMailDTO);
+    public String signUpMailConfirm(MemberMailDTO memberMailDTO) {
+        if (memberDAO.updateSignUpEmailConfirm(memberMailDTO) != 1) {
+            throw new GuideMessageException("비밀번호 변경 처리 중 오류가 발생하였습니다.");
+        }
+        return memberMailDTO.getTo();
     }
 
     @Override
@@ -98,7 +102,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String findId(MemberDTO memberDTO) {
         String memberId = memberDAO.selectMemberIdWithNameAndEmail(memberDTO);
-        if (!StringUtils.isEmpty(memberId)) {
+        if (StringUtils.isEmpty(memberId)) {
             throw new NoResultException("존재하지 않는 회원 정보입니다.");
         }
         return memberId;
@@ -114,16 +118,23 @@ public class MemberServiceImpl implements MemberService {
             throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
         }
 
-        MemberDTO signInDTO = memberDAO.selectSignInMemberInfo(SignInDTO.builder()
-                .memberId(changePasswordDTO.getMemberId())
-                .memberPassword(changePasswordDTO.getMemberPassword())
-                .build());
+        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(changePasswordDTO.getMemberNo());
 
-        if (signInDTO == null) {
+        if (memberDTO == null) {
             throw new NoResultException("현재 비밀번호를 잘못 입력하였습니다.");
         }
-        memberDAO.updateMemberPassword(changePasswordDTO);
 
-        return true;
+        return memberDAO.updateMemberPassword(changePasswordDTO) == 1;
+    }
+
+    @Override
+    public boolean withdraw(SignInDTO signInDTO) {
+        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(signInDTO.getMemberNo());
+
+        if (memberDTO == null) {
+            throw new NoResultException("잘못된 비밀번호입니다.");
+        }
+
+        return memberDAO.updateWithdrawMemberInfo(signInDTO) == 1;
     }
 }

@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -102,16 +103,17 @@ public class MemberController {
 
     @Operation(summary = "인증메일 확인", description = "메일 인증을 처리합니다. (true: 인증완료 / false: 미인증처리)")
     @GetMapping("certification-mail-confirm")
-    public ResponseWrapper signUpMailConfirm(@RequestParam(value = "memberId") @Schema(example = "회원ID") @NotBlank @Size(min = 5, max = 20) String memberId,
+    public ResponseWrapper<String> signUpMailConfirm(@RequestParam(value = "memberId") @Schema(example = "회원ID") @NotBlank @Size(min = 5, max = 20) String memberId,
                                              @RequestParam(value = "key") @Schema(example = "인증키") @NotBlank @Size(max = 100) String key,
-                                             @RequestParam(value = "mailTypeCode") @Schema(example = "10") @NotBlank @Pattern(regexp = "^[12]0$") String mailTypeCode) {
-        memberService.signUpMailConfirm(MemberMailDTO.builder()
-                .memberId(memberId)
-                .key(key)
-                .mailTypeCode(mailTypeCode)
-                .build());
+                                             @RequestParam(value = "mailTypeCode") @Schema(example = "10") @NotBlank @Pattern(regexp = "^[123]0$") String mailTypeCode) {
 
-        return ResponseWrapper.builder().build();
+        return ResponseWrapper.<String>builder()
+                .data(Collections.singletonList(memberService.signUpMailConfirm(MemberMailDTO.builder()
+                        .memberId(memberId)
+                        .key(key)
+                        .mailTypeCode(mailTypeCode)
+                        .build())))
+                .build();
     }
 
     @Operation(summary = "로그인 요청", description = "로그인 처리합니다. (return: 회원 정보)")
@@ -129,7 +131,8 @@ public class MemberController {
         return ResponseWrapper.<String>builder()
                 .data(Collections.singletonList(memberService.findId(MemberDTO.builder()
                         .memberName(memberName)
-                        .email(email).build())))
+                        .email(email)
+                        .build())))
                 .build();
     }
 
@@ -154,6 +157,14 @@ public class MemberController {
     public ResponseWrapper<Boolean> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(memberService.changePassword(changePasswordDTO)))
+                .build();
+    }
+
+    @Operation(summary = "회원탈퇴", description = "회원 탈퇴 처리합니다.")
+    @PutMapping("/withdraw")
+    public ResponseWrapper<Boolean> withDraw(@Valid @RequestBody SignInDTO signInDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(memberService.withdraw(signInDTO)))
                 .build();
     }
 }

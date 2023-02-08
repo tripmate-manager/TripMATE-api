@@ -9,8 +9,9 @@ import com.tripmate.domain.members.dto.SignInDTO;
 public interface MemberService {
     int signUp(MemberDTO memberDTO);
     boolean isDuplicate(DuplicationCheckDTO duplicationCheckDTO);
-    void signUpMailConfirm(MemberMailDTO memberMailDTO);
+    String signUpMailConfirm(MemberMailDTO memberMailDTO);
     MemberDTO signIn(SignInDTO signInDTO);
     String findId(MemberDTO memberDTO);
     boolean changePassword(ChangePasswordDTO changePasswordDTO);
+    boolean withdraw(SignInDTO signInDTO);
 }

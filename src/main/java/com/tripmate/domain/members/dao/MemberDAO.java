@@ -33,8 +33,8 @@ public class MemberDAO {
         sqlSession.getMapper(MemberDAOMapper.class).insertEmailInfo(memberMailDTO);
     }
 
-    public void updateSignUpEmailConfirm(MemberMailDTO memberMailDTO) {
-        sqlSession.getMapper(MemberDAOMapper.class).updateSignUpEmailConfirm(memberMailDTO);
+    public int updateSignUpEmailConfirm(MemberMailDTO memberMailDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateSignUpEmailConfirm(memberMailDTO);
     }
 
     public MemberDTO selectSignInMemberInfo(SignInDTO signInDTO) {
@@ -69,7 +69,15 @@ public class MemberDAO {
         sqlSession.getMapper(MemberDAOMapper.class).updateEmailInfo(memberMailDTO);
     }
 
-    public void updateMemberPassword(ChangePasswordDTO changePasswordDTO) {
-        sqlSession.getMapper(MemberDAOMapper.class).updateMemberPassword(changePasswordDTO);
+    public int updateMemberPassword(ChangePasswordDTO changePasswordDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateMbrPwd(changePasswordDTO);
+    }
+
+    public int updateWithdrawMemberInfo(SignInDTO signInDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateWithdrawMemberInfo(signInDTO);
+    }
+
+    public MemberDTO selectMemberInfoWithMemberNo(int memberNo) {
+        return sqlSession.getMapper(MemberDAOMapper.class).selectMemberInfoWithMbrNo(memberNo);
     }
 }
