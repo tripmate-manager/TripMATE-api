@@ -4,6 +4,7 @@ import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.MypageDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 
 public interface MemberService {
@@ -14,4 +15,5 @@ public interface MemberService {
     String findId(MemberDTO memberDTO);
     boolean changePassword(ChangePasswordDTO changePasswordDTO);
     boolean withdraw(SignInDTO signInDTO);
+    MypageDTO editMypageMemberInfo(MypageDTO mypageDTO);
 }

@@ -4,6 +4,7 @@ import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.MypageDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 
 public interface MemberDAOMapper {
@@ -22,4 +23,5 @@ public interface MemberDAOMapper {
     int updateMbrPwd(ChangePasswordDTO changePasswordDTO);
     int updateWithdrawMemberInfo(SignInDTO signInDTO);
     MemberDTO selectMemberInfoWithMbrNo(int memberNo);
+    int updateMypageMemberInfo(MypageDTO mypageDTO);
 }

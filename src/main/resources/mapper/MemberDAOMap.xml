@@ -206,4 +206,14 @@
         FROM MB_MBR_MGMT
         WHERE MBR_NO = #{memberNo:VARCHAR};
     </select>
+
+    <update id="updateMypageMemberInfo" parameterType="MypageDTO">
+        UPDATE MB_MBR_MGMT
+        SET NICK_NM = #{nickName:VARCHAR},
+            GEND_CD = #{genderCode:VARCHAR},
+            BDAY = #{birthDay:VARCHAR},
+            UPT_NO = #{memberNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE MBR_NO = #{memberNo:VARCHAR};
+    </update>
 </mapper>

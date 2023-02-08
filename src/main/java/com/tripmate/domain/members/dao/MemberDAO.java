@@ -5,6 +5,7 @@ import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.MypageDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +80,9 @@ public class MemberDAO {
 
     public MemberDTO selectMemberInfoWithMemberNo(int memberNo) {
         return sqlSession.getMapper(MemberDAOMapper.class).selectMemberInfoWithMbrNo(memberNo);
+    }
+
+    public int updateMypageMemberInfo(MypageDTO mypageDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).updateMypageMemberInfo(mypageDTO);
     }
 }

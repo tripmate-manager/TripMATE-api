@@ -7,6 +7,7 @@ import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.MypageDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 import com.tripmate.domain.members.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -165,6 +166,14 @@ public class MemberController {
     public ResponseWrapper<Boolean> withDraw(@Valid @RequestBody SignInDTO signInDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(memberService.withdraw(signInDTO)))
+                .build();
+    }
+
+    @Operation(summary = "마이페이지 회원정보 수정", description = "마이페이지 회원 정보를 변경합니다.(닉네임, 생년월일, 성별)")
+    @PutMapping("/edit-mypage")
+    public ResponseWrapper<MypageDTO> editMypageMemberInfo(@Valid @RequestBody MypageDTO mypageDTO) {
+        return ResponseWrapper.<MypageDTO>builder()
+                .data(Collections.singletonList(memberService.editMypageMemberInfo(mypageDTO)))
                 .build();
     }
 }

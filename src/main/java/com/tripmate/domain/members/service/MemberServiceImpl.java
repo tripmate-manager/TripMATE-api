@@ -10,6 +10,7 @@ import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.MypageDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,5 +137,20 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return memberDAO.updateWithdrawMemberInfo(signInDTO) == 1;
+    }
+
+    @Override
+    public MypageDTO editMypageMemberInfo(MypageDTO mypageDTO) {
+        if (memberDAO.updateMypageMemberInfo(mypageDTO) != 1) {
+            throw new GuideMessageException("회원정보 변경 처리 중 오류가 발생하였습니다.");
+        }
+
+        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(mypageDTO.getMemberNo());
+
+        return MypageDTO.builder()
+                .memberNo(memberDTO.getMemberNo())
+                .nickName(memberDTO.getNickName())
+                .birthDay(memberDTO.getBirthDay())
+                .genderCode(memberDTO.getGenderCode()).build();
     }
 }
