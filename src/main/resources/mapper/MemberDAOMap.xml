@@ -179,14 +179,14 @@
         WHERE MBR_NO = #{memberNo:VARCHAR};
     </update>
 
-    <update id="updateWithdrawMemberInfo" parameterType="SignInDTO">
+    <update id="updateWithdrawMemberInfo" parameterType="int">
         UPDATE MB_MBR_MGMT
         SET MBR_PWD = "",
             MBR_NM = "",
             GEND_CD = "",
             BDAY = "",
             LOGIN_REQ_CNT = 0,
-            MBR_STATUS_CD = #{memberStatusCode:VARCHAR},
+            MBR_STATUS_CD = '30',
             UPT_NO = #{memberNo:VARCHAR},
             UPT_DTIME = now()
         WHERE MBR_NO = #{memberNo:VARCHAR};
@@ -206,4 +206,14 @@
         FROM MB_MBR_MGMT
         WHERE MBR_NO = #{memberNo:VARCHAR};
     </select>
+
+    <update id="updateMemberInfo" parameterType="MypageDTO">
+        UPDATE MB_MBR_MGMT
+        SET NICK_NM = #{nickName:VARCHAR},
+            GEND_CD = #{genderCode:VARCHAR},
+            BDAY = #{birthDay:VARCHAR},
+            UPT_NO = #{memberNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE MBR_NO = #{memberNo:VARCHAR};
+    </update>
 </mapper>

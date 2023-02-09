@@ -7,16 +7,18 @@ import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.MypageDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 import com.tripmate.domain.members.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +31,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 
@@ -161,10 +164,18 @@ public class MemberController {
     }
 
     @Operation(summary = "회원탈퇴", description = "회원 탈퇴 처리합니다.")
-    @PutMapping("/withdraw")
-    public ResponseWrapper<Boolean> withDraw(@Valid @RequestBody SignInDTO signInDTO) {
+    @DeleteMapping("/{memberNo}")
+    public ResponseWrapper<Boolean> withdraw(@PathVariable(value = "memberNo") @Schema(example = "회원번호") int memberNo) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(memberService.withdraw(signInDTO)))
+                .data(Collections.singletonList(memberService.updateWithdrawMemberInfo(memberNo)))
+                .build();
+    }
+
+    @Operation(summary = "마이페이지 회원정보 수정", description = "마이페이지 회원 정보를 변경합니다.(닉네임, 생년월일, 성별)")
+    @PutMapping("/{memberNo}")
+    public ResponseWrapper<MypageDTO> updateMemberInfo(@Valid @Positive @PathVariable(value = "memberNo") @Schema(example = "회원번호") int memberNo, @Valid @RequestBody MypageDTO mypageDTO) {
+        return ResponseWrapper.<MypageDTO>builder()
+                .data(Collections.singletonList(memberService.updateMemberInfo(memberNo, mypageDTO)))
                 .build();
     }
 }

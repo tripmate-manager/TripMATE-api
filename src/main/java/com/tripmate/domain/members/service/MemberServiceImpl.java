@@ -10,6 +10,7 @@ import com.tripmate.domain.members.dto.ChangePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
+import com.tripmate.domain.members.dto.MypageDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,13 +129,41 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean withdraw(SignInDTO signInDTO) {
-        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(signInDTO.getMemberNo());
+    public boolean updateWithdrawMemberInfo(int memberNo) {
+        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(memberNo);
 
         if (memberDTO == null) {
             throw new NoResultException("잘못된 비밀번호입니다.");
         }
 
-        return memberDAO.updateWithdrawMemberInfo(signInDTO) == 1;
+        return memberDAO.updateWithdrawMemberInfo(memberNo) == 1;
+    }
+
+    @Override
+    public MypageDTO updateMemberInfo(int memberNo, MypageDTO mypageDTO) {
+        if (memberNo != mypageDTO.getMemberNo()) {
+            throw new WrongParameterException("회원정보 변경 처리 중 오류가 발생하였습니다.");
+        }
+
+        if (!mypageDTO.getNickName().equals(memberDAO.selectMemberInfoWithMemberNo(memberNo).getNickName())) {
+            if (isDuplicate(DuplicationCheckDTO.builder()
+                    .duplicationMemberInfo(mypageDTO.getNickName())
+                    .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
+                    .build())) {
+                throw new WrongParameterException("이미 등록된 닉네임 입니다.");
+            }
+        }
+
+        if (memberDAO.updateMemberInfo(mypageDTO) != 1) {
+            throw new GuideMessageException("회원정보 변경 처리 중 오류가 발생하였습니다.");
+        }
+
+        MemberDTO updateMemberInfoResult = memberDAO.selectMemberInfoWithMemberNo(memberNo);
+
+        return MypageDTO.builder()
+                .memberNo(updateMemberInfoResult.getMemberNo())
+                .nickName(updateMemberInfoResult.getNickName())
+                .birthDay(updateMemberInfoResult.getBirthDay())
+                .genderCode(updateMemberInfoResult.getGenderCode()).build();
     }
 }
