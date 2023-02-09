@@ -31,6 +31,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 
@@ -172,9 +173,9 @@ public class MemberController {
 
     @Operation(summary = "마이페이지 회원정보 수정", description = "마이페이지 회원 정보를 변경합니다.(닉네임, 생년월일, 성별)")
     @PutMapping("/{memberNo}")
-    public ResponseWrapper<MypageDTO> updateMemberInfo(@PathVariable(value = "memberNo") @Schema(example = "회원번호") int memberNo, @Valid @RequestBody MypageDTO mypageDTO) {
+    public ResponseWrapper<MypageDTO> updateMemberInfo(@Valid @Positive @PathVariable(value = "memberNo") @Schema(example = "회원번호") int memberNo, @Valid @RequestBody MypageDTO mypageDTO) {
         return ResponseWrapper.<MypageDTO>builder()
-                .data(Collections.singletonList(memberService.updateMemberInfo(mypageDTO)))
+                .data(Collections.singletonList(memberService.updateMemberInfo(memberNo, mypageDTO)))
                 .build();
     }
 }

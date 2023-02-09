@@ -140,8 +140,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MypageDTO updateMemberInfo(MypageDTO mypageDTO) {
-        if (!mypageDTO.getNickName().equals(memberDAO.selectMemberInfoWithMemberNo(mypageDTO.getMemberNo()).getNickName())) {
+    public MypageDTO updateMemberInfo(int memberNo, MypageDTO mypageDTO) {
+        if (memberNo != mypageDTO.getMemberNo()) {
+            throw new WrongParameterException("회원정보 변경 처리 중 오류가 발생하였습니다.");
+        }
+
+        if (!mypageDTO.getNickName().equals(memberDAO.selectMemberInfoWithMemberNo(memberNo).getNickName())) {
             if (isDuplicate(DuplicationCheckDTO.builder()
                     .duplicationMemberInfo(mypageDTO.getNickName())
                     .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)

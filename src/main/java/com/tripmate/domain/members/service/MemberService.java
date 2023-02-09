@@ -15,5 +15,5 @@ public interface MemberService {
     String findId(MemberDTO memberDTO);
     boolean changePassword(ChangePasswordDTO changePasswordDTO);
     boolean updateWithdrawMemberInfo(int memberNo);
-    MypageDTO updateMemberInfo(MypageDTO mypageDTO);
+    MypageDTO updateMemberInfo(int memberNo, MypageDTO mypageDTO);
 }
