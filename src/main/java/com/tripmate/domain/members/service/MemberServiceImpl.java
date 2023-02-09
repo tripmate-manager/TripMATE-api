@@ -158,7 +158,7 @@ public class MemberServiceImpl implements MemberService {
             throw new GuideMessageException("회원정보 변경 처리 중 오류가 발생하였습니다.");
         }
 
-        MemberDTO updateMemberInfoResult = memberDAO.selectMemberInfoWithMemberNo(mypageDTO.getMemberNo());
+        MemberDTO updateMemberInfoResult = memberDAO.selectMemberInfoWithMemberNo(memberNo);
 
         return MypageDTO.builder()
                 .memberNo(updateMemberInfoResult.getMemberNo())
