@@ -30,21 +30,22 @@ public class PlanDAO {
     public List<PlanAddressVO> selectAddressList(String sidoName) {
         return sqlSession.getMapper(PlanDAOMapper.class).selectAddressList(sidoName);
     }
+
     public int insertPlanInfo(CreatePlanDTO createPlanDTO) {
         sqlSession.getMapper(PlanDAOMapper.class).insertPlanInfo(createPlanDTO);
 
         return createPlanDTO.getPlanNo();
     }
 
-    public int insertTripAddress(PlanAddressVO planAddressVO) {
-        return sqlSession.getMapper(PlanDAOMapper.class).insertTripAddress(planAddressVO);
+    public int insertTripAddress(List<PlanAddressVO> planAddressVOList) {
+        return sqlSession.getMapper(PlanDAOMapper.class).insertTripAddress(planAddressVOList);
     }
 
-    public int insertPlanAttribute(PlanAttributeVO planAttributeVO) {
-        return sqlSession.getMapper(PlanDAOMapper.class).insertPlanAttribute(planAttributeVO);
+    public int insertPlanAttribute(List<PlanAttributeVO> planAttributeVOList) {
+        return sqlSession.getMapper(PlanDAOMapper.class).insertPlanAttribute(planAttributeVOList);
     }
 
-    public int selectAttributeDuplicationCnt(PlanAttributeVO planAttributeVO) {
+    public int selectPlanAttributeDuplicationCnt(PlanAttributeVO planAttributeVO) {
         return sqlSession.getMapper(PlanDAOMapper.class).selectPlanAttributeDuplicationCnt(planAttributeVO);
     }
     public int insertPlanAttributeMgmt(PlanAttributeVO planAttributeVO) {

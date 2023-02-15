@@ -56,34 +56,30 @@
                                     now());
     </insert>
 
-    <insert id="insertTripAddress" parameterType="PlanAddressVO">
+    <insert id="insertTripAddress" parameterType="java.util.List">
         INSERT INTO CT_TRIP_ADDR (PLAN_NO,
                                   ADDR_NO,
                                   REG_NO,
                                   REG_DTIME,
                                   UPT_NO,
                                   UPT_DTIME)
-        VALUES (#{planNo:NUMERIC},
-                #{addressNo:NUMERIC},
-                #{memberNo:NUMERIC},
-                now(),
-                0,
-                now());
+        VALUES
+        <foreach collection="list" item="planAddressVO" separator=",">
+            ("${planAddressVO.planNo}", "${planAddressVO.addressNo}", "${planAddressVO.memberNo}", now(), 0 , now())
+        </foreach>
     </insert>
 
-    <insert id="insertPlanAttribute" parameterType="PlanAttributeVO">
+    <insert id="insertPlanAttribute" parameterType="java.util.List">
         INSERT INTO CT_PLAN_ATTR (PLAN_NO,
                                   ATTR_NO,
                                   REG_NO,
                                   REG_DTIME,
                                   UPT_NO,
                                   UPT_DTIME)
-        VALUES (#{planNo:NUMERIC},
-                #{attributeNo:NUMERIC},
-                #{memberNo:NUMERIC},
-                now(),
-                0,
-                now());
+        VALUES
+        <foreach collection="list" item="planAttributeVO" separator=",">
+            ("${planAttributeVO.planNo}", "${planAttributeVO.attributeNo}", "${planAttributeVO.memberNo}", now(), 0 , now())
+        </foreach>
     </insert>
 
     <select id="selectPlanAttributeDuplicationCnt" parameterType="PlanAttributeVO" resultType="int">

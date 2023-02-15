@@ -11,8 +11,8 @@ public interface PlanDAOMapper {
     List<PlanAddressVO> selectAddressList();
     List<PlanAddressVO> selectAddressList(String sidoName);
     int insertPlanInfo(CreatePlanDTO createPlanDTO);
-    int insertTripAddress(PlanAddressVO planAddressVO);
-    int insertPlanAttribute(PlanAttributeVO planAttributeVO);
+    int insertTripAddress(List<PlanAddressVO> planAddressVOList);
+    int insertPlanAttribute(List<PlanAttributeVO> planAttributeVOList);
     int selectPlanAttributeDuplicationCnt(PlanAttributeVO planAttributeVO);
     int insertPlanAttributeMgmt(PlanAttributeVO planAttributeVO);
 }
