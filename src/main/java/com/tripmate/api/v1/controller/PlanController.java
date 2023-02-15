@@ -1,6 +1,7 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.vo.ResponseWrapper;
+import com.tripmate.domain.plans.dto.CreatePlanDTO;
 import com.tripmate.domain.plans.service.PlanService;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
@@ -12,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Collections;
@@ -55,6 +59,14 @@ public class PlanController {
     public ResponseWrapper<List<PlanAddressVO>> selectAddressList(@PathVariable(value = "sidoName") @NotBlank @Schema(example = "시도명") String sidoName) {
         return ResponseWrapper.<List<PlanAddressVO>>builder()
                 .data(Collections.singletonList(planService.selectAddressList(sidoName)))
+                .build();
+    }
+
+    @Operation(summary = "플랜 생성", description = "플랜을 생성합니다. (return: 플랜 생성 성공 여부)")
+    @PostMapping
+    public ResponseWrapper<Boolean> createPlan(@Valid @RequestBody CreatePlanDTO createPlanDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.createPlan(createPlanDTO)))
                 .build();
     }
 }

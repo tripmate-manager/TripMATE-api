@@ -29,4 +29,89 @@
             WHERE SIDO_NM = #{sidoName:VARCHAR}
         </if>;
     </select>
+
+    <insert id="insertPlanInfo" parameterType="CreatePlanDTO">
+        <selectKey keyProperty="planNo" keyColumn="PLAN_NO" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CT_PLAN_MGMT (PLAN_TITLE,
+                                    PLAN_DESC,
+                                    PUBLIC_YN,
+                                    TRIP_START_DATE,
+                                    TRIP_END_DATE,
+                                    TRIP_TERM,
+                                    REG_NO,
+                                    REG_DTIME,
+                                    UPT_NO,
+                                    UPT_DTIME)
+                                    VALUES (#{planTitle:VARCHAR},
+                                    #{planDescription:VARCHAR},
+                                    #{publicYn:VARCHAR},
+                                    #{tripStartDate:VARCHAR},
+                                    #{tripEndDate:VARCHAR},
+                                    DATEDIFF(#{tripEndDate:VARCHAR}, #{tripStartDate:VARCHAR}),
+                                    #{memberNo:NUMERIC},
+                                    now(),
+                                    0,
+                                    now());
+    </insert>
+
+    <insert id="insertTripAddress" parameterType="PlanAddressVO">
+        INSERT INTO CT_TRIP_ADDR (PLAN_NO,
+                                  ADDR_NO,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME)
+        VALUES (#{planNo:NUMERIC},
+                #{addressNo:NUMERIC},
+                #{memberNo:NUMERIC},
+                now(),
+                0,
+                now());
+    </insert>
+
+    <insert id="insertPlanAttribute" parameterType="PlanAttributeVO">
+        INSERT INTO CT_PLAN_ATTR (PLAN_NO,
+                                  ATTR_NO,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME)
+        VALUES (#{planNo:NUMERIC},
+                #{attributeNo:NUMERIC},
+                #{memberNo:NUMERIC},
+                now(),
+                0,
+                now());
+    </insert>
+
+    <select id="selectPlanAttributeDuplicationCnt" parameterType="PlanAttributeVO" resultType="int">
+        SELECT CASE WHEN COUNT(*) > 0 THEN ATTR_NO
+                    ELSE 0
+                   END
+        FROM CT_PLAN_ATTR_MGMT
+        WHERE ATTR_NM = #{attributeName:VARCHAR}
+          AND ATTR_TP_CD = #{attributeTypeCode:VARCHAR};
+    </select>
+
+    <insert id="insertPlanAttributeMgmt" parameterType="PlanAttributeVO">
+        <selectKey keyProperty="attributeNo" keyColumn="ATTR_NO" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CT_PLAN_ATTR_MGMT (ATTR_NM,
+                                        ATTR_TP_CD,
+                                        USE_YN,
+                                        REG_NO,
+                                        REG_DTIME,
+                                        UPT_NO,
+                                        UPT_DTIME)
+        VALUES (#{attributeName:NUMERIC},
+                #{attributeTypeCode:VARCHAR},
+                'Y',
+                0,
+                now(),
+                0,
+                now());
+    </insert>
 </mapper>
