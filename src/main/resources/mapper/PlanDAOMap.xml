@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tripmate.domain.plans.dao.mapper.PlanDAOMapper">
+    <resultMap id="searchPlanAttributeList" type="PlanAttributeVO">
+        <result property="attributeNo" column="ATTR_NO"/>
+        <result property="attributeName" column="ATTR_NM"/>
+    </resultMap>
+
+    <select id="selectPlanAttributeList" parameterType="String" resultMap="searchPlanAttributeList">
+        SELECT *
+        FROM CT_PLAN_ATTR_MGMT
+        WHERE ATTR_TP_CD = #{attributeType:VARCHAR}
+          AND USE_YN = 'Y';
+    </select>
+
+    <resultMap id="searchAddressList" type="PlanAddressVO">
+        <result property="addressNo" column="ADDR_NO"/>
+        <result property="sidoName" column="SIDO_NM"/>
+        <result property="sigunguName" column="SIGUNGU_NM"/>
+    </resultMap>
+
+    <select id="selectAddressList" parameterType="String" resultMap="searchAddressList">
+        SELECT DISTINCT *
+        FROM CT_ADDR_MGMT
+        <if test="sidoName != null">
+            WHERE SIDO_NM = #{sidoName:VARCHAR}
+        </if>;
+    </select>
+</mapper>

@@ -12,5 +12,7 @@
         <typeAlias type="com.tripmate.domain.members.dto.SignInDTO" alias="SignInDTO"/>
         <typeAlias type="com.tripmate.domain.members.dto.ChangePasswordDTO" alias="ChangePasswordDTO"/>
         <typeAlias type="com.tripmate.domain.members.dto.MypageDTO" alias="MypageDTO"/>
+        <typeAlias type="com.tripmate.domain.plans.vo.PlanAttributeVO" alias="PlanAttributeVO"/>
+        <typeAlias type="com.tripmate.domain.plans.vo.PlanAddressVO" alias="PlanAddressVO"/>
     </typeAliases>
 </configuration>
