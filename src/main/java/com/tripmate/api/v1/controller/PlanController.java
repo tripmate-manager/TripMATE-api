@@ -23,7 +23,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Collections;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -40,25 +39,25 @@ public class PlanController {
 
     @Operation(summary = "플랜 속성 조회", description = "플랜 속성을 조회합니다.")
     @GetMapping("/plan-attributes")
-    public ResponseWrapper<List<PlanAttributeVO>> selectPlanAttributeList(@RequestParam(value = "attributeTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "플랜속성타입코드(10: 해시태그, 20: 여행테마)") String attributeTypeCode) {
-        return ResponseWrapper.<List<PlanAttributeVO>>builder()
-                .data(Collections.singletonList(planService.selectPlanAttributeList(attributeTypeCode)))
+    public ResponseWrapper<PlanAttributeVO> selectPlanAttributeList(@RequestParam(value = "attributeTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "플랜속성타입코드(10: 해시태그, 20: 여행테마)") String attributeTypeCode) {
+        return ResponseWrapper.<PlanAttributeVO>builder()
+                .data(planService.selectPlanAttributeList(attributeTypeCode))
                 .build();
     }
 
     @Operation(summary = "지역 정보 조회", description = "시도 지역 정보를 조회합니다.")
     @GetMapping("/trip-address")
-    public ResponseWrapper<List<PlanAddressVO>> selectAddressList() {
-        return ResponseWrapper.<List<PlanAddressVO>>builder()
-                .data(Collections.singletonList(planService.selectAddressList()))
+    public ResponseWrapper<PlanAddressVO> selectAddressList() {
+        return ResponseWrapper.<PlanAddressVO>builder()
+                .data(planService.selectAddressList())
                 .build();
     }
 
     @Operation(summary = "지역 정보 조회", description = "시도별 시군구 지역 정보를 조회합니다.")
     @GetMapping("/trip-address/{sidoName}")
-    public ResponseWrapper<List<PlanAddressVO>> selectAddressList(@PathVariable(value = "sidoName") @NotBlank @Schema(example = "시도명") String sidoName) {
-        return ResponseWrapper.<List<PlanAddressVO>>builder()
-                .data(Collections.singletonList(planService.selectAddressList(sidoName)))
+    public ResponseWrapper<PlanAddressVO> selectAddressList(@PathVariable(value = "sidoName") @NotBlank @Schema(example = "시도명") String sidoName) {
+        return ResponseWrapper.<PlanAddressVO>builder()
+                .data(planService.selectAddressList(sidoName))
                 .build();
     }
 

@@ -37,11 +37,19 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public List<PlanAddressVO> selectAddressList(String sidoName) {
+        List<PlanAddressVO> planAddressVOList = planDAO.selectAddressList(sidoName);
+        if (planAddressVOList == null) {
+            throw new NoResultException("처리 중 오류가 발생하였습니다.");
+        }
         return planDAO.selectAddressList(sidoName);
     }
 
     @Override
     public List<PlanAddressVO> selectAddressList() {
+        List<PlanAddressVO> planAddressVOList = planDAO.selectAddressList();
+        if (planAddressVOList == null) {
+            throw new NoResultException("처리 중 오류가 발생하였습니다.");
+        }
         return planDAO.selectAddressList();
     }
 

@@ -65,7 +65,7 @@
                                   UPT_DTIME)
         VALUES
         <foreach collection="list" item="planAddressVO" separator=",">
-            ("${planAddressVO.planNo}", "${planAddressVO.addressNo}", "${planAddressVO.memberNo}", now(), 0 , now())
+            (#{planAddressVO.planNo:NUMERIC}, #{planAddressVO.addressNo:NUMERIC}, #{planAddressVO.memberNo:NUMERIC}, now(), 0 , now())
         </foreach>
     </insert>
 
@@ -78,7 +78,7 @@
                                   UPT_DTIME)
         VALUES
         <foreach collection="list" item="planAttributeVO" separator=",">
-            ("${planAttributeVO.planNo}", "${planAttributeVO.attributeNo}", "${planAttributeVO.memberNo}", now(), 0 , now())
+            (#{planAttributeVO.planNo:NUMERIC}, #{planAttributeVO.attributeNo:NUMERIC}, #{planAttributeVO.memberNo:NUMERIC}, now(), 0 , now())
         </foreach>
     </insert>
 
