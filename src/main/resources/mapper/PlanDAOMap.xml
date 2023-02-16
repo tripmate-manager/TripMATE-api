@@ -44,16 +44,16 @@
                                     REG_DTIME,
                                     UPT_NO,
                                     UPT_DTIME)
-                                    VALUES (#{planTitle:VARCHAR},
-                                    #{planDescription:VARCHAR},
-                                    #{publicYn:VARCHAR},
-                                    #{tripStartDate:VARCHAR},
-                                    #{tripEndDate:VARCHAR},
-                                    DATEDIFF(#{tripEndDate:VARCHAR}, #{tripStartDate:VARCHAR}),
-                                    #{memberNo:NUMERIC},
-                                    now(),
-                                    0,
-                                    now());
+        VALUES (#{planTitle:VARCHAR},
+                #{planDescription:VARCHAR},
+                #{publicYn:VARCHAR},
+                #{tripStartDate:VARCHAR},
+                #{tripEndDate:VARCHAR},
+                DATEDIFF(#{tripEndDate:VARCHAR}, #{tripStartDate:VARCHAR}),
+                #{memberNo:NUMERIC},
+                now(),
+                0,
+                now());
     </insert>
 
     <insert id="insertTripAddress" parameterType="java.util.List">
@@ -106,6 +106,23 @@
                 #{attributeTypeCode:VARCHAR},
                 'Y',
                 0,
+                now(),
+                0,
+                now());
+    </insert>
+
+    <insert id="insertPlanMate" parameterType="PlanMateVO">
+        INSERT INTO CT_PLAN_MATE (PLAN_NO,
+                                  MBR_NO,
+                                  LEAD_YN,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME)
+        VALUES (#{planNo:NUMERIC},
+                #{memberNo:NUMERIC},
+                #{leadYn:VARCHAR},
+                #{memberNo:NUMERIC},
                 now(),
                 0,
                 now());

@@ -2,6 +2,7 @@ package com.tripmate.domain.plans.service;
 
 import com.tripmate.common.exception.GuideMessageException;
 import com.tripmate.common.exception.NoResultException;
+import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.MemberDTO;
@@ -9,6 +10,7 @@ import com.tripmate.domain.plans.dao.PlanDAO;
 import com.tripmate.domain.plans.dto.CreatePlanDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanMateVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +64,15 @@ public class PlanServiceImpl implements PlanService {
         }
 
         if (planDAO.insertPlanInfo(createPlanDTO) == 0) {
+            throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
+        }
+
+        PlanMateVO planMateVO = PlanMateVO.builder()
+                .planNo(createPlanDTO.getPlanNo())
+                .memberNo(createPlanDTO.getMemberNo())
+                .leadYn(Const.Y)
+                .build();
+        if (planDAO.insertPlanMate(planMateVO) != 1) {
             throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
         }
 

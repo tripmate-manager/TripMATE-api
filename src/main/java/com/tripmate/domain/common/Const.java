@@ -8,4 +8,7 @@ public interface Const {
 
     int SIGNIN_LIMIT_CNT            = 5;
     String MAIL_TEMPLATES_PATH      = "mailTemplates/";
+
+    String Y = "Y";
+    String N = "N";
 }

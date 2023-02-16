@@ -4,6 +4,7 @@ import com.tripmate.domain.plans.dao.mapper.PlanDAOMapper;
 import com.tripmate.domain.plans.dto.CreatePlanDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanMateVO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -48,7 +49,12 @@ public class PlanDAO {
     public int selectPlanAttributeNo(PlanAttributeVO planAttributeVO) {
         return sqlSession.getMapper(PlanDAOMapper.class).selectPlanAttributeNo(planAttributeVO);
     }
+
     public int insertPlanAttributeMgmt(PlanAttributeVO planAttributeVO) {
         return sqlSession.getMapper(PlanDAOMapper.class).insertPlanAttributeMgmt(planAttributeVO);
+    }
+
+    public int insertPlanMate(PlanMateVO planMateVO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).insertPlanMate(planMateVO);
     }
 }

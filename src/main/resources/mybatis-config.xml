@@ -15,5 +15,6 @@
         <typeAlias type="com.tripmate.domain.plans.vo.PlanAttributeVO" alias="PlanAttributeVO"/>
         <typeAlias type="com.tripmate.domain.plans.vo.PlanAddressVO" alias="PlanAddressVO"/>
         <typeAlias type="com.tripmate.domain.plans.dto.CreatePlanDTO" alias="CreatePlanDTO"/>
+        <typeAlias type="com.tripmate.domain.plans.vo.PlanMateVO" alias="PlanMateVO"/>
     </typeAliases>
 </configuration>
