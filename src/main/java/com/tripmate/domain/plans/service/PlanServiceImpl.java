@@ -106,7 +106,7 @@ public class PlanServiceImpl implements PlanService {
                         .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_HASHTAG)
                         .build();
 
-                int hashtagAttributeNo = planDAO.selectPlanAttributeDuplicationCnt(planHashtagVO);
+                int hashtagAttributeNo = planDAO.selectPlanAttributeNo(planHashtagVO);
                 if (hashtagAttributeNo == 0) {
                     planDAO.insertPlanAttributeMgmt(planHashtagVO);
                     hashtagAttributeNo = planHashtagVO.getAttributeNo();

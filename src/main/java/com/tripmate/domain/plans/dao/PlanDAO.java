@@ -45,8 +45,8 @@ public class PlanDAO {
         return sqlSession.getMapper(PlanDAOMapper.class).insertPlanAttribute(planAttributeVOList);
     }
 
-    public int selectPlanAttributeDuplicationCnt(PlanAttributeVO planAttributeVO) {
-        return sqlSession.getMapper(PlanDAOMapper.class).selectPlanAttributeDuplicationCnt(planAttributeVO);
+    public int selectPlanAttributeNo(PlanAttributeVO planAttributeVO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).selectPlanAttributeNo(planAttributeVO);
     }
     public int insertPlanAttributeMgmt(PlanAttributeVO planAttributeVO) {
         return sqlSession.getMapper(PlanDAOMapper.class).insertPlanAttributeMgmt(planAttributeVO);

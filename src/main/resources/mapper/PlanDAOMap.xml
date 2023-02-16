@@ -82,7 +82,7 @@
         </foreach>
     </insert>
 
-    <select id="selectPlanAttributeDuplicationCnt" parameterType="PlanAttributeVO" resultType="int">
+    <select id="selectPlanAttributeNo" parameterType="PlanAttributeVO" resultType="int">
         SELECT CASE WHEN COUNT(*) > 0 THEN ATTR_NO
                     ELSE 0
                    END
