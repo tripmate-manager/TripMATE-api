@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -50,7 +50,7 @@ public class CreatePlanDTO {
     @Schema(description = "여행 종료 일자", pattern = "yyyy.MM.dd", example = "2023.01.01")
     private String tripEndDate;
 
-    @NotNull(message = "여행지를 입력해주세요.")
+    @NotEmpty(message = "여행지를 입력해주세요.")
     @Schema(description = "플랜 지역 리스트")
     private List<Integer> planAddressList;
 
