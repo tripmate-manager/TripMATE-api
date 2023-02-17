@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tripmate.domain.plans.dao.mapper.PlanDAOMapper">
+    <resultMap id="searchPlanAttributeList" type="PlanAttributeVO">
+        <result property="attributeNo" column="ATTR_NO"/>
+        <result property="attributeName" column="ATTR_NM"/>
+    </resultMap>
+
+    <select id="selectPlanAttributeList" parameterType="String" resultMap="searchPlanAttributeList">
+        SELECT *
+        FROM CT_PLAN_ATTR_MGMT
+        WHERE ATTR_TP_CD = #{attributeType:VARCHAR}
+          AND USE_YN = 'Y';
+    </select>
+
+    <resultMap id="searchAddressList" type="PlanAddressVO">
+        <result property="addressNo" column="ADDR_NO"/>
+        <result property="sidoName" column="SIDO_NM"/>
+        <result property="sigunguName" column="SIGUNGU_NM"/>
+    </resultMap>
+
+    <select id="selectAddressList" parameterType="String" resultMap="searchAddressList">
+        SELECT DISTINCT *
+        FROM CT_ADDR_MGMT
+        <if test="sidoName != null">
+            WHERE SIDO_NM = #{sidoName:VARCHAR}
+        </if>;
+    </select>
+
+    <insert id="insertPlanInfo" parameterType="CreatePlanDTO">
+        <selectKey keyProperty="planNo" keyColumn="PLAN_NO" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CT_PLAN_MGMT (PLAN_TITLE,
+                                    PLAN_DESC,
+                                    PUBLIC_YN,
+                                    TRIP_START_DATE,
+                                    TRIP_END_DATE,
+                                    TRIP_TERM,
+                                    REG_NO,
+                                    REG_DTIME,
+                                    UPT_NO,
+                                    UPT_DTIME)
+        VALUES (#{planTitle:VARCHAR},
+                #{planDescription:VARCHAR},
+                #{publicYn:VARCHAR},
+                #{tripStartDate:VARCHAR},
+                #{tripEndDate:VARCHAR},
+                DATEDIFF(#{tripEndDate:VARCHAR}, #{tripStartDate:VARCHAR}),
+                #{memberNo:NUMERIC},
+                now(),
+                0,
+                now());
+    </insert>
+
+    <insert id="insertTripAddress" parameterType="java.util.List">
+        INSERT INTO CT_TRIP_ADDR (PLAN_NO,
+                                  ADDR_NO,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME)
+        VALUES
+        <foreach collection="list" item="planAddressVO" separator=",">
+            (#{planAddressVO.planNo:NUMERIC}, #{planAddressVO.addressNo:NUMERIC}, #{planAddressVO.memberNo:NUMERIC}, now(), 0 , now())
+        </foreach>
+    </insert>
+
+    <insert id="insertPlanAttribute" parameterType="java.util.List">
+        INSERT INTO CT_PLAN_ATTR (PLAN_NO,
+                                  ATTR_NO,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME)
+        VALUES
+        <foreach collection="list" item="planAttributeVO" separator=",">
+            (#{planAttributeVO.planNo:NUMERIC}, #{planAttributeVO.attributeNo:NUMERIC}, #{planAttributeVO.memberNo:NUMERIC}, now(), 0 , now())
+        </foreach>
+    </insert>
+
+    <select id="selectPlanAttributeNo" parameterType="PlanAttributeVO" resultType="int">
+        SELECT CASE WHEN COUNT(*) > 0 THEN ATTR_NO
+                    ELSE 0
+                   END
+        FROM CT_PLAN_ATTR_MGMT
+        WHERE ATTR_NM = #{attributeName:VARCHAR}
+          AND ATTR_TP_CD = #{attributeTypeCode:VARCHAR};
+    </select>
+
+    <insert id="insertPlanAttributeMgmt" parameterType="PlanAttributeVO">
+        <selectKey keyProperty="attributeNo" keyColumn="ATTR_NO" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CT_PLAN_ATTR_MGMT (ATTR_NM,
+                                        ATTR_TP_CD,
+                                        USE_YN,
+                                        REG_NO,
+                                        REG_DTIME,
+                                        UPT_NO,
+                                        UPT_DTIME)
+        VALUES (#{attributeName:NUMERIC},
+                #{attributeTypeCode:VARCHAR},
+                'Y',
+                0,
+                now(),
+                0,
+                now());
+    </insert>
+
+    <insert id="insertPlanMate" parameterType="PlanMateVO">
+        INSERT INTO CT_PLAN_MATE (PLAN_NO,
+                                  MBR_NO,
+                                  LEAD_YN,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME)
+        VALUES (#{planNo:NUMERIC},
+                #{memberNo:NUMERIC},
+                #{leadYn:VARCHAR},
+                #{memberNo:NUMERIC},
+                now(),
+                0,
+                now());
+    </insert>
+</mapper>
