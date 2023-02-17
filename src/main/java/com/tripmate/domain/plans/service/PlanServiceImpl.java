@@ -11,6 +11,7 @@ import com.tripmate.domain.plans.dto.CreatePlanDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
+import com.tripmate.domain.plans.vo.PlanVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -138,5 +139,18 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return true;
+    }
+    @Override
+    public List<PlanVO> selectPlanList(String memberNo) {
+        List<Integer> planNoList = planDAO.selectPlanNoListWithMbrNo(memberNo);
+        List<PlanVO> planVOList = new ArrayList<>();
+
+        for (int planNo : planNoList) {
+            PlanVO planVO = planDAO.selectPlanInfoWithMbrNo(planNo);
+
+            planVOList.add(planVO);
+        }
+
+        return planVOList;
     }
 }

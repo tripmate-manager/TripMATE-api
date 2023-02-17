@@ -5,6 +5,7 @@ import com.tripmate.domain.plans.dto.CreatePlanDTO;
 import com.tripmate.domain.plans.service.PlanService;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -66,6 +67,14 @@ public class PlanController {
     public ResponseWrapper<Boolean> createPlan(@Valid @RequestBody CreatePlanDTO createPlanDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.createPlan(createPlanDTO)))
+                .build();
+    }
+
+    @Operation(summary = "플랜 조회", description = "회원의 플랜을 조회합니다. (return: 플랜 리스트)")
+    @GetMapping("/{memberNo}")
+    public ResponseWrapper<PlanVO> selectPlanNo(@PathVariable(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+        return ResponseWrapper.<PlanVO>builder()
+                .data(planService.selectPlanList(memberNo))
                 .build();
     }
 }
