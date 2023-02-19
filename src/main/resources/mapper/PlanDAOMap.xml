@@ -148,6 +148,7 @@
         <result property="publicYn" column="PUBLIC_YN"/>
         <result property="tripStartDate" column="TRIP_START_DATE"/>
         <result property="tripEndDate" column="TRIP_END_DATE"/>
+        <result property="tripTerm" column="TRIP_TERM"/>
         <result property="likeRegistrationCnt" column="LIKE_REG_CNT"/>
         <result property="achieveRate" column="ACHV_RATE"/>
         <result property="views" column="VIEWS"/>

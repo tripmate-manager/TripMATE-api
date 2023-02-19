@@ -140,15 +140,18 @@ public class PlanServiceImpl implements PlanService {
 
         return true;
     }
+
     @Override
     public List<PlanVO> selectPlanList(String memberNo) {
         List<Integer> planNoList = planDAO.selectPlanNoListWithMbrNo(memberNo);
         List<PlanVO> planVOList = new ArrayList<>();
 
-        for (int planNo : planNoList) {
-            PlanVO planVO = planDAO.selectPlanInfoWithMbrNo(planNo);
+        if (planNoList != null) {
+            for (int planNo : planNoList) {
+                PlanVO planVO = planDAO.selectPlanInfoWithMbrNo(planNo);
 
-            planVOList.add(planVO);
+                planVOList.add(planVO);
+            }
         }
 
         return planVOList;
