@@ -18,6 +18,5 @@ public interface PlanDAOMapper {
     int selectPlanAttributeNo(PlanAttributeVO planAttributeVO);
     int insertPlanAttributeMgmt(PlanAttributeVO planAttributeVO);
     int insertPlanMate(PlanMateVO planMateVO);
-    List<Integer> selectPlanNoListWithMbrNo(String memberNo);
-    PlanVO selectPlanInfoWithMbrNo(int memberNo);
+    List<PlanVO> selectPlanInfoWithMbrNo(String memberNo);
 }
