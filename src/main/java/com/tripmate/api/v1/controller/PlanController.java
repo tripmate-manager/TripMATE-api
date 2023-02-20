@@ -72,7 +72,7 @@ public class PlanController {
 
     @Operation(summary = "플랜 조회", description = "회원의 플랜을 조회합니다. (return: 플랜 리스트)")
     @GetMapping("/{memberNo}")
-    public ResponseWrapper<PlanVO> selectPlanNo(@PathVariable(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+    public ResponseWrapper<PlanVO> selectPlanList(@PathVariable(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
         return ResponseWrapper.<PlanVO>builder()
                 .data(planService.selectPlanList(memberNo))
                 .build();
