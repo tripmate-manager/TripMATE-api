@@ -175,12 +175,6 @@
         <result property="sigunguName" column="SIGUNGU_NM"/>
     </resultMap>
 
-    <select id="selectPlanInfoWithPlanNo" parameterType="int" resultMap="searchPlanList">
-        SELECT *
-        FROM CT_PLAN_MGMT
-        WHERE PLAN_NO = #{planNo:NUMERIC};
-    </select>
-
     <select id="selectPlanAddressWithPlanNo" resultMap="searchPlanAddressList">
         SELECT addr.*, mgmt.SIDO_NM ,mgmt.SIGUNGU_NM
         FROM CT_PLAN_MGMT plan, CT_TRIP_ADDR addr, CT_ADDR_MGMT mgmt
