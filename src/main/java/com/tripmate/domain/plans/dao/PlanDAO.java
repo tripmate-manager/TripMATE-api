@@ -59,7 +59,7 @@ public class PlanDAO {
         return sqlSession.getMapper(PlanDAOMapper.class).insertPlanMate(planMateVO);
     }
 
-    public List<PlanVO> selectPlanInfoWithMbrNo(String memberNo) {
+    public List<PlanVO> selectPlanInfoWithMemberNo(String memberNo) {
         return sqlSession.getMapper(PlanDAOMapper.class).selectPlanInfoWithMbrNo(memberNo);
     }
 }

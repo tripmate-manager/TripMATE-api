@@ -12,5 +12,5 @@ public interface PlanService {
     List<PlanAddressVO> selectAddressList(String sidoName);
     List<PlanAddressVO> selectAddressList();
     boolean createPlan(CreatePlanDTO createPlanDTO);
-    List<PlanVO> selectPlanList(String memberNo);
+    List<PlanVO> selectMemberPlanList(String memberNo);
 }

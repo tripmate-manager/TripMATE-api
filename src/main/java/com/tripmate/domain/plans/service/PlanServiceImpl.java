@@ -142,7 +142,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanVO> selectPlanList(String memberNo) {
-        return planDAO.selectPlanInfoWithMbrNo(memberNo);
+    public List<PlanVO> selectMemberPlanList(String memberNo) {
+        return planDAO.selectPlanInfoWithMemberNo(memberNo);
     }
 }

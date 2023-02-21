@@ -70,11 +70,11 @@ public class PlanController {
                 .build();
     }
 
-    @Operation(summary = "플랜 조회", description = "회원의 플랜을 조회합니다. (return: 플랜 리스트)")
-    @GetMapping("/{memberNo}")
-    public ResponseWrapper<PlanVO> selectPlanList(@PathVariable(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+    @Operation(summary = "회원 플랜 조회", description = "회원의 플랜을 조회합니다. (return: 플랜 리스트)")
+    @GetMapping
+    public ResponseWrapper<PlanVO> selectMemberPlanList(@RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
         return ResponseWrapper.<PlanVO>builder()
-                .data(planService.selectPlanList(memberNo))
+                .data(planService.selectMemberPlanList(memberNo))
                 .build();
     }
 }
