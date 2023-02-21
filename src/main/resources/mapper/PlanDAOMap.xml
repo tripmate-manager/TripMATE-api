@@ -162,9 +162,8 @@
                plan.REV_AVG_SCORE,
                mate.LEAD_YN,
                plan.REG_DTIME
-        FROM CT_PLAN_MGMT plan, CT_PLAN_MATE mate, CT_PLAN_MGMT mgmt
+        FROM CT_PLAN_MGMT plan, CT_PLAN_MATE mate
         WHERE plan.PLAN_NO = mate.PLAN_NO
-          AND mate.PLAN_NO = mgmt.PLAN_NO
           AND mate.MBR_NO = #{memberNo:VARCHAR};
     </select>
 
@@ -176,7 +175,10 @@
     </resultMap>
 
     <select id="selectPlanAddressWithPlanNo" resultMap="searchPlanAddressList">
-        SELECT addr.*, mgmt.SIDO_NM ,mgmt.SIGUNGU_NM
+        SELECT addr.PLAN_NO,
+               addr.ADDR_NO,
+               mgmt.SIDO_NM,
+               mgmt.SIGUNGU_NM
         FROM CT_PLAN_MGMT plan, CT_TRIP_ADDR addr, CT_ADDR_MGMT mgmt
         WHERE plan.PLAN_NO = addr.PLAN_NO
           AND addr.ADDR_NO = mgmt.ADDR_NO
@@ -184,7 +186,10 @@
     </select>
 
     <select id="selectPlanAttributeWithPlanNo" resultMap="searchPlanAttributeList">
-        SELECT attr.*, mgmt.ATTR_NM, mgmt.ATTR_TP_CD
+        SELECT attr.PLAN_NO,
+               attr.ATTR_NO,
+               mgmt.ATTR_NM,
+               mgmt.ATTR_TP_CD
         FROM CT_PLAN_MGMT plan, CT_PLAN_ATTR attr, CT_PLAN_ATTR_MGMT mgmt
         WHERE plan.PLAN_NO = attr.PLAN_NO
           AND attr.ATTR_NO = mgmt.ATTR_NO
