@@ -8,9 +8,9 @@ import com.tripmate.domain.plans.vo.PlanVO;
 import java.util.List;
 
 public interface PlanService {
-    List<PlanAttributeVO> selectPlanAttributeList(String attributeType);
-    List<PlanAddressVO> selectAddressList(String sidoName);
-    List<PlanAddressVO> selectAddressList();
+    List<PlanAttributeVO> searchPlanAttributeList(String attributeType);
+    List<PlanAddressVO> searchAddressList(String sidoName);
+    List<PlanAddressVO> searchAddressList();
     boolean createPlan(CreatePlanDTO createPlanDTO);
-    List<PlanVO> selectMemberPlanList(String memberNo);
+    List<PlanVO> searchMemberPlanList(String memberNo);
 }

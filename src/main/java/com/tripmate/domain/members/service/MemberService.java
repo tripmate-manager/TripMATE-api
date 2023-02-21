@@ -1,6 +1,6 @@
 package com.tripmate.domain.members.service;
 
-import com.tripmate.domain.members.dto.ChangePasswordDTO;
+import com.tripmate.domain.members.dto.UpdatePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
@@ -13,7 +13,7 @@ public interface MemberService {
     String signUpMailConfirm(MemberMailDTO memberMailDTO);
     MemberDTO signIn(SignInDTO signInDTO);
     String findId(MemberDTO memberDTO);
-    boolean changePassword(ChangePasswordDTO changePasswordDTO);
+    boolean updateMemberPassword(UpdatePasswordDTO updatePasswordDTO);
     boolean updateWithdrawMemberInfo(int memberNo);
     MypageDTO updateMemberInfo(int memberNo, MypageDTO mypageDTO);
 }

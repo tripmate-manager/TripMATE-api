@@ -73,7 +73,7 @@ public class MailServiceImpl implements MailService {
                 .mailTypeCode(memberMailDTO.getMailTypeCode())
                 .build();
 
-        if (memberDAO.selectAuthEmailCnt(mailInfoDTO) > 0) {
+        if (memberDAO.getAuthEmailCnt(mailInfoDTO) > 0) {
             memberDAO.updateEmailInfo(mailInfoDTO);
         } else {
             memberDAO.insertEmailInfo(mailInfoDTO);
@@ -83,7 +83,7 @@ public class MailServiceImpl implements MailService {
     }
 
     public boolean sendPasswordMail(MemberMailDTO memberMailDTO) throws MessagingException {
-        MemberDTO findPasswordMemberInfoDTO = memberDAO.selectMemberNoAndStatusCode(memberMailDTO);
+        MemberDTO findPasswordMemberInfoDTO = memberDAO.getMemberNoAndStatusCode(memberMailDTO);
 
         if (findPasswordMemberInfoDTO == null) {
             throw new NoResultException("존재하지 않는 회원 정보입니다.");

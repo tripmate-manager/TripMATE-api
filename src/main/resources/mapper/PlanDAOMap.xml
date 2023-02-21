@@ -11,7 +11,7 @@
         <result property="attributeTypeCode" column="ATTR_TP_CD"/>
     </resultMap>
 
-    <select id="selectPlanAttributeList" parameterType="String" resultMap="searchPlanAttributeList">
+    <select id="searchPlanAttributeList" parameterType="String" resultMap="searchPlanAttributeList">
         SELECT *
         FROM CT_PLAN_ATTR_MGMT
         WHERE ATTR_TP_CD = #{attributeType:VARCHAR}
@@ -24,7 +24,7 @@
         <result property="sigunguName" column="SIGUNGU_NM"/>
     </resultMap>
 
-    <select id="selectAddressList" parameterType="String" resultMap="searchAddressList">
+    <select id="searchAddressList" parameterType="String" resultMap="searchAddressList">
         SELECT DISTINCT *
         FROM CT_ADDR_MGMT
         <if test="sidoName != null">
@@ -84,7 +84,7 @@
         </foreach>
     </insert>
 
-    <select id="selectPlanAttributeNo" parameterType="PlanAttributeVO" resultType="int">
+    <select id="getPlanAttributeNo" parameterType="PlanAttributeVO" resultType="int">
         SELECT CASE WHEN COUNT(*) > 0 THEN ATTR_NO
                     ELSE 0
                    END
@@ -144,11 +144,11 @@
         <result property="reviewAverageScore" column="REV_AVG_SCORE"/>
         <result property="leadYn" column="LEAD_YN"/>
         <result property="registrationDateTime" column="REG_DTIME"/>
-        <collection property="planAddressList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAddressVO" select="selectPlanAddressWithPlanNo"/>
-        <collection property="planAttributeList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAttributeVO" select="selectPlanAttributeWithPlanNo"/>
+        <collection property="planAddressList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAddressVO" select="getPlanAddressWithPlanNo"/>
+        <collection property="planAttributeList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAttributeVO" select="getPlanAttributeWithPlanNo"/>
     </resultMap>
 
-    <select id="selectPlanInfoWithMbrNo" parameterType="String" resultMap="searchPlanList">
+    <select id="searchPlanListWithMemberNo" parameterType="String" resultMap="searchPlanList">
         SELECT plan.PLAN_NO,
                plan.PLAN_TITLE,
                plan.PLAN_DESC,
@@ -174,7 +174,7 @@
         <result property="sigunguName" column="SIGUNGU_NM"/>
     </resultMap>
 
-    <select id="selectPlanAddressWithPlanNo" resultMap="searchPlanAddressList">
+    <select id="getPlanAddressWithPlanNo" resultMap="searchPlanAddressList">
         SELECT addr.PLAN_NO,
                addr.ADDR_NO,
                mgmt.SIDO_NM,
@@ -185,7 +185,7 @@
           AND plan.PLAN_NO = #{planNo:NUMERIC};
     </select>
 
-    <select id="selectPlanAttributeWithPlanNo" resultMap="searchPlanAttributeList">
+    <select id="getPlanAttributeWithPlanNo" resultMap="searchPlanAttributeList">
         SELECT attr.PLAN_NO,
                attr.ATTR_NO,
                mgmt.ATTR_NM,

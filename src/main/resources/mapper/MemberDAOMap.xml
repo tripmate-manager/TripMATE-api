@@ -36,7 +36,7 @@
                 now());
     </insert>
 
-    <select id="selectDuplicationCnt" parameterType="DuplicationCheckDTO" resultType="int">
+    <select id="getDuplicationCnt" parameterType="DuplicationCheckDTO" resultType="int">
         SELECT COUNT(*)
         FROM MB_MBR_MGMT
         <choose>
@@ -92,7 +92,7 @@
         AND MAEM.EMAIL_TP_CD = #{mailTypeCode:VARCHAR};
     </update>
 
-    <select id="selectSignInMemberInfo" parameterType="SignInDTO" resultType="MemberDTO">
+    <select id="getSignInMemberInfo" parameterType="SignInDTO" resultType="MemberDTO">
         SELECT MBR_NO AS memberNo,
                 MBR_ID AS memberId,
                 MBR_PWD AS memberPassword,
@@ -108,14 +108,14 @@
           AND MBR_PWD = password(#{memberPassword:VARCHAR});
     </select>
 
-    <select id="selectSignInRequestCnt" parameterType="SignInDTO" resultType="MemberDTO">
+    <select id="getSignInRequestCnt" parameterType="SignInDTO" resultType="MemberDTO">
         SELECT MBR_NO AS memberNo,
                 LOGIN_REQ_CNT AS signInRequestCnt
         FROM MB_MBR_MGMT
         WHERE MBR_ID = #{memberId:VARCHAR};
     </select>
     
-    <update id="updateSignInReqCntAndMbrStatusCd" parameterType="SignInDTO">
+    <update id="updateSignInReqestCntAndMemberStatusCd" parameterType="SignInDTO">
         UPDATE MB_MBR_MGMT
         SET LOGIN_REQ_CNT = #{signInRequestCnt:NUMERIC},
         <if test="memberStatusCode != null and '40'.toString() eq memberStatusCode">
@@ -126,14 +126,14 @@
         WHERE MBR_NO = #{memberNo:NUMERIC};
     </update>
 
-    <select id="selectMbrIdWithMbrNmAndEmail" parameterType="MemberDTO" resultType="String">
+    <select id="getMemberIdWithMemberNameAndEmail" parameterType="MemberDTO" resultType="String">
         SELECT MBR_ID
         FROM MB_MBR_MGMT
         WHERE MBR_NM = #{memberName:VARCHAR}
           AND EMAIL = #{email:VARCHAR};
     </select>
 
-    <select id="selectMbrNoAndStatusCd" parameterType="MemberMailDTO" resultType="MemberDTO">
+    <select id="getMemberNoAndStatusCd" parameterType="MemberMailDTO" resultType="MemberDTO">
         SELECT MBR_NO AS memberNo,
                MBR_STATUS_CD AS memberStatusCode
         FROM MB_MBR_MGMT
@@ -141,7 +141,7 @@
           AND EMAIL = #{to:VARCHAR};
     </select>
 
-    <update id="updateMbrPwdAndStatusCd" parameterType="MemberDTO">
+    <update id="updateMemberPasswordAndStatusCd" parameterType="MemberDTO">
         UPDATE MB_MBR_MGMT
         SET MBR_PWD = password(#{memberPassword:VARCHAR}),
             MBR_STATUS_CD = '40',
@@ -150,7 +150,7 @@
         WHERE MBR_NO = #{memberNo:VARCHAR};
     </update>
 
-    <select id="selectAuthEmailCnt" parameterType="MemberMailDTO" resultType="int">
+    <select id="getAuthEmailCnt" parameterType="MemberMailDTO" resultType="int">
         SELECT COUNT(*)
         FROM MB_AUTH_EMAIL_MGMT
         WHERE MBR_NO = (SELECT MBR_NO
@@ -171,7 +171,7 @@
         AND EMAIL_TP_CD = #{mailTypeCode:VARCHAR};
     </update>
 
-    <update id="updateMbrPwd" parameterType="ChangePasswordDTO">
+    <update id="updateMemberPassword" parameterType="UpdatePasswordDTO">
         UPDATE MB_MBR_MGMT
         SET MBR_PWD = password(#{newMemberPassword:VARCHAR}),
             UPT_NO = #{memberNo:VARCHAR},
@@ -192,7 +192,7 @@
         WHERE MBR_NO = #{memberNo:VARCHAR};
     </update>
 
-    <select id="selectMemberInfoWithMbrNo" parameterType="int" resultType="MemberDTO">
+    <select id="getMemberInfoWithMemberNo" parameterType="int" resultType="MemberDTO">
         SELECT MBR_NO AS memberNo,
                MBR_ID AS memberId,
                MBR_PWD AS memberPassword,
