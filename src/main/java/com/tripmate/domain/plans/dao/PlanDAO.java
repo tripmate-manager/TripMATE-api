@@ -5,6 +5,7 @@ import com.tripmate.domain.plans.dto.CreatePlanDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
+import com.tripmate.domain.plans.vo.PlanVO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,16 +21,16 @@ public class PlanDAO {
         this.sqlSession = sqlSession;
     }
 
-    public List<PlanAttributeVO> selectPlanAttributeList(String attributeTypeCode) {
-        return sqlSession.getMapper(PlanDAOMapper.class).selectPlanAttributeList(attributeTypeCode);
+    public List<PlanAttributeVO> searchPlanAttributeList(String attributeTypeCode) {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchPlanAttributeList(attributeTypeCode);
     }
 
-    public List<PlanAddressVO> selectAddressList() {
-        return sqlSession.getMapper(PlanDAOMapper.class).selectAddressList();
+    public List<PlanAddressVO> searchAddressList() {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchAddressList();
     }
 
-    public List<PlanAddressVO> selectAddressList(String sidoName) {
-        return sqlSession.getMapper(PlanDAOMapper.class).selectAddressList(sidoName);
+    public List<PlanAddressVO> searchAddressList(String sidoName) {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchAddressList(sidoName);
     }
 
     public int insertPlanInfo(CreatePlanDTO createPlanDTO) {
@@ -47,7 +48,7 @@ public class PlanDAO {
     }
 
     public int selectPlanAttributeNo(PlanAttributeVO planAttributeVO) {
-        return sqlSession.getMapper(PlanDAOMapper.class).selectPlanAttributeNo(planAttributeVO);
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanAttributeNo(planAttributeVO);
     }
 
     public int insertPlanAttributeMgmt(PlanAttributeVO planAttributeVO) {
@@ -56,5 +57,9 @@ public class PlanDAO {
 
     public int insertPlanMate(PlanMateVO planMateVO) {
         return sqlSession.getMapper(PlanDAOMapper.class).insertPlanMate(planMateVO);
+    }
+
+    public List<PlanVO> searchPlanListWithMemberNo(String memberNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchPlanListWithMemberNo(memberNo);
     }
 }

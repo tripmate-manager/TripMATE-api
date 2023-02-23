@@ -5,11 +5,13 @@
 
 <mapper namespace="com.tripmate.domain.plans.dao.mapper.PlanDAOMapper">
     <resultMap id="searchPlanAttributeList" type="PlanAttributeVO">
+        <result property="planNo" column="PLAN_NO"/>
         <result property="attributeNo" column="ATTR_NO"/>
         <result property="attributeName" column="ATTR_NM"/>
+        <result property="attributeTypeCode" column="ATTR_TP_CD"/>
     </resultMap>
 
-    <select id="selectPlanAttributeList" parameterType="String" resultMap="searchPlanAttributeList">
+    <select id="searchPlanAttributeList" parameterType="String" resultMap="searchPlanAttributeList">
         SELECT *
         FROM CT_PLAN_ATTR_MGMT
         WHERE ATTR_TP_CD = #{attributeType:VARCHAR}
@@ -22,7 +24,7 @@
         <result property="sigunguName" column="SIGUNGU_NM"/>
     </resultMap>
 
-    <select id="selectAddressList" parameterType="String" resultMap="searchAddressList">
+    <select id="searchAddressList" parameterType="String" resultMap="searchAddressList">
         SELECT DISTINCT *
         FROM CT_ADDR_MGMT
         <if test="sidoName != null">
@@ -82,7 +84,7 @@
         </foreach>
     </insert>
 
-    <select id="selectPlanAttributeNo" parameterType="PlanAttributeVO" resultType="int">
+    <select id="getPlanAttributeNo" parameterType="PlanAttributeVO" resultType="int">
         SELECT CASE WHEN COUNT(*) > 0 THEN ATTR_NO
                     ELSE 0
                    END
@@ -127,4 +129,70 @@
                 0,
                 now());
     </insert>
+
+    <resultMap id="searchPlanList" type="PlanVO">
+        <result property="planNo" column="PLAN_NO"/>
+        <result property="planTitle" column="PLAN_TITLE"/>
+        <result property="planDescription" column="PLAN_DESC"/>
+        <result property="publicYn" column="PUBLIC_YN"/>
+        <result property="tripStartDate" column="TRIP_START_DATE"/>
+        <result property="tripEndDate" column="TRIP_END_DATE"/>
+        <result property="tripTerm" column="TRIP_TERM"/>
+        <result property="likeRegistrationCnt" column="LIKE_REG_CNT"/>
+        <result property="achieveRate" column="ACHV_RATE"/>
+        <result property="views" column="VIEWS"/>
+        <result property="reviewAverageScore" column="REV_AVG_SCORE"/>
+        <result property="leadYn" column="LEAD_YN"/>
+        <result property="registrationDateTime" column="REG_DTIME"/>
+        <collection property="planAddressList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAddressVO" select="getPlanAddressWithPlanNo"/>
+        <collection property="planAttributeList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAttributeVO" select="getPlanAttributeWithPlanNo"/>
+    </resultMap>
+
+    <select id="searchPlanListWithMemberNo" parameterType="String" resultMap="searchPlanList">
+        SELECT plan.PLAN_NO,
+               plan.PLAN_TITLE,
+               plan.PLAN_DESC,
+               plan.PUBLIC_YN,
+               plan.TRIP_START_DATE,
+               plan.TRIP_END_DATE,
+               plan.TRIP_TERM,
+               plan.LIKE_REG_CNT,
+               plan.ACHV_RATE,
+               plan.VIEWS,
+               plan.REV_AVG_SCORE,
+               mate.LEAD_YN,
+               plan.REG_DTIME
+        FROM CT_PLAN_MGMT plan, CT_PLAN_MATE mate
+        WHERE plan.PLAN_NO = mate.PLAN_NO
+          AND mate.MBR_NO = #{memberNo:VARCHAR};
+    </select>
+
+    <resultMap id="searchPlanAddressList" type="PlanAddressVO">
+        <result property="planNo" column="PLAN_NO"/>
+        <result property="addressNo" column="ADDR_NO"/>
+        <result property="sidoName" column="SIDO_NM"/>
+        <result property="sigunguName" column="SIGUNGU_NM"/>
+    </resultMap>
+
+    <select id="getPlanAddressWithPlanNo" resultMap="searchPlanAddressList">
+        SELECT addr.PLAN_NO,
+               addr.ADDR_NO,
+               mgmt.SIDO_NM,
+               mgmt.SIGUNGU_NM
+        FROM CT_PLAN_MGMT plan, CT_TRIP_ADDR addr, CT_ADDR_MGMT mgmt
+        WHERE plan.PLAN_NO = addr.PLAN_NO
+          AND addr.ADDR_NO = mgmt.ADDR_NO
+          AND plan.PLAN_NO = #{planNo:NUMERIC};
+    </select>
+
+    <select id="getPlanAttributeWithPlanNo" resultMap="searchPlanAttributeList">
+        SELECT attr.PLAN_NO,
+               attr.ATTR_NO,
+               mgmt.ATTR_NM,
+               mgmt.ATTR_TP_CD
+        FROM CT_PLAN_MGMT plan, CT_PLAN_ATTR attr, CT_PLAN_ATTR_MGMT mgmt
+        WHERE plan.PLAN_NO = attr.PLAN_NO
+          AND attr.ATTR_NO = mgmt.ATTR_NO
+          AND plan.PLAN_NO = #{planNo:NUMERIC};
+    </select>
 </mapper>

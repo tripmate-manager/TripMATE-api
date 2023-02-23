@@ -5,6 +5,7 @@ import com.tripmate.domain.plans.dto.CreatePlanDTO;
 import com.tripmate.domain.plans.service.PlanService;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,25 +40,25 @@ public class PlanController {
 
     @Operation(summary = "플랜 속성 조회", description = "플랜 속성을 조회합니다.")
     @GetMapping("/plan-attributes")
-    public ResponseWrapper<PlanAttributeVO> selectPlanAttributeList(@RequestParam(value = "attributeTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "플랜속성타입코드(10: 해시태그, 20: 여행테마)") String attributeTypeCode) {
+    public ResponseWrapper<PlanAttributeVO> searchPlanAttributeList(@RequestParam(value = "attributeTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "플랜속성타입코드(10: 해시태그, 20: 여행테마)") String attributeTypeCode) {
         return ResponseWrapper.<PlanAttributeVO>builder()
-                .data(planService.selectPlanAttributeList(attributeTypeCode))
+                .data(planService.searchPlanAttributeList(attributeTypeCode))
                 .build();
     }
 
     @Operation(summary = "지역 정보 조회", description = "시도 지역 정보를 조회합니다.")
     @GetMapping("/trip-address")
-    public ResponseWrapper<PlanAddressVO> selectAddressList() {
+    public ResponseWrapper<PlanAddressVO> searchAddressList() {
         return ResponseWrapper.<PlanAddressVO>builder()
-                .data(planService.selectAddressList())
+                .data(planService.searchAddressList())
                 .build();
     }
 
     @Operation(summary = "지역 정보 조회", description = "시도별 시군구 지역 정보를 조회합니다.")
     @GetMapping("/trip-address/{sidoName}")
-    public ResponseWrapper<PlanAddressVO> selectAddressList(@PathVariable(value = "sidoName") @NotBlank @Schema(example = "시도명") String sidoName) {
+    public ResponseWrapper<PlanAddressVO> searchAddressList(@PathVariable(value = "sidoName") @NotBlank @Schema(example = "시도명") String sidoName) {
         return ResponseWrapper.<PlanAddressVO>builder()
-                .data(planService.selectAddressList(sidoName))
+                .data(planService.searchAddressList(sidoName))
                 .build();
     }
 
@@ -66,6 +67,14 @@ public class PlanController {
     public ResponseWrapper<Boolean> createPlan(@Valid @RequestBody CreatePlanDTO createPlanDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.createPlan(createPlanDTO)))
+                .build();
+    }
+
+    @Operation(summary = "회원 플랜 조회", description = "회원의 플랜을 조회합니다. (return: 플랜 리스트)")
+    @GetMapping
+    public ResponseWrapper<PlanVO> searchMemberPlanList(@RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+        return ResponseWrapper.<PlanVO>builder()
+                .data(planService.searchMemberPlanList(memberNo))
                 .build();
     }
 }

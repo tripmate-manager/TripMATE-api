@@ -10,11 +10,13 @@
         <typeAlias type="com.tripmate.domain.members.dto.MemberMailDTO" alias="MemberMailDTO"/>
         <typeAlias type="com.tripmate.domain.common.vo.CodeVO" alias="CodeVO"/>
         <typeAlias type="com.tripmate.domain.members.dto.SignInDTO" alias="SignInDTO"/>
-        <typeAlias type="com.tripmate.domain.members.dto.ChangePasswordDTO" alias="ChangePasswordDTO"/>
+        <typeAlias type="com.tripmate.domain.members.dto.UpdatePasswordDTO" alias="UpdatePasswordDTO"/>
         <typeAlias type="com.tripmate.domain.members.dto.MypageDTO" alias="MypageDTO"/>
         <typeAlias type="com.tripmate.domain.plans.vo.PlanAttributeVO" alias="PlanAttributeVO"/>
         <typeAlias type="com.tripmate.domain.plans.vo.PlanAddressVO" alias="PlanAddressVO"/>
         <typeAlias type="com.tripmate.domain.plans.dto.CreatePlanDTO" alias="CreatePlanDTO"/>
+        <typeAlias type="com.tripmate.domain.plans.vo.PlanMateVO" alias="PlanMateVO"/>
+        <typeAlias type="com.tripmate.domain.plans.vo.PlanVO" alias="PlanVO"/>
         <typeAlias type="com.tripmate.domain.plans.vo.PlanMateVO" alias="PlanMateVO"/>
     </typeAliases>
 </configuration>

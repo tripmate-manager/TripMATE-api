@@ -3,7 +3,7 @@ package com.tripmate.api.v1.controller;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.common.service.MailService;
 import com.tripmate.domain.common.vo.ResponseWrapper;
-import com.tripmate.domain.members.dto.ChangePasswordDTO;
+import com.tripmate.domain.members.dto.UpdatePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
@@ -156,10 +156,10 @@ public class MemberController {
     }
 
     @Operation(summary = "비밀번호 변경", description = "회원 비밀번호 정보를 변경합니다.")
-    @PutMapping("/change-password")
-    public ResponseWrapper<Boolean> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
+    @PutMapping("/update-password")
+    public ResponseWrapper<Boolean> updatePassword(@Valid @RequestBody UpdatePasswordDTO updatePasswordDTO) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(memberService.changePassword(changePasswordDTO)))
+                .data(Collections.singletonList(memberService.updateMemberPassword(updatePasswordDTO)))
                 .build();
     }
 

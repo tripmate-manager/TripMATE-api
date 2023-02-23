@@ -11,6 +11,7 @@ import com.tripmate.domain.plans.dto.CreatePlanDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
+import com.tripmate.domain.plans.vo.PlanVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,8 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanAttributeVO> selectPlanAttributeList(String attributeTypeCode) {
-        List<PlanAttributeVO> planAttributeVOList = planDAO.selectPlanAttributeList(attributeTypeCode);
+    public List<PlanAttributeVO> searchPlanAttributeList(String attributeTypeCode) {
+        List<PlanAttributeVO> planAttributeVOList = planDAO.searchPlanAttributeList(attributeTypeCode);
         if (planAttributeVOList == null) {
             throw new NoResultException("처리 중 오류가 발생하였습니다.");
         }
@@ -38,26 +39,26 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanAddressVO> selectAddressList(String sidoName) {
-        List<PlanAddressVO> planAddressVOList = planDAO.selectAddressList(sidoName);
+    public List<PlanAddressVO> searchAddressList(String sidoName) {
+        List<PlanAddressVO> planAddressVOList = planDAO.searchAddressList(sidoName);
         if (planAddressVOList == null) {
             throw new NoResultException("처리 중 오류가 발생하였습니다.");
         }
-        return planDAO.selectAddressList(sidoName);
+        return planDAO.searchAddressList(sidoName);
     }
 
     @Override
-    public List<PlanAddressVO> selectAddressList() {
-        List<PlanAddressVO> planAddressVOList = planDAO.selectAddressList();
+    public List<PlanAddressVO> searchAddressList() {
+        List<PlanAddressVO> planAddressVOList = planDAO.searchAddressList();
         if (planAddressVOList == null) {
             throw new NoResultException("처리 중 오류가 발생하였습니다.");
         }
-        return planDAO.selectAddressList();
+        return planDAO.searchAddressList();
     }
 
     @Override
     public boolean createPlan(CreatePlanDTO createPlanDTO) {
-        MemberDTO memberNoExistCheckDTO = memberDAO.selectMemberInfoWithMemberNo(createPlanDTO.getMemberNo());
+        MemberDTO memberNoExistCheckDTO = memberDAO.getMemberInfoWithMemberNo(createPlanDTO.getMemberNo());
 
         if (memberNoExistCheckDTO == null) {
             throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
@@ -138,5 +139,10 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return true;
+    }
+
+    @Override
+    public List<PlanVO> searchMemberPlanList(String memberNo) {
+        return planDAO.searchPlanListWithMemberNo(memberNo);
     }
 }

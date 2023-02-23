@@ -19,7 +19,6 @@ import java.util.List;
 @Getter
 @Schema(description = "플랜 생성 Request DTO")
 public class CreatePlanDTO {
-    @Hidden
     private int memberNo;
 
     @Hidden

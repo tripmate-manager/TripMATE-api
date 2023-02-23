@@ -6,7 +6,7 @@ import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.common.Const;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.members.dao.MemberDAO;
-import com.tripmate.domain.members.dto.ChangePasswordDTO;
+import com.tripmate.domain.members.dto.UpdatePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean isDuplicate(DuplicationCheckDTO duplicationCheckDTO) {
-        return memberDAO.selectDuplicationCnt(duplicationCheckDTO) > 0;
+        return memberDAO.getDuplicationCnt(duplicationCheckDTO) > 0;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDTO signIn(SignInDTO signInDTO) {
-        MemberDTO signInMemberDTO = memberDAO.selectSignInMemberInfo(signInDTO);
+        MemberDTO signInMemberDTO = memberDAO.getSignInMemberInfo(signInDTO);
 
         if (signInMemberDTO != null && signInMemberDTO.getSignInRequestCnt() < Const.SIGNIN_LIMIT_CNT) {
             signInDTO = SignInDTO.builder()
@@ -77,7 +77,7 @@ public class MemberServiceImpl implements MemberService {
 
             memberDAO.updateSignInRequestCntAndStatusCode(signInDTO);
         } else {
-            MemberDTO checkIdExistDTO = memberDAO.selectSignInRequestCnt(signInDTO);
+            MemberDTO checkIdExistDTO = memberDAO.getSignInRequestCnt(signInDTO);
 
             if (checkIdExistDTO != null) {
                 if (checkIdExistDTO.getSignInRequestCnt() >= Const.SIGNIN_LIMIT_CNT) {
@@ -102,7 +102,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String findId(MemberDTO memberDTO) {
-        String memberId = memberDAO.selectMemberIdWithNameAndEmail(memberDTO);
+        String memberId = memberDAO.getMemberIdWithNameAndEmail(memberDTO);
         if (StringUtils.isEmpty(memberId)) {
             throw new NoResultException("존재하지 않는 회원 정보입니다.");
         }
@@ -110,27 +110,27 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
-        MemberDTO memberIdExistCheckDTO = memberDAO.selectSignInRequestCnt(SignInDTO.builder()
-                .memberId(changePasswordDTO.getMemberId())
+    public boolean updateMemberPassword(UpdatePasswordDTO updatePasswordDTO) {
+        MemberDTO memberIdExistCheckDTO = memberDAO.getSignInRequestCnt(SignInDTO.builder()
+                .memberId(updatePasswordDTO.getMemberId())
                 .build());
 
         if (memberIdExistCheckDTO == null) {
             throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
         }
 
-        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(changePasswordDTO.getMemberNo());
+        MemberDTO memberDTO = memberDAO.getMemberInfoWithMemberNo(updatePasswordDTO.getMemberNo());
 
         if (memberDTO == null) {
             throw new NoResultException("현재 비밀번호를 잘못 입력하였습니다.");
         }
 
-        return memberDAO.updateMemberPassword(changePasswordDTO) == 1;
+        return memberDAO.updateMemberPassword(updatePasswordDTO) == 1;
     }
 
     @Override
     public boolean updateWithdrawMemberInfo(int memberNo) {
-        MemberDTO memberDTO = memberDAO.selectMemberInfoWithMemberNo(memberNo);
+        MemberDTO memberDTO = memberDAO.getMemberInfoWithMemberNo(memberNo);
 
         if (memberDTO == null) {
             throw new NoResultException("잘못된 비밀번호입니다.");
@@ -145,7 +145,7 @@ public class MemberServiceImpl implements MemberService {
             throw new WrongParameterException("회원정보 변경 처리 중 오류가 발생하였습니다.");
         }
 
-        if (!mypageDTO.getNickName().equals(memberDAO.selectMemberInfoWithMemberNo(memberNo).getNickName())) {
+        if (!mypageDTO.getNickName().equals(memberDAO.getMemberInfoWithMemberNo(memberNo).getNickName())) {
             if (isDuplicate(DuplicationCheckDTO.builder()
                     .duplicationMemberInfo(mypageDTO.getNickName())
                     .duplicationCheckType(ConstCode.DUPLICATION_CHECK_NICK_NAME)
@@ -158,7 +158,7 @@ public class MemberServiceImpl implements MemberService {
             throw new GuideMessageException("회원정보 변경 처리 중 오류가 발생하였습니다.");
         }
 
-        MemberDTO updateMemberInfoResult = memberDAO.selectMemberInfoWithMemberNo(memberNo);
+        MemberDTO updateMemberInfoResult = memberDAO.getMemberInfoWithMemberNo(memberNo);
 
         return MypageDTO.builder()
                 .memberNo(updateMemberInfoResult.getMemberNo())
