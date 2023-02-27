@@ -65,7 +65,7 @@ public class PlanController {
     }
 
     @Operation(summary = "플랜 생성", description = "플랜을 생성합니다. (return: 플랜 생성 성공 여부)")
-    @PostMapping
+    @PostMapping("/create-plan")
     public ResponseWrapper<Boolean> createPlan(@Valid @RequestBody PlanDTO planDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.createPlan(planDTO)))
@@ -73,15 +73,15 @@ public class PlanController {
     }
 
     @Operation(summary = "회원 플랜 조회", description = "회원의 플랜을 조회합니다. (return: 플랜 리스트)")
-    @GetMapping
-    public ResponseWrapper<PlanVO> searchMemberPlanList(@RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+    @GetMapping("/{memberNo}")
+    public ResponseWrapper<PlanVO> searchMemberPlanList(@Valid @PathVariable(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
         return ResponseWrapper.<PlanVO>builder()
                 .data(planService.searchMemberPlanList(memberNo))
                 .build();
     }
 
     @Operation(summary = "플랜 상세 조회", description = "플랜 상세 정보를 조회합니다. (return: 플랜 정보)")
-    @GetMapping("/{planNo}")
+    @GetMapping("/plan-detail/{planNo}")
     public ResponseWrapper<PlanVO> getPlanInfo(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
         return ResponseWrapper.<PlanVO>builder()
                 .data(Collections.singletonList(planService.getPlanInfo(planNo)))
