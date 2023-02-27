@@ -213,4 +213,23 @@
         WHERE plan.PLAN_NO = #{planNo:VARCHAR};
     </select>
 
+    <resultMap id="searchPlanMateList" type="PlanMateVO">
+        <result property="planNo" column="PLAN_NO"/>
+        <result property="memberNo" column="MBR_NO"/>
+        <result property="leadYn" column="LEAD_YN"/>
+        <result property="memberName" column="MBR_NM"/>
+        <result property="nickName" column="NICK_NM"/>
+    </resultMap>
+
+    <select id="searchPlanMateListWithPlanNo" parameterType="String" resultMap="searchPlanMateList">
+        SELECT mate.PLAN_NO,
+               mbr.MBR_NO,
+               mate.LEAD_YN,
+               mbr.MBR_NM,
+               mbr.NICK_NM
+        FROM CT_PLAN_MATE mate, MB_MBR_MGMT mbr
+        WHERE mate.MBR_NO = mbr.MBR_NO
+          AND mate.PLAN_NO = #{planNo:VARCHAR};
+    </select>
+
 </mapper>

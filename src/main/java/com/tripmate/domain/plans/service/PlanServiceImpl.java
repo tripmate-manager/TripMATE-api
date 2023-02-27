@@ -150,4 +150,9 @@ public class PlanServiceImpl implements PlanService {
     public PlanVO getPlanInfo(String planNo) {
         return planDAO.getPlanInfoWithPlanNo(planNo);
     }
+
+    @Override
+    public List<PlanMateVO> searchPlanMateList(String planNo) {
+        return planDAO.searchPlanMateListWithPlanNo(planNo);
+    }
 }

@@ -66,4 +66,8 @@ public class PlanDAO {
     public PlanVO getPlanInfoWithPlanNo(String planNo) {
         return sqlSession.getMapper(PlanDAOMapper.class).getPlanInfoWithPlanNo(planNo).get(0);
     }
+
+    public List<PlanMateVO> searchPlanMateListWithPlanNo(String planNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchPlanMateListWithPlanNo(planNo);
+    }
 }

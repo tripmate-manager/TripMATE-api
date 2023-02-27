@@ -20,4 +20,5 @@ public interface PlanDAOMapper {
     int insertPlanMate(PlanMateVO planMateVO);
     List<PlanVO> searchPlanListWithMemberNo(String memberNo);
     List<PlanVO> getPlanInfoWithPlanNo(String planNo);
+    List<PlanMateVO> searchPlanMateListWithPlanNo(String planNo);
 }
