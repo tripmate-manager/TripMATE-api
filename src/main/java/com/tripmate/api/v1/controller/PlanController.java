@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,6 +93,14 @@ public class PlanController {
     public ResponseWrapper<PlanMateVO> searchPlanMateList(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
         return ResponseWrapper.<PlanMateVO>builder()
                 .data(planService.searchPlanMateList(planNo))
+                .build();
+    }
+
+    @Operation(summary = "플랜 수정", description = "플랜을 수정합니다. (return: 플랜 정보)")
+    @PutMapping("/{planNo}")
+    public ResponseWrapper<PlanVO> updatePlan(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo, @Valid @RequestBody PlanDTO planDTO) {
+        return ResponseWrapper.<PlanVO>builder()
+                .data(Collections.singletonList(planService.updatePlan(planNo, planDTO)))
                 .build();
     }
 }

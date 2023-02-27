@@ -232,4 +232,30 @@
           AND mate.PLAN_NO = #{planNo:VARCHAR};
     </select>
 
+    <update id="updatePlan" parameterType="PlanDTO">
+        UPDATE CT_PLAN_MGMT
+        SET PLAN_TITLE = #{planTitle:VARCHAR},
+            PLAN_DESC = #{planDescription:VARCHAR},
+            PUBLIC_YN = #{publicYn:VARCHAR},
+            TRIP_START_DATE = #{tripStartDate:VARCHAR},
+            TRIP_END_DATE = #{tripEndDate:VARCHAR},
+            TRIP_TERM = DATEDIFF(#{tripEndDate:VARCHAR}, #{tripStartDate:VARCHAR}),
+            UPT_NO = #{memberNo:NUMERIC},
+            UPT_DTIME = now()
+        WHERE PLAN_NO = #{planNo:NUMERIC};
+    </update>
+
+    <delete id="deletePlanAddressWithPlanNo" parameterType="String">
+        DELETE FROM CT_TRIP_ADDR
+        WHERE CT_TRIP_ADDR.PLAN_NO = #{planNo:VARCHAR};
+    </delete>
+
+    <delete id="deletePlanAttributeWithPlanNo" parameterType="PlanAttributeDTO">
+        DELETE cpa
+        FROM CT_PLAN_ATTR cpa
+        INNER JOIN CT_PLAN_ATTR_MGMT cpam
+        ON cpa.ATTR_NO = cpam.ATTR_NO
+        WHERE cpa.PLAN_NO = #{planNo:NUMERIC}
+        AND cpam.ATTR_TP_CD = #{attributeTypeCode:VARCHAR};
+    </delete>
 </mapper>

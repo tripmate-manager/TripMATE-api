@@ -1,6 +1,7 @@
 package com.tripmate.domain.plans.dao;
 
 import com.tripmate.domain.plans.dao.mapper.PlanDAOMapper;
+import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
@@ -69,5 +70,17 @@ public class PlanDAO {
 
     public List<PlanMateVO> searchPlanMateListWithPlanNo(String planNo) {
         return sqlSession.getMapper(PlanDAOMapper.class).searchPlanMateListWithPlanNo(planNo);
+    }
+
+    public int updatePlan(PlanDTO planDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).updatePlan(planDTO);
+    }
+
+    public int deletePlanAddressWithPlanNo(String planNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).deletePlanAddressWithPlanNo(planNo);
+    }
+
+    public int deletePlanAttributeWithPlanNo(PlanAttributeDTO planAttributeDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).deletePlanAttributeWithPlanNo(planAttributeDTO);
     }
 }
