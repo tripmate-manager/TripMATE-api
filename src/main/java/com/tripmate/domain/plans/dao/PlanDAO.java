@@ -1,7 +1,7 @@
 package com.tripmate.domain.plans.dao;
 
 import com.tripmate.domain.plans.dao.mapper.PlanDAOMapper;
-import com.tripmate.domain.plans.dto.CreatePlanDTO;
+import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
@@ -33,10 +33,10 @@ public class PlanDAO {
         return sqlSession.getMapper(PlanDAOMapper.class).searchAddressList(sidoName);
     }
 
-    public int insertPlanInfo(CreatePlanDTO createPlanDTO) {
-        sqlSession.getMapper(PlanDAOMapper.class).insertPlanInfo(createPlanDTO);
+    public int insertPlanInfo(PlanDTO planDTO) {
+        sqlSession.getMapper(PlanDAOMapper.class).insertPlanInfo(planDTO);
 
-        return createPlanDTO.getPlanNo();
+        return planDTO.getPlanNo();
     }
 
     public int insertTripAddress(List<PlanAddressVO> planAddressVOList) {
@@ -61,5 +61,9 @@ public class PlanDAO {
 
     public List<PlanVO> searchPlanListWithMemberNo(String memberNo) {
         return sqlSession.getMapper(PlanDAOMapper.class).searchPlanListWithMemberNo(memberNo);
+    }
+
+    public PlanVO getPlanInfoWithPlanNo(String planNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanInfoWithPlanNo(planNo).get(0);
     }
 }

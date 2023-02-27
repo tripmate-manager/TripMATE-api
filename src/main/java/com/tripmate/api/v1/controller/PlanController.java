@@ -1,7 +1,7 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.vo.ResponseWrapper;
-import com.tripmate.domain.plans.dto.CreatePlanDTO;
+import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.service.PlanService;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
@@ -64,9 +64,9 @@ public class PlanController {
 
     @Operation(summary = "플랜 생성", description = "플랜을 생성합니다. (return: 플랜 생성 성공 여부)")
     @PostMapping
-    public ResponseWrapper<Boolean> createPlan(@Valid @RequestBody CreatePlanDTO createPlanDTO) {
+    public ResponseWrapper<Boolean> createPlan(@Valid @RequestBody PlanDTO planDTO) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(planService.createPlan(createPlanDTO)))
+                .data(Collections.singletonList(planService.createPlan(planDTO)))
                 .build();
     }
 
@@ -75,6 +75,14 @@ public class PlanController {
     public ResponseWrapper<PlanVO> searchMemberPlanList(@RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
         return ResponseWrapper.<PlanVO>builder()
                 .data(planService.searchMemberPlanList(memberNo))
+                .build();
+    }
+
+    @Operation(summary = "플랜 상세 조회", description = "플랜 상세 정보를 조회합니다. (return: 플랜 정보)")
+    @GetMapping("/{planNo}")
+    public ResponseWrapper<PlanVO> getPlanInfo(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
+        return ResponseWrapper.<PlanVO>builder()
+                .data(Collections.singletonList(planService.getPlanInfo(planNo)))
                 .build();
     }
 }

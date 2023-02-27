@@ -32,7 +32,7 @@
         </if>;
     </select>
 
-    <insert id="insertPlanInfo" parameterType="CreatePlanDTO">
+    <insert id="insertPlanInfo" parameterType="PlanDTO">
         <selectKey keyProperty="planNo" keyColumn="PLAN_NO" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -195,4 +195,22 @@
           AND attr.ATTR_NO = mgmt.ATTR_NO
           AND plan.PLAN_NO = #{planNo:NUMERIC};
     </select>
+
+    <select id="getPlanInfoWithPlanNo" parameterType="String" resultMap="searchPlanList">
+        SELECT plan.PLAN_NO,
+               plan.PLAN_TITLE,
+               plan.PLAN_DESC,
+               plan.PUBLIC_YN,
+               plan.TRIP_START_DATE,
+               plan.TRIP_END_DATE,
+               plan.TRIP_TERM,
+               plan.LIKE_REG_CNT,
+               plan.ACHV_RATE,
+               plan.VIEWS,
+               plan.REV_AVG_SCORE,
+               plan.REG_DTIME
+        FROM CT_PLAN_MGMT plan
+        WHERE plan.PLAN_NO = #{planNo:VARCHAR};
+    </select>
+
 </mapper>

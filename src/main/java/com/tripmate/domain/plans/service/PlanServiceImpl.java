@@ -7,7 +7,7 @@ import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.plans.dao.PlanDAO;
-import com.tripmate.domain.plans.dto.CreatePlanDTO;
+import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
@@ -57,20 +57,20 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public boolean createPlan(CreatePlanDTO createPlanDTO) {
-        MemberDTO memberNoExistCheckDTO = memberDAO.getMemberInfoWithMemberNo(createPlanDTO.getMemberNo());
+    public boolean createPlan(PlanDTO planDTO) {
+        MemberDTO memberNoExistCheckDTO = memberDAO.getMemberInfoWithMemberNo(planDTO.getMemberNo());
 
         if (memberNoExistCheckDTO == null) {
             throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
         }
 
-        if (planDAO.insertPlanInfo(createPlanDTO) == 0) {
+        if (planDAO.insertPlanInfo(planDTO) == 0) {
             throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
         }
 
         PlanMateVO planMateVO = PlanMateVO.builder()
-                .planNo(createPlanDTO.getPlanNo())
-                .memberNo(createPlanDTO.getMemberNo())
+                .planNo(planDTO.getPlanNo())
+                .memberNo(planDTO.getMemberNo())
                 .leadYn(Const.Y)
                 .build();
         if (planDAO.insertPlanMate(planMateVO) != 1) {
@@ -78,10 +78,10 @@ public class PlanServiceImpl implements PlanService {
         }
 
         List<PlanAddressVO> planAddressVOList = new ArrayList<>();
-        for (int addressNo : createPlanDTO.getPlanAddressList()) {
+        for (int addressNo : planDTO.getPlanAddressList()) {
             PlanAddressVO planAddressVO = PlanAddressVO.builder()
-                    .memberNo(createPlanDTO.getMemberNo())
-                    .planNo(createPlanDTO.getPlanNo())
+                    .memberNo(planDTO.getMemberNo())
+                    .planNo(planDTO.getPlanNo())
                     .addressNo(addressNo)
                     .build();
 
@@ -91,12 +91,12 @@ public class PlanServiceImpl implements PlanService {
             throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
         }
 
-        if (createPlanDTO.getPlanThemeList() != null) {
+        if (planDTO.getPlanThemeList() != null) {
             List<PlanAttributeVO> planAttributeVOList = new ArrayList<>();
-            for (int tripThemeNo : createPlanDTO.getPlanThemeList()) {
+            for (int tripThemeNo : planDTO.getPlanThemeList()) {
                 PlanAttributeVO tripThemeVO = PlanAttributeVO.builder()
-                        .memberNo(createPlanDTO.getMemberNo())
-                        .planNo(createPlanDTO.getPlanNo())
+                        .memberNo(planDTO.getMemberNo())
+                        .planNo(planDTO.getPlanNo())
                         .attributeNo(tripThemeNo)
                         .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_TRIP_THEME)
                         .build();
@@ -108,12 +108,12 @@ public class PlanServiceImpl implements PlanService {
             }
         }
 
-        if (createPlanDTO.getPlanHashtagList() != null) {
+        if (planDTO.getPlanHashtagList() != null) {
             List<PlanAttributeVO> planAttributeVOList = new ArrayList<>();
-            for (String hashtag : createPlanDTO.getPlanHashtagList()) {
+            for (String hashtag : planDTO.getPlanHashtagList()) {
                 PlanAttributeVO planHashtagVO = PlanAttributeVO.builder()
-                        .memberNo(createPlanDTO.getMemberNo())
-                        .planNo(createPlanDTO.getPlanNo())
+                        .memberNo(planDTO.getMemberNo())
+                        .planNo(planDTO.getPlanNo())
                         .attributeName(hashtag)
                         .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_HASHTAG)
                         .build();
@@ -125,8 +125,8 @@ public class PlanServiceImpl implements PlanService {
                 }
 
                 PlanAttributeVO insertHashtagAttributeVO = PlanAttributeVO.builder()
-                        .memberNo(createPlanDTO.getMemberNo())
-                        .planNo(createPlanDTO.getPlanNo())
+                        .memberNo(planDTO.getMemberNo())
+                        .planNo(planDTO.getPlanNo())
                         .attributeNo(hashtagAttributeNo)
                         .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_HASHTAG)
                         .build();
@@ -144,5 +144,10 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public List<PlanVO> searchMemberPlanList(String memberNo) {
         return planDAO.searchPlanListWithMemberNo(memberNo);
+    }
+
+    @Override
+    public PlanVO getPlanInfo(String planNo) {
+        return planDAO.getPlanInfoWithPlanNo(planNo);
     }
 }
