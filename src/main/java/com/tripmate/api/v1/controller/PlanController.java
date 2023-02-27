@@ -98,8 +98,8 @@ public class PlanController {
 
     @Operation(summary = "플랜 수정", description = "플랜을 수정합니다. (return: 플랜 정보)")
     @PutMapping("/{planNo}")
-    public ResponseWrapper<PlanVO> updatePlan(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo, @Valid @RequestBody PlanDTO planDTO) {
-        return ResponseWrapper.<PlanVO>builder()
+    public ResponseWrapper<Boolean> updatePlan(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo, @Valid @RequestBody PlanDTO planDTO) {
+        return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.updatePlan(planNo, planDTO)))
                 .build();
     }

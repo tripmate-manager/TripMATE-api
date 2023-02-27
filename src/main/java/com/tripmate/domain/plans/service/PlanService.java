@@ -16,5 +16,5 @@ public interface PlanService {
     List<PlanVO> searchMemberPlanList(String memberNo);
     PlanVO getPlanInfo(String planNo);
     List<PlanMateVO> searchPlanMateList(String planNo);
-    PlanVO updatePlan(String planNo, PlanDTO planDTO);
+    boolean updatePlan(String planNo, PlanDTO planDTO);
 }

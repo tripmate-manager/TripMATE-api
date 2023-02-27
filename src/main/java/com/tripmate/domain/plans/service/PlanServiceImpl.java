@@ -107,15 +107,11 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public PlanVO updatePlan(String planNo, PlanDTO planDTO) {
+    public boolean updatePlan(String planNo, PlanDTO planDTO) {
         PlanVO planVO = planDAO.getPlanInfoWithPlanNo(planNo);
 
         if (planVO == null) {
             throw new NoResultException("플랜 번호에 해당하는 플랜 정보가 존재하지 않습니다.");
-        }
-
-        if (planDAO.updatePlan(planDTO) == 0) {
-            throw new GuideMessageException("플랜 수정 처리 중 오류가 발생하였습니다.");
         }
 
         if (planDTO.getPlanAddressList() != null) {
@@ -144,7 +140,7 @@ public class PlanServiceImpl implements PlanService {
             insertHashtag(planDTO);
         }
 
-        return planDAO.getPlanInfoWithPlanNo(planNo);
+        return planDAO.updatePlan(planDTO) == 1;
     }
 
     private void insertPlanAddress(PlanDTO planDTO) {
