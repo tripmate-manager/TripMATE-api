@@ -15,6 +15,7 @@ import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    @Transactional
     public boolean createPlan(PlanDTO planDTO) {
         MemberDTO memberNoExistCheckDTO = memberDAO.getMemberInfoWithMemberNo(planDTO.getMemberNo());
 
@@ -107,6 +109,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    @Transactional
     public boolean updatePlan(String planNo, PlanDTO planDTO) {
         PlanVO planVO = planDAO.getPlanInfoWithPlanNo(planNo);
 
