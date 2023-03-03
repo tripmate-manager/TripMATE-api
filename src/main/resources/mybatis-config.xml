@@ -18,5 +18,7 @@
         <typeAlias type="com.tripmate.domain.plans.vo.PlanMateVO" alias="PlanMateVO"/>
         <typeAlias type="com.tripmate.domain.plans.vo.PlanVO" alias="PlanVO"/>
         <typeAlias type="com.tripmate.domain.plans.dto.PlanAttributeDTO" alias="PlanAttributeDTO"/>
+        <typeAlias type="com.tripmate.domain.plans.dto.SearchMemberDTO" alias="SearchMemberDTO"/>
+        <typeAlias type="com.tripmate.domain.plans.dto.PlanAuthCodeDTO" alias="PlanAuthCodeDTO"/>
     </typeAliases>
 </configuration>

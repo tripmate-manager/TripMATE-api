@@ -66,8 +66,8 @@ public class PlanController {
 
     @Operation(summary = "플랜 생성", description = "플랜을 생성합니다. (return: 플랜 생성 성공 여부)")
     @PostMapping("/create-plan")
-    public ResponseWrapper<Boolean> createPlan(@Valid @RequestBody PlanDTO planDTO) {
-        return ResponseWrapper.<Boolean>builder()
+    public ResponseWrapper<Integer> createPlan(@Valid @RequestBody PlanDTO planDTO) {
+        return ResponseWrapper.<Integer>builder()
                 .data(Collections.singletonList(planService.createPlan(planDTO)))
                 .build();
     }
@@ -101,6 +101,24 @@ public class PlanController {
     public ResponseWrapper<Boolean> updatePlan(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo, @Valid @RequestBody PlanDTO planDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.updatePlan(planNo, planDTO)))
+                .build();
+    }
+
+    @Operation(summary = "회원(플랜메이트) 검색", description = "입력한 아이디/닉네임/이메일 조건에 부합하는 회원을 조회합니다.")
+    @GetMapping("/search-member")
+    public ResponseWrapper<PlanMateVO> searchMemberList(@RequestParam(value = "searchDiviCode") @NotBlank @Pattern(regexp = "^[123]0$") @Schema(example = "검색구분코드(10: 아이디, 20: 닉네임, 30: 이메일)") String searchDiviCode,
+                                                        @RequestParam(value = "searchKeyword") @NotBlank @Schema(example = "검색어") String searchKeyword) {
+        return ResponseWrapper.<PlanMateVO>builder()
+                .data(planService.searchMemberList(searchDiviCode, searchKeyword))
+                .build();
+    }
+
+    @Operation(summary = "초대 인증코드 생성", description = "비회원 초대 시 인증코드를 생성합니다.")
+    @PostMapping("/invite-code")
+    public ResponseWrapper<String> createInviteAuthCode(@RequestParam(value = "planNo") @NotBlank @Schema(example = "플랜번호") String planNo,
+                                                        @RequestParam(value = "inviteTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "초대타입코드(10: 회원, 20: 비회원)") String inviteTypeCode) {
+        return ResponseWrapper.<String>builder()
+                .data(Collections.singletonList(planService.createInviteAuthCode(planNo, inviteTypeCode)))
                 .build();
     }
 }
