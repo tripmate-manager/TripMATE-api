@@ -207,6 +207,22 @@
         WHERE MBR_NO = #{memberNo:VARCHAR};
     </select>
 
+    <select id="getMemberInfoWithMemberNoAndMemberPassword" parameterType="UpdatePasswordDTO" resultType="MemberDTO">
+        SELECT MBR_NO AS memberNo,
+               MBR_ID AS memberId,
+               MBR_PWD AS memberPassword,
+               MBR_NM AS memberName,
+               NICK_NM AS nickName,
+               EMAIL AS email,
+               GEND_CD AS genderCode,
+               BDAY AS birthDay,
+               LOGIN_REQ_CNT AS signInRequestCnt,
+               MBR_STATUS_CD AS memberStatusCode
+        FROM MB_MBR_MGMT
+        WHERE MBR_NO = #{memberNo:VARCHAR}
+        AND MBR_PWD = password(#{memberPassword:VARCHAR});
+    </select>
+
     <update id="updateMemberInfo" parameterType="MypageDTO">
         UPDATE MB_MBR_MGMT
         SET NICK_NM = #{nickName:VARCHAR},

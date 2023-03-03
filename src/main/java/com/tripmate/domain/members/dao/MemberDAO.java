@@ -82,6 +82,10 @@ public class MemberDAO {
         return sqlSession.getMapper(MemberDAOMapper.class).getMemberInfoWithMemberNo(memberNo);
     }
 
+    public MemberDTO getMemberInfoWithMemberNoAndMemberPassword(UpdatePasswordDTO updatePasswordDTO) {
+        return sqlSession.getMapper(MemberDAOMapper.class).getMemberInfoWithMemberNoAndMemberPassword(updatePasswordDTO);
+    }
+
     public int updateMemberInfo(MypageDTO mypageDTO) {
         return sqlSession.getMapper(MemberDAOMapper.class).updateMemberInfo(mypageDTO);
     }

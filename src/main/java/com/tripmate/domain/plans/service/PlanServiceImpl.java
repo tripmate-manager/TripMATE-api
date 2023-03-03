@@ -7,13 +7,15 @@ import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.plans.dao.PlanDAO;
-import com.tripmate.domain.plans.dto.CreatePlanDTO;
+import com.tripmate.domain.plans.dto.PlanAttributeDTO;
+import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,85 +59,35 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public boolean createPlan(CreatePlanDTO createPlanDTO) {
-        MemberDTO memberNoExistCheckDTO = memberDAO.getMemberInfoWithMemberNo(createPlanDTO.getMemberNo());
+    @Transactional
+    public boolean createPlan(PlanDTO planDTO) {
+        MemberDTO memberNoExistCheckDTO = memberDAO.getMemberInfoWithMemberNo(planDTO.getMemberNo());
 
         if (memberNoExistCheckDTO == null) {
             throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
         }
 
-        if (planDAO.insertPlanInfo(createPlanDTO) == 0) {
+        if (planDAO.insertPlanInfo(planDTO) == 0) {
             throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
         }
 
         PlanMateVO planMateVO = PlanMateVO.builder()
-                .planNo(createPlanDTO.getPlanNo())
-                .memberNo(createPlanDTO.getMemberNo())
+                .planNo(planDTO.getPlanNo())
+                .memberNo(planDTO.getMemberNo())
                 .leadYn(Const.Y)
                 .build();
         if (planDAO.insertPlanMate(planMateVO) != 1) {
             throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
         }
 
-        List<PlanAddressVO> planAddressVOList = new ArrayList<>();
-        for (int addressNo : createPlanDTO.getPlanAddressList()) {
-            PlanAddressVO planAddressVO = PlanAddressVO.builder()
-                    .memberNo(createPlanDTO.getMemberNo())
-                    .planNo(createPlanDTO.getPlanNo())
-                    .addressNo(addressNo)
-                    .build();
+        insertPlanAddress(planDTO);
 
-            planAddressVOList.add(planAddressVO);
-        }
-        if (planDAO.insertTripAddress(planAddressVOList) < 1) {
-            throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
+        if (planDTO.getPlanThemeList() != null) {
+            insertPlanTheme(planDTO);
         }
 
-        if (createPlanDTO.getPlanThemeList() != null) {
-            List<PlanAttributeVO> planAttributeVOList = new ArrayList<>();
-            for (int tripThemeNo : createPlanDTO.getPlanThemeList()) {
-                PlanAttributeVO tripThemeVO = PlanAttributeVO.builder()
-                        .memberNo(createPlanDTO.getMemberNo())
-                        .planNo(createPlanDTO.getPlanNo())
-                        .attributeNo(tripThemeNo)
-                        .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_TRIP_THEME)
-                        .build();
-
-                planAttributeVOList.add(tripThemeVO);
-            }
-            if (planDAO.insertPlanAttribute(planAttributeVOList) < 1) {
-                throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
-            }
-        }
-
-        if (createPlanDTO.getPlanHashtagList() != null) {
-            List<PlanAttributeVO> planAttributeVOList = new ArrayList<>();
-            for (String hashtag : createPlanDTO.getPlanHashtagList()) {
-                PlanAttributeVO planHashtagVO = PlanAttributeVO.builder()
-                        .memberNo(createPlanDTO.getMemberNo())
-                        .planNo(createPlanDTO.getPlanNo())
-                        .attributeName(hashtag)
-                        .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_HASHTAG)
-                        .build();
-
-                int hashtagAttributeNo = planDAO.selectPlanAttributeNo(planHashtagVO);
-                if (hashtagAttributeNo == 0) {
-                    planDAO.insertPlanAttributeMgmt(planHashtagVO);
-                    hashtagAttributeNo = planHashtagVO.getAttributeNo();
-                }
-
-                PlanAttributeVO insertHashtagAttributeVO = PlanAttributeVO.builder()
-                        .memberNo(createPlanDTO.getMemberNo())
-                        .planNo(createPlanDTO.getPlanNo())
-                        .attributeNo(hashtagAttributeNo)
-                        .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_HASHTAG)
-                        .build();
-
-                planAttributeVOList.add(insertHashtagAttributeVO);
-            }
-            if (planDAO.insertPlanAttribute(planAttributeVOList) < 1) {
-                throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
-            }
+        if (planDTO.getPlanHashtagList() != null) {
+            insertHashtag(planDTO);
         }
 
         return true;
@@ -144,5 +96,116 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public List<PlanVO> searchMemberPlanList(String memberNo) {
         return planDAO.searchPlanListWithMemberNo(memberNo);
+    }
+
+    @Override
+    public PlanVO getPlanInfo(String planNo) {
+        return planDAO.getPlanInfoWithPlanNo(planNo);
+    }
+
+    @Override
+    public List<PlanMateVO> searchPlanMateList(String planNo) {
+        return planDAO.searchPlanMateListWithPlanNo(planNo);
+    }
+
+    @Override
+    @Transactional
+    public boolean updatePlan(String planNo, PlanDTO planDTO) {
+        PlanVO planVO = planDAO.getPlanInfoWithPlanNo(planNo);
+
+        if (planVO == null) {
+            throw new NoResultException("플랜 번호에 해당하는 플랜 정보가 존재하지 않습니다.");
+        }
+
+        if (planDTO.getPlanAddressList() != null) {
+            planDAO.deletePlanAddressWithPlanNo(planNo);
+
+            insertPlanAddress(planDTO);
+        }
+
+        if (planDTO.getPlanThemeList() != null) {
+            PlanAttributeDTO deleteAddressDTO = PlanAttributeDTO.builder()
+                    .planNo(planDTO.getPlanNo())
+                    .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_TRIP_THEME)
+                    .build();
+            planDAO.deletePlanAttributeWithPlanNo(deleteAddressDTO);
+
+            insertPlanTheme(planDTO);
+        }
+
+        if (planDTO.getPlanHashtagList() != null) {
+            PlanAttributeDTO deleteHashtagDTO = PlanAttributeDTO.builder()
+                    .planNo(planDTO.getPlanNo())
+                    .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_HASHTAG)
+                    .build();
+            planDAO.deletePlanAttributeWithPlanNo(deleteHashtagDTO);
+
+            insertHashtag(planDTO);
+        }
+
+        return planDAO.updatePlan(planDTO) == 1;
+    }
+
+    private void insertPlanAddress(PlanDTO planDTO) {
+        List<PlanAddressVO> planAddressVOList = new ArrayList<>();
+        for (int addressNo : planDTO.getPlanAddressList()) {
+            PlanAddressVO planAddressVO = PlanAddressVO.builder()
+                    .memberNo(planDTO.getMemberNo())
+                    .planNo(planDTO.getPlanNo())
+                    .addressNo(addressNo)
+                    .build();
+
+            planAddressVOList.add(planAddressVO);
+        }
+        if (planDAO.insertTripAddress(planAddressVOList) < 1) {
+            throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
+        }
+    }
+
+    private void insertHashtag(PlanDTO planDTO) {
+        List<PlanAttributeVO> planAttributeVOList = new ArrayList<>();
+        for (String hashtag : planDTO.getPlanHashtagList()) {
+            PlanAttributeVO planHashtagVO = PlanAttributeVO.builder()
+                    .memberNo(planDTO.getMemberNo())
+                    .planNo(planDTO.getPlanNo())
+                    .attributeName(hashtag)
+                    .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_HASHTAG)
+                    .build();
+
+            int hashtagAttributeNo = planDAO.selectPlanAttributeNo(planHashtagVO);
+            if (hashtagAttributeNo == 0) {
+                planDAO.insertPlanAttributeMgmt(planHashtagVO);
+                hashtagAttributeNo = planHashtagVO.getAttributeNo();
+            }
+
+            PlanAttributeVO insertHashtagAttributeVO = PlanAttributeVO.builder()
+                    .memberNo(planDTO.getMemberNo())
+                    .planNo(planDTO.getPlanNo())
+                    .attributeNo(hashtagAttributeNo)
+                    .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_HASHTAG)
+                    .build();
+
+            planAttributeVOList.add(insertHashtagAttributeVO);
+        }
+        if (planDAO.insertPlanAttribute(planAttributeVOList) < 1) {
+            throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
+        }
+    }
+
+    private void insertPlanTheme(PlanDTO planDTO) {
+        List<PlanAttributeVO> planAttributeVOList = new ArrayList<>();
+        for (int tripThemeNo : planDTO.getPlanThemeList()) {
+            PlanAttributeVO tripThemeVO = PlanAttributeVO.builder()
+                    .memberNo(planDTO.getMemberNo())
+                    .planNo(planDTO.getPlanNo())
+                    .attributeNo(tripThemeNo)
+                    .attributeTypeCode(ConstCode.ATTRIBUTE_TYPE_CODE_TRIP_THEME)
+                    .build();
+
+            planAttributeVOList.add(tripThemeVO);
+        }
+        if (planDAO.insertPlanAttribute(planAttributeVOList) < 1) {
+            throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
+        }
     }
 }

@@ -111,18 +111,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean updateMemberPassword(UpdatePasswordDTO updatePasswordDTO) {
-        MemberDTO memberIdExistCheckDTO = memberDAO.getSignInRequestCnt(SignInDTO.builder()
-                .memberId(updatePasswordDTO.getMemberId())
-                .build());
-
-        if (memberIdExistCheckDTO == null) {
-            throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
-        }
-
-        MemberDTO memberDTO = memberDAO.getMemberInfoWithMemberNo(updatePasswordDTO.getMemberNo());
+        MemberDTO memberDTO = memberDAO.getMemberInfoWithMemberNoAndMemberPassword(updatePasswordDTO);
 
         if (memberDTO == null) {
             throw new NoResultException("현재 비밀번호를 잘못 입력하였습니다.");
+        }
+
+        if (memberDTO.getMemberPassword().equals(updatePasswordDTO.getNewMemberPassword())) {
+            throw new NoResultException("기존 비밀번호와 새 비밀번호가 같습니다.");
         }
 
         return memberDAO.updateMemberPassword(updatePasswordDTO) == 1;

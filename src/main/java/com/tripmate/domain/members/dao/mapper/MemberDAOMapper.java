@@ -1,11 +1,11 @@
 package com.tripmate.domain.members.dao.mapper;
 
-import com.tripmate.domain.members.dto.UpdatePasswordDTO;
 import com.tripmate.domain.members.dto.DuplicationCheckDTO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.members.dto.MemberMailDTO;
 import com.tripmate.domain.members.dto.MypageDTO;
 import com.tripmate.domain.members.dto.SignInDTO;
+import com.tripmate.domain.members.dto.UpdatePasswordDTO;
 
 public interface MemberDAOMapper {
     int insertMemberInfo(MemberDTO memberDTO);
@@ -23,5 +23,6 @@ public interface MemberDAOMapper {
     int updateMemberPassword(UpdatePasswordDTO updatePasswordDTO);
     int updateWithdrawMemberInfo(int memberNo);
     MemberDTO getMemberInfoWithMemberNo(int memberNo);
+    MemberDTO getMemberInfoWithMemberNoAndMemberPassword(UpdatePasswordDTO updatePasswordDTO);
     int updateMemberInfo(MypageDTO mypageDTO);
 }

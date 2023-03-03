@@ -1,10 +1,11 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.vo.ResponseWrapper;
-import com.tripmate.domain.plans.dto.CreatePlanDTO;
+import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.service.PlanService;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,18 +65,42 @@ public class PlanController {
     }
 
     @Operation(summary = "플랜 생성", description = "플랜을 생성합니다. (return: 플랜 생성 성공 여부)")
-    @PostMapping
-    public ResponseWrapper<Boolean> createPlan(@Valid @RequestBody CreatePlanDTO createPlanDTO) {
+    @PostMapping("/create-plan")
+    public ResponseWrapper<Boolean> createPlan(@Valid @RequestBody PlanDTO planDTO) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(planService.createPlan(createPlanDTO)))
+                .data(Collections.singletonList(planService.createPlan(planDTO)))
                 .build();
     }
 
     @Operation(summary = "회원 플랜 조회", description = "회원의 플랜을 조회합니다. (return: 플랜 리스트)")
-    @GetMapping
-    public ResponseWrapper<PlanVO> searchMemberPlanList(@RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+    @GetMapping("/{memberNo}")
+    public ResponseWrapper<PlanVO> searchMemberPlanList(@Valid @PathVariable(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
         return ResponseWrapper.<PlanVO>builder()
                 .data(planService.searchMemberPlanList(memberNo))
+                .build();
+    }
+
+    @Operation(summary = "플랜 상세 조회", description = "플랜 상세 정보를 조회합니다. (return: 플랜 정보)")
+    @GetMapping("/plan-detail/{planNo}")
+    public ResponseWrapper<PlanVO> getPlanInfo(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
+        return ResponseWrapper.<PlanVO>builder()
+                .data(Collections.singletonList(planService.getPlanInfo(planNo)))
+                .build();
+    }
+
+    @Operation(summary = "플랜 메이트 조회", description = "입력한 플랜의 플랜 메이트 목록을 조회합니다. (return: 플랜 메이트 정보)")
+    @GetMapping("/plan-mate/{planNo}")
+    public ResponseWrapper<PlanMateVO> searchPlanMateList(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
+        return ResponseWrapper.<PlanMateVO>builder()
+                .data(planService.searchPlanMateList(planNo))
+                .build();
+    }
+
+    @Operation(summary = "플랜 수정", description = "플랜을 수정합니다. (return: 플랜 정보)")
+    @PutMapping("/{planNo}")
+    public ResponseWrapper<Boolean> updatePlan(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo, @Valid @RequestBody PlanDTO planDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.updatePlan(planNo, planDTO)))
                 .build();
     }
 }

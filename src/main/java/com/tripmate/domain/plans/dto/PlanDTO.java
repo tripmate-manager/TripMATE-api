@@ -17,8 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Schema(description = "플랜 생성 Request DTO")
-public class CreatePlanDTO {
+@Schema(description = "플랜 생성/수정 Request DTO")
+public class PlanDTO {
     private int memberNo;
 
     @Hidden
