@@ -176,7 +176,8 @@ public class PlanServiceImpl implements PlanService {
             throw new GuideMessageException("초대 인증 코드 생성 처리 중 오류가 발생하였습니다.");
         }
 
-        return planAuthCodeDTO.getInviteCode();    }
+        return planAuthCodeDTO.getInviteCode();
+    }
 
     private void insertPlanAddress(PlanDTO planDTO) {
         List<PlanAddressVO> planAddressVOList = new ArrayList<>();
