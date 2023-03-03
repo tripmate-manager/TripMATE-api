@@ -12,9 +12,10 @@ public interface PlanService {
     List<PlanAttributeVO> searchPlanAttributeList(String attributeType);
     List<PlanAddressVO> searchAddressList(String sidoName);
     List<PlanAddressVO> searchAddressList();
-    boolean createPlan(PlanDTO planDTO);
+    int createPlan(PlanDTO planDTO);
     List<PlanVO> searchMemberPlanList(String memberNo);
     PlanVO getPlanInfo(String planNo);
     List<PlanMateVO> searchPlanMateList(String planNo);
     boolean updatePlan(String planNo, PlanDTO planDTO);
+    List<PlanMateVO> searchMemberList(String searchDiviCode, String searchKeyword);
 }

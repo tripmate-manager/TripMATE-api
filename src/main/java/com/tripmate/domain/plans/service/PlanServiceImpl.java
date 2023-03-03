@@ -9,6 +9,7 @@ import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.plans.dao.PlanDAO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.SearchMemberDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
@@ -60,14 +61,16 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     @Transactional
-    public boolean createPlan(PlanDTO planDTO) {
+    public int createPlan(PlanDTO planDTO) {
         MemberDTO memberNoExistCheckDTO = memberDAO.getMemberInfoWithMemberNo(planDTO.getMemberNo());
+        int planNo;
 
         if (memberNoExistCheckDTO == null) {
             throw new NoResultException("회원 ID에 해당하는 회원 정보가 존재하지 않습니다.");
         }
 
-        if (planDAO.insertPlanInfo(planDTO) == 0) {
+        planNo = planDAO.insertPlanInfo(planDTO);
+        if (planNo == 0) {
             throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
         }
 
@@ -90,7 +93,7 @@ public class PlanServiceImpl implements PlanService {
             insertHashtag(planDTO);
         }
 
-        return true;
+        return planNo;
     }
 
     @Override
@@ -144,6 +147,16 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return planDAO.updatePlan(planDTO) == 1;
+    }
+
+    @Override
+    public List<PlanMateVO> searchMemberList(String searchDiviCode, String searchKeyword) {
+        SearchMemberDTO searchMemberDTO = SearchMemberDTO.builder()
+                .searchMemberDiviCode(searchDiviCode)
+                .searchKeyword(searchKeyword)
+                .build();
+
+        return planDAO.searchMemberListWithSearchKeyword(searchMemberDTO);
     }
 
     private void insertPlanAddress(PlanDTO planDTO) {

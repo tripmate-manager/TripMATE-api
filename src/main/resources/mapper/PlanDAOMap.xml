@@ -217,6 +217,7 @@
         <result property="planNo" column="PLAN_NO"/>
         <result property="memberNo" column="MBR_NO"/>
         <result property="leadYn" column="LEAD_YN"/>
+        <result property="memberId" column="MBR_ID"/>
         <result property="memberName" column="MBR_NM"/>
         <result property="nickName" column="NICK_NM"/>
     </resultMap>
@@ -258,4 +259,21 @@
         WHERE cpa.PLAN_NO = #{planNo:NUMERIC}
         AND cpam.ATTR_TP_CD = #{attributeTypeCode:VARCHAR};
     </delete>
+
+    <select id="searchMemberListWithSearchKeyword" parameterType="SearchMemberDTO" resultMap="searchPlanMateList">
+        SELECT MBR_NO, MBR_ID, MBR_NM, NICK_NM
+        FROM MB_MBR_MGMT
+        WHERE MBR_STATUS_CD IN ('10', '40')
+        <choose>
+            <when test="searchMemberDiviCode != null and '10'.toString() eq searchMemberDiviCode">
+                AND MBR_ID = #{searchKeyword:VARCHAR};
+            </when>
+            <when test="searchMemberDiviCode != null and '20'.toString() eq searchMemberDiviCode">
+                AND UPPER(NICK_NM) LIKE CONCAT('%', UPPER(#{searchKeyword:VARCHAR}), '%');
+            </when>
+            <otherwise>
+                AND UPPER(EMAIL) = UPPER(#{searchKeyword:VARCHAR}) OR UPPER(SUBSTRING_INDEX(EMAIL,'@',1)) = UPPER(#{searchKeyword:VARCHAR});
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

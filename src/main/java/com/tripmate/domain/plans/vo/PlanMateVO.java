@@ -27,9 +27,14 @@ public class PlanMateVO {
     @Schema(description = "플랜리더여부")
     private String leadYn;
 
+    @Schema(description = "회원ID")
+    private String memberId;
+
     @NotBlank
+    @Schema(description = "회원이름")
     private String memberName;
 
     @NotBlank
+    @Schema(description = "닉네임")
     private String nickName;
 }
