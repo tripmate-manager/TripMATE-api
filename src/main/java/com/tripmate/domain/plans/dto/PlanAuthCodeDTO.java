@@ -17,12 +17,12 @@ import javax.validation.constraints.NotBlank;
 public class PlanAuthCodeDTO {
     private int inviteCodeNo;
 
-    @NotBlank(message = "플랜 번호")
+    @NotBlank(message = "플랜 번호를 입력해주세요.")
     private String planNo;
 
-    @NotBlank(message = "초대 타입 번호")
+    @NotBlank(message = "초대 타입 번호를 입력해주세요.")
     private String inviteTypeCode;
 
-    @NotBlank(message = "초대 코드")
+    @NotBlank(message = "초대 코드를 입력해주세요.")
     private String inviteCode;
 }
