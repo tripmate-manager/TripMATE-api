@@ -2,6 +2,7 @@ package com.tripmate.domain.plans.dao;
 
 import com.tripmate.domain.plans.dao.mapper.PlanDAOMapper;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
+import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
@@ -87,5 +88,9 @@ public class PlanDAO {
 
     public List<PlanMateVO> searchMemberListWithSearchKeyword(SearchMemberDTO searchMemberDTO) {
         return sqlSession.getMapper(PlanDAOMapper.class).searchMemberListWithSearchKeyword(searchMemberDTO);
+    }
+
+    public int insertInviteCode(PlanAuthCodeDTO planAuthCodeDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).insertInviteCode(planAuthCodeDTO);
     }
 }

@@ -276,4 +276,26 @@
             </otherwise>
         </choose>
     </select>
+
+    <insert id="insertInviteCode" parameterType="PlanAuthCodeDTO">
+        <selectKey keyProperty="inviteCodeNo" keyColumn="INVI_CD_NO" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CT_INVI_CD_MGMT (PLAN_NO,
+                                    INVI_TP_CD,
+                                    INVI_CD,
+                                    INVI_CD_EXPIRE_DTIME,
+                                    REG_NO,
+                                    REG_DTIME,
+                                    UPT_NO,
+                                    UPT_DTIME)
+        VALUES (#{planNo:VARCHAR},
+                #{inviteTypeCode:VARCHAR},
+                #{inviteCode:VARCHAR},
+                DATE_ADD(now(), INTERVAL 7 DAY),
+                0,
+                now(),
+                0,
+                now());
+    </insert>
 </mapper>

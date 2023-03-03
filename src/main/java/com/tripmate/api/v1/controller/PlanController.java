@@ -112,4 +112,13 @@ public class PlanController {
                 .data(planService.searchMemberList(searchDiviCode, searchKeyword))
                 .build();
     }
+
+    @Operation(summary = "초대 인증코드 생성", description = "비회원 초대 시 인증코드를 생성합니다.")
+    @PostMapping("/invite-code")
+    public ResponseWrapper<String> createInviteAuthCode(@RequestParam(value = "planNo") @NotBlank @Schema(example = "플랜번호") String planNo,
+                                                        @RequestParam(value = "inviteTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "초대타입코드(10: 회원, 20: 비회원)") String inviteTypeCode) {
+        return ResponseWrapper.<String>builder()
+                .data(Collections.singletonList(planService.createInviteAuthCode(planNo, inviteTypeCode)))
+                .build();
+    }
 }

@@ -18,4 +18,5 @@ public interface PlanService {
     List<PlanMateVO> searchPlanMateList(String planNo);
     boolean updatePlan(String planNo, PlanDTO planDTO);
     List<PlanMateVO> searchMemberList(String searchDiviCode, String searchKeyword);
+    String createInviteAuthCode(String planNo, String inviteTypeCode);
 }
