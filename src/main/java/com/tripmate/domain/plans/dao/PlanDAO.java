@@ -1,6 +1,7 @@
 package com.tripmate.domain.plans.dao;
 
 import com.tripmate.domain.plans.dao.mapper.PlanDAOMapper;
+import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
@@ -92,5 +93,9 @@ public class PlanDAO {
 
     public int insertInviteCode(PlanAuthCodeDTO planAuthCodeDTO) {
         return sqlSession.getMapper(PlanDAOMapper.class).insertInviteCode(planAuthCodeDTO);
+    }
+
+    public int insertNotification(NotificationDTO notificationDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).insertNotification(notificationDTO);
     }
 }

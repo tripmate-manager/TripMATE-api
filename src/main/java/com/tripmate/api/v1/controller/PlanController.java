@@ -1,6 +1,7 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.vo.ResponseWrapper;
+import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.service.PlanService;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
@@ -119,6 +120,14 @@ public class PlanController {
                                                         @RequestParam(value = "inviteTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "초대타입코드(10: 회원, 20: 비회원)") String inviteTypeCode) {
         return ResponseWrapper.<String>builder()
                 .data(Collections.singletonList(planService.createInviteAuthCode(planNo, inviteTypeCode)))
+                .build();
+    }
+
+    @Operation(summary = "알림 생성", description = "알림을 생성합니다.")
+    @PostMapping("/notification")
+    public ResponseWrapper<Boolean> createNotification(@Valid @RequestBody NotificationDTO notificationDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.createNotification(notificationDTO)))
                 .build();
     }
 }

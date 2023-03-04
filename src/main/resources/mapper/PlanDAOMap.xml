@@ -298,4 +298,31 @@
                 0,
                 now());
     </insert>
+
+    <insert id="insertNotification" parameterType="NotificationDTO">
+        INSERT INTO CT_NOTI_MGMT (PLAN_NO,
+                                  NOTI_TP_CD,
+                                  SENDER_NO,
+                                  RCVER_NO,
+                                  NOTI_DTIME,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME
+                <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
+                    , DAILYPLAN_NO
+                </if>)
+        VALUES (#{planNo:NUMERIC},
+                #{notificationTypeCode:VARCHAR},
+                #{senderNo:NUMERIC},
+                #{receiverNo:NUMERIC},
+                now(),
+                0,
+                now(),
+                0,
+                now()
+            <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
+                , #{dailyplanNo:NUMERIC}
+            </if>);
+    </insert>
 </mapper>

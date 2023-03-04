@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -19,6 +20,7 @@ import java.util.List;
 @Getter
 @Schema(description = "플랜 생성/수정 Request DTO")
 public class PlanDTO {
+    @Min(value = 1, message = "회원 번호는 필수이며, 양수만 입력 가능합니다.")
     private int memberNo;
 
     @Hidden

@@ -8,6 +8,7 @@ import com.tripmate.domain.common.Encrypt;
 import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.plans.dao.PlanDAO;
+import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
@@ -177,6 +178,15 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return planAuthCodeDTO.getInviteCode();
+    }
+
+    @Override
+    public boolean createNotification(NotificationDTO notificationDTO) {
+        if (planDAO.insertNotification(notificationDTO) != 1) {
+            throw new GuideMessageException("초대 인증 코드 생성 처리 중 오류가 발생하였습니다.");
+        }
+
+        return true;
     }
 
     private void insertPlanAddress(PlanDTO planDTO) {

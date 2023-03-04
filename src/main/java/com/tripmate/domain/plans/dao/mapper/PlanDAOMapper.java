@@ -1,5 +1,6 @@
 package com.tripmate.domain.plans.dao.mapper;
 
+import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
@@ -29,4 +30,5 @@ public interface PlanDAOMapper {
     int deletePlanAttributeWithPlanNo(PlanAttributeDTO planAttributeDTO);
     List<PlanMateVO> searchMemberListWithSearchKeyword(SearchMemberDTO searchMemberDTO);
     int insertInviteCode(PlanAuthCodeDTO planAuthCodeDTO);
+    int insertNotification(NotificationDTO notificationDTO);
 }
