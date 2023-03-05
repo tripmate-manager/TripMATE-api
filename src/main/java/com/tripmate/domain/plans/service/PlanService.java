@@ -2,6 +2,7 @@ package com.tripmate.domain.plans.service;
 
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
@@ -21,4 +22,5 @@ public interface PlanService {
     List<PlanMateVO> searchMemberList(String searchDiviCode, String searchKeyword);
     String createInviteAuthCode(String planNo, String inviteTypeCode);
     boolean createNotification(NotificationDTO notificationDTO);
+    List<NotificationVO> searchNotificationList(String memberNo);
 }

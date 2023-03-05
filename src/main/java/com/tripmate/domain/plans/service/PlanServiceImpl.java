@@ -13,6 +13,7 @@ import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
+import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
@@ -187,6 +188,11 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return true;
+    }
+
+    @Override
+    public List<NotificationVO> searchNotificationList(String memberNo) {
+        return planDAO.searchNotificationList(memberNo);
     }
 
     private void insertPlanAddress(PlanDTO planDTO) {

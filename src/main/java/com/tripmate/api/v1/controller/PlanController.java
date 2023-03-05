@@ -4,6 +4,7 @@ import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.service.PlanService;
+import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
@@ -128,6 +129,14 @@ public class PlanController {
     public ResponseWrapper<Boolean> createNotification(@Valid @RequestBody NotificationDTO notificationDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.createNotification(notificationDTO)))
+                .build();
+    }
+
+    @Operation(summary = "알림 조회", description = "알림을 조회합니다.")
+    @GetMapping("/notification")
+    public ResponseWrapper<NotificationVO> searchNotificationList(@Valid @RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+        return ResponseWrapper.<NotificationVO>builder()
+                .data(planService.searchNotificationList(memberNo))
                 .build();
     }
 }
