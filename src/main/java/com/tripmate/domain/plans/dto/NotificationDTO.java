@@ -40,6 +40,6 @@ public class NotificationDTO {
     @Hidden
     private String readDateTime;
 
-    //todo: 일정알림시간 필드 (추후 수정)
+    @Hidden
     private String notificationDateTime;
 }

@@ -23,4 +23,6 @@ public interface PlanService {
     String createInviteAuthCode(String planNo, String inviteTypeCode);
     boolean createNotification(NotificationDTO notificationDTO);
     List<NotificationVO> searchNotificationList(String memberNo);
+    int getUnreadNotificationCnt(String memberNo);
+    boolean updateNotificationReadDateTime(String memberNo, String notificationNo);
 }

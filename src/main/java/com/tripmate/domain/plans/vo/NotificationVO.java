@@ -41,10 +41,7 @@ public class NotificationVO {
     @Min(value = 1, message = "수신자 회원번호는 필수이며, 양수만 입력 가능합니다.")
     private int receiverNo;
 
-    @Hidden
     private String readDateTime;
 
-    private String updateDatetime;
-
-    private String notificationDatetime;
+    private String notificationDateTime;
 }

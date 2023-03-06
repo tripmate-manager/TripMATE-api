@@ -307,10 +307,10 @@
                                   REG_NO,
                                   REG_DTIME,
                                   UPT_NO,
-                                  UPT_DTIME
-                <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
+                                  UPT_DTIME,
+                                  NOTI_DTIME
+        <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
                     , POST_NO
-                    , NOTI_DTIME
                 </if>)
         VALUES (#{planNo:NUMERIC},
                 #{notificationTypeCode:VARCHAR},
@@ -319,10 +319,10 @@
                 #{senderNo:NUMERIC},
                 now(),
                 #{senderNo:NUMERIC},
+                now(),
                 now()
             <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
                 , #{postNo:NUMERIC}
-                , #{notificationDateTime:VARCHAR}
             </if>);
     </insert>
 
@@ -337,8 +337,7 @@
         <result property="senderName" column="SENDER_NAME"/>
         <result property="receiverNo" column="RCVER_NO"/>
         <result property="readDateTime" column="READ_DTIME"/>
-        <result property="updateDatetime" column="UPT_DTIME"/>
-        <result property="notificationDatetime" column="NOTI_DTIME"/>
+        <result property="notificationDateTime" column="NOTI_DTIME"/>
     </resultMap>
 
     <select id="searchNotificationList" parameterType="String" resultMap="searchNotificationList">
@@ -349,8 +348,6 @@
                 noti.RCVER_NO,
                 noti.NOTI_DTIME,
                 noti.READ_DTIME,
-                noti.REG_DTIME,
-                noti.NOTI_DTIME,
                 (SELECT PLAN_TITLE FROM CT_PLAN_MGMT WHERE PLAN_NO = noti.PLAN_NO) AS PLAN_TITLE,
                 (SELECT POST_TITLE FROM CT_POST_MGMT WHERE POST_NO = noti.POST_NO) AS POST_TITLE,
                 (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = (SELECT MBR_NO FROM CT_PLAN_MATE WHERE PLAN_NO = noti.PLAN_NO AND LEAD_YN = 'Y')) AS LEADER_NAME,
@@ -359,4 +356,19 @@
         WHERE noti.RCVER_NO = #{memberNo:VARCHAR}
         ORDER BY noti.NOTI_NO DESC;
     </select>
+
+    <select id="getUnreadNotificationCnt" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM CT_NOTI_MGMT
+        WHERE RCVER_NO = #{memberNo:VARCHAR}
+          AND READ_DTIME IS NULL;
+    </select>
+
+    <update id="updateNotificationReadDateTime" parameterType="UpdateNotificationReadDateTimeDTO">
+        UPDATE CT_NOTI_MGMT
+        SET READ_DTIME = now(),
+            UPT_NO = #{memberNo:VARCHAR},
+            UPT_DTIME = now()
+        where NOTI_NO = #{notificationNo:VARCHAR};
+    </update>
 </mapper>

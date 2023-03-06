@@ -139,4 +139,21 @@ public class PlanController {
                 .data(planService.searchNotificationList(memberNo))
                 .build();
     }
+
+    @Operation(summary = "미확인 알림 카운트 조회", description = "읽지 않은 알림 카운트 수를 조회합니다.")
+    @GetMapping("/notification/unread")
+    public ResponseWrapper<Integer> getUnreadNotificationCnt(@Valid @RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+        return ResponseWrapper.<Integer>builder()
+                .data(Collections.singletonList(planService.getUnreadNotificationCnt(memberNo)))
+                .build();
+    }
+
+    @Operation(summary = "알림 확인 일시 수정", description = "알림 확인 일시를 수정합니다.")
+    @PutMapping("/notification")
+    public ResponseWrapper<Boolean> updateNotificationReadDateTime(@Valid @RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo,
+                                                                   @Valid @RequestParam(value = "notificationNo") @NotBlank @Schema(example = "알림번호") String notificationNo) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.updateNotificationReadDateTime(memberNo, notificationNo)))
+                .build();
+    }
 }

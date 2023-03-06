@@ -5,6 +5,7 @@ import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
+import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
@@ -33,4 +34,6 @@ public interface PlanDAOMapper {
     int insertInviteCode(PlanAuthCodeDTO planAuthCodeDTO);
     int insertNotification(NotificationDTO notificationDTO);
     List<NotificationVO> searchNotificationList(String memberNo);
+    int getUnreadNotificationCnt(String memberNo);
+    int updateNotificationReadDateTime(UpdateNotificationReadDateTimeDTO updateNotificationReadDateTimeDTO);
 }
