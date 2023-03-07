@@ -17,6 +17,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Schema(description = "알림 목록 조회 Response VO")
 public class NotificationVO {
+    private int notificationNo;
 
     @Min(value = 1, message = "플랜 번호는 필수이며, 양수만 입력 가능합니다.")
     private int planNo;

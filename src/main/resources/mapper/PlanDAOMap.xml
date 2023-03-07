@@ -327,6 +327,7 @@
     </insert>
 
     <resultMap id="searchNotificationList" type="NotificationVO">
+        <result property="notificationNo" column="NOTI_NO"/>
         <result property="planNo" column="PLAN_NO"/>
         <result property="planTitle" column="PLAN_TITLE"/>
         <result property="leaderName" column="LEADER_NAME"/>
@@ -341,7 +342,8 @@
     </resultMap>
 
     <select id="searchNotificationList" parameterType="String" resultMap="searchNotificationList">
-        SELECT noti.PLAN_NO,
+        SELECT noti.NOTI_NO,
+                noti.PLAN_NO,
                 noti.POST_NO,
                 noti.NOTI_TP_CD,
                 noti.SENDER_NO,
@@ -354,6 +356,7 @@
                 (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = noti.SENDER_NO) AS SENDER_NAME
         FROM CT_NOTI_MGMT noti
         WHERE noti.RCVER_NO = #{memberNo:VARCHAR}
+          AND noti.NOTI_DTIME <![CDATA[<]]> now()
         ORDER BY noti.NOTI_NO DESC;
     </select>
 
@@ -361,6 +364,7 @@
         SELECT COUNT(*)
         FROM CT_NOTI_MGMT
         WHERE RCVER_NO = #{memberNo:VARCHAR}
+          AND TIMESTAMPDIFF(MINUTE, now(), NOTI_DTIME) <![CDATA[<]]> 0
           AND READ_DTIME IS NULL;
     </select>
 
@@ -369,6 +373,6 @@
         SET READ_DTIME = now(),
             UPT_NO = #{memberNo:VARCHAR},
             UPT_DTIME = now()
-        where NOTI_NO = #{notificationNo:VARCHAR};
+        WHERE NOTI_NO = #{notificationNo:VARCHAR};
     </update>
 </mapper>
