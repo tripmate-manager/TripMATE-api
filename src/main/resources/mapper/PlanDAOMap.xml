@@ -298,4 +298,81 @@
                 0,
                 now());
     </insert>
+
+    <insert id="insertNotification" parameterType="NotificationDTO">
+        INSERT INTO CT_NOTI_MGMT (PLAN_NO,
+                                  NOTI_TP_CD,
+                                  SENDER_NO,
+                                  RCVER_NO,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME,
+                                  NOTI_DTIME
+        <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
+                    , POST_NO
+                </if>)
+        VALUES (#{planNo:NUMERIC},
+                #{notificationTypeCode:VARCHAR},
+                #{senderNo:NUMERIC},
+                #{receiverNo:NUMERIC},
+                #{senderNo:NUMERIC},
+                now(),
+                #{senderNo:NUMERIC},
+                now(),
+                now()
+            <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
+                , #{postNo:NUMERIC}
+            </if>);
+    </insert>
+
+    <resultMap id="searchNotificationList" type="NotificationVO">
+        <result property="notificationNo" column="NOTI_NO"/>
+        <result property="planNo" column="PLAN_NO"/>
+        <result property="planTitle" column="PLAN_TITLE"/>
+        <result property="leaderName" column="LEADER_NAME"/>
+        <result property="postNo" column="POST_NO"/>
+        <result property="postTitle" column="POST_TITLE"/>
+        <result property="notificationTypeCode" column="NOTI_TP_CD"/>
+        <result property="senderNo" column="SENDER_NO"/>
+        <result property="senderName" column="SENDER_NAME"/>
+        <result property="receiverNo" column="RCVER_NO"/>
+        <result property="readDateTime" column="READ_DTIME"/>
+        <result property="notificationDateTime" column="NOTI_DTIME"/>
+    </resultMap>
+
+    <select id="searchNotificationList" parameterType="String" resultMap="searchNotificationList">
+        SELECT noti.NOTI_NO,
+                noti.PLAN_NO,
+                noti.POST_NO,
+                noti.NOTI_TP_CD,
+                noti.SENDER_NO,
+                noti.RCVER_NO,
+                noti.NOTI_DTIME,
+                noti.READ_DTIME,
+                (SELECT PLAN_TITLE FROM CT_PLAN_MGMT WHERE PLAN_NO = noti.PLAN_NO) AS PLAN_TITLE,
+                (SELECT POST_TITLE FROM CT_POST_MGMT WHERE POST_NO = noti.POST_NO) AS POST_TITLE,
+                (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = (SELECT MBR_NO FROM CT_PLAN_MATE WHERE PLAN_NO = noti.PLAN_NO AND LEAD_YN = 'Y')) AS LEADER_NAME,
+                (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = noti.SENDER_NO) AS SENDER_NAME
+        FROM CT_NOTI_MGMT noti
+        WHERE noti.RCVER_NO = #{memberNo:VARCHAR}
+          AND noti.NOTI_DTIME <![CDATA[<]]> now()
+        ORDER BY noti.NOTI_NO DESC;
+    </select>
+
+    <select id="getUnreadNotificationCnt" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM CT_NOTI_MGMT
+        WHERE RCVER_NO = #{memberNo:VARCHAR}
+          AND TIMESTAMPDIFF(MINUTE, now(), NOTI_DTIME) <![CDATA[<]]> 0
+          AND READ_DTIME IS NULL;
+    </select>
+
+    <update id="updateNotificationReadDateTime" parameterType="UpdateNotificationReadDateTimeDTO">
+        UPDATE CT_NOTI_MGMT
+        SET READ_DTIME = now(),
+            UPT_NO = #{memberNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE NOTI_NO = #{notificationNo:VARCHAR};
+    </update>
 </mapper>

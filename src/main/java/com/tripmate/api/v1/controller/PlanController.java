@@ -1,8 +1,10 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.vo.ResponseWrapper;
+import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.service.PlanService;
+import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
@@ -119,6 +121,39 @@ public class PlanController {
                                                         @RequestParam(value = "inviteTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "초대타입코드(10: 회원, 20: 비회원)") String inviteTypeCode) {
         return ResponseWrapper.<String>builder()
                 .data(Collections.singletonList(planService.createInviteAuthCode(planNo, inviteTypeCode)))
+                .build();
+    }
+
+    @Operation(summary = "알림 생성", description = "알림을 생성합니다.")
+    @PostMapping("/notification")
+    public ResponseWrapper<Boolean> createNotification(@Valid @RequestBody NotificationDTO notificationDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.createNotification(notificationDTO)))
+                .build();
+    }
+
+    @Operation(summary = "알림 조회", description = "알림을 조회합니다.")
+    @GetMapping("/notification")
+    public ResponseWrapper<NotificationVO> searchNotificationList(@Valid @RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+        return ResponseWrapper.<NotificationVO>builder()
+                .data(planService.searchNotificationList(memberNo))
+                .build();
+    }
+
+    @Operation(summary = "미확인 알림 카운트 조회", description = "읽지 않은 알림 카운트 수를 조회합니다.")
+    @GetMapping("/notification/unread")
+    public ResponseWrapper<Integer> getUnreadNotificationCnt(@Valid @RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+        return ResponseWrapper.<Integer>builder()
+                .data(Collections.singletonList(planService.getUnreadNotificationCnt(memberNo)))
+                .build();
+    }
+
+    @Operation(summary = "알림 확인 일시 수정", description = "알림 확인 일시를 수정합니다.")
+    @PutMapping("/notification")
+    public ResponseWrapper<Boolean> updateNotificationReadDateTime(@Valid @RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo,
+                                                                   @Valid @RequestParam(value = "notificationNo") @NotBlank @Schema(example = "알림번호") String notificationNo) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.updateNotificationReadDateTime(memberNo, notificationNo)))
                 .build();
     }
 }

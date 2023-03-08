@@ -1,10 +1,13 @@
 package com.tripmate.domain.plans.dao;
 
 import com.tripmate.domain.plans.dao.mapper.PlanDAOMapper;
+import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
+import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
+import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
@@ -92,5 +95,21 @@ public class PlanDAO {
 
     public int insertInviteCode(PlanAuthCodeDTO planAuthCodeDTO) {
         return sqlSession.getMapper(PlanDAOMapper.class).insertInviteCode(planAuthCodeDTO);
+    }
+
+    public int insertNotification(NotificationDTO notificationDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).insertNotification(notificationDTO);
+    }
+
+    public List<NotificationVO> searchNotificationList(String memberNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchNotificationList(memberNo);
+    }
+
+    public int getUnreadNotificationCnt(String memberNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getUnreadNotificationCnt(memberNo);
+    }
+
+    public int updateNotificationReadDateTime(UpdateNotificationReadDateTimeDTO updateNotificationReadDateTimeDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).updateNotificationReadDateTime(updateNotificationReadDateTimeDTO);
     }
 }

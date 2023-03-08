@@ -8,10 +8,13 @@ import com.tripmate.domain.common.Encrypt;
 import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.plans.dao.PlanDAO;
+import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
+import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
+import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
@@ -177,6 +180,34 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return planAuthCodeDTO.getInviteCode();
+    }
+
+    @Override
+    public boolean createNotification(NotificationDTO notificationDTO) {
+        if (planDAO.insertNotification(notificationDTO) != 1) {
+            throw new GuideMessageException("초대 인증 코드 생성 처리 중 오류가 발생하였습니다.");
+        }
+
+        return true;
+    }
+
+    @Override
+    public List<NotificationVO> searchNotificationList(String memberNo) {
+        return planDAO.searchNotificationList(memberNo);
+    }
+
+    @Override
+    public int getUnreadNotificationCnt(String memberNo) {
+        return planDAO.getUnreadNotificationCnt(memberNo);
+    }
+
+    @Override
+    public boolean updateNotificationReadDateTime(String memberNo, String notificationNo) {
+        return planDAO.updateNotificationReadDateTime(UpdateNotificationReadDateTimeDTO.builder()
+                .memberNo(memberNo)
+                .notificationNo(notificationNo)
+                .build()
+        ) == 1;
     }
 
     private void insertPlanAddress(PlanDTO planDTO) {
