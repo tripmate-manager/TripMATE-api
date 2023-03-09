@@ -15,6 +15,8 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Schema(description = "플랜메이트 VO")
 public class PlanMateVO {
+    @Schema(description = "플랜메이트번호")
+    private int mateNo;
 
     @Schema(description = "플랜번호")
     private int planNo;

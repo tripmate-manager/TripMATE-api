@@ -108,7 +108,13 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public PlanVO getPlanInfo(String planNo) {
-        return planDAO.getPlanInfoWithPlanNo(planNo);
+        List<PlanVO> planVO = planDAO.getPlanInfoWithPlanNo(planNo);
+
+        if (planVO.isEmpty()) {
+            throw new NoResultException("해당 플랜 정보가 존재하지 않습니다.");
+        }
+
+        return planDAO.getPlanInfoWithPlanNo(planNo).get(0);
     }
 
     @Override
@@ -119,10 +125,10 @@ public class PlanServiceImpl implements PlanService {
     @Override
     @Transactional
     public boolean updatePlan(String planNo, PlanDTO planDTO) {
-        PlanVO planVO = planDAO.getPlanInfoWithPlanNo(planNo);
+        List<PlanVO> planVO = planDAO.getPlanInfoWithPlanNo(planNo);
 
         if (planVO == null) {
-            throw new NoResultException("플랜 번호에 해당하는 플랜 정보가 존재하지 않습니다.");
+            throw new NoResultException("해당 플랜 정보가 존재하지 않습니다.");
         }
 
         if (planDTO.getPlanAddressList() != null) {
