@@ -267,7 +267,7 @@
     </delete>
 
     <select id="searchMemberListWithSearchKeyword" parameterType="SearchMemberDTO" resultMap="searchPlanMateList">
-        SELECT MATE_NO, MBR_NO, MBR_ID, MBR_NM, NICK_NM
+        SELECT MBR_NO, MBR_ID, MBR_NM, NICK_NM
         FROM MB_MBR_MGMT
         WHERE MBR_STATUS_CD IN ('10', '40')
         <choose>
