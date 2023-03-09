@@ -383,4 +383,40 @@
             UPT_DTIME = now()
         WHERE NOTI_NO = #{notificationNo:VARCHAR};
     </update>
+
+    <select id="getPlanLeaderMemberNo" parameterType="String" resultType="String">
+        SELECT MBR_NO
+        FROM CT_PLAN_MATE
+        WHERE PLAN_NO = #{planNo:VARCHAR}
+          AND LEAD_YN = 'Y';
+    </select>
+
+    <update id="updatePlanLeadYn" parameterType="ExitPlanDTO">
+        UPDATE CT_PLAN_MATE
+        SET LEAD_YN = 'Y',
+            UPT_NO = #{memberNo:NUMERIC},
+            UPT_DTIME = now()
+        WHERE MATE_NO = #{mateNo:VARCHAR};
+    </update>
+
+    <delete id="deletePlanMate" parameterType="ExitPlanDTO">
+        DELETE FROM CT_PLAN_MATE
+        WHERE PLAN_NO = #{planNo:VARCHAR}
+          AND MBR_NO = #{memberNo:VARCHAR};
+    </delete>
+
+    <select id="getPlanMateCnt" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM CT_PLAN_MATE mate, CT_PLAN_MGMT plan
+        WHERE mate.PLAN_NO = plan.PLAN_NO
+          AND plan.PLAN_NO = #{planNo:VARCHAR};
+    </select>
+
+    <update id="updatePlanUseYn" parameterType="ExitPlanDTO">
+        UPDATE CT_PLAN_MGMT
+           SET USE_YN = 'N',
+               UPT_NO = #{memberNo:NUMERIC},
+               UPT_DTIME = now()
+         WHERE PLAN_NO = #{planNo:VARCHAR};
+    </update>
 </mapper>

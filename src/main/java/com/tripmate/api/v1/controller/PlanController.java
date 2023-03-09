@@ -1,6 +1,7 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.vo.ResponseWrapper;
+import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.service.PlanService;
@@ -154,6 +155,14 @@ public class PlanController {
                                                                    @Valid @RequestParam(value = "notificationNo") @NotBlank @Schema(example = "알림번호") String notificationNo) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.updateNotificationReadDateTime(memberNo, notificationNo)))
+                .build();
+    }
+
+    @Operation(summary = "플랜 나가기", description = "플랜 나가기 처리합니다.")
+    @PostMapping("/exit-plan")
+    public ResponseWrapper<Boolean> exitPlanMember(@Valid @RequestBody ExitPlanDTO exitPlanDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.exitPlan(exitPlanDTO)))
                 .build();
     }
 }

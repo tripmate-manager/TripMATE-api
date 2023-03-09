@@ -1,5 +1,6 @@
 package com.tripmate.domain.plans.service;
 
+import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
 import com.tripmate.domain.plans.vo.NotificationVO;
@@ -25,4 +26,5 @@ public interface PlanService {
     List<NotificationVO> searchNotificationList(String memberNo);
     int getUnreadNotificationCnt(String memberNo);
     boolean updateNotificationReadDateTime(String memberNo, String notificationNo);
+    boolean exitPlan(ExitPlanDTO exitPlanDTO);
 }

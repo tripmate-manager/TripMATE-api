@@ -8,6 +8,7 @@ import com.tripmate.domain.common.Encrypt;
 import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.plans.dao.PlanDAO;
+import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
@@ -214,6 +215,28 @@ public class PlanServiceImpl implements PlanService {
                 .notificationNo(notificationNo)
                 .build()
         ) == 1;
+    }
+
+    @Override
+    @Transactional
+    public boolean exitPlan(ExitPlanDTO exitPlanDTO) {
+        if (exitPlanDTO.getMateNo().equals(planDAO.getPlanLeaderMemberNo(exitPlanDTO.getPlanNo()))) {
+            if (planDAO.updatePlanLeadYn(exitPlanDTO) != 1) {
+                throw new GuideMessageException("플랜 리더 변경 처리 중 오류가 발생하였습니다.");
+            }
+        }
+
+        if (planDAO.deletePlanMate(exitPlanDTO) != 1) {
+            throw new GuideMessageException("플랜 나가기 처리 중 오류가 발생하였습니다.");
+        }
+
+        if (planDAO.getPlanMateCnt(exitPlanDTO.getPlanNo()) == 0) {
+            if (planDAO.updatePlanUseYn(exitPlanDTO) != 1) {
+                throw new GuideMessageException("플랜 나가기 처리 중 오류가 발생하였습니다.");
+            }
+        }
+
+        return true;
     }
 
     private void insertPlanAddress(PlanDTO planDTO) {
