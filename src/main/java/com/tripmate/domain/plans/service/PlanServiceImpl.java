@@ -220,7 +220,7 @@ public class PlanServiceImpl implements PlanService {
     @Override
     @Transactional
     public boolean exitPlan(ExitPlanDTO exitPlanDTO) {
-        if (exitPlanDTO.getMateNo().equals(planDAO.getPlanLeaderMemberNo(exitPlanDTO.getPlanNo()))) {
+        if (exitPlanDTO.getMemberNo().equals(planDAO.getPlanLeaderMemberNo(exitPlanDTO.getPlanNo()))) {
             if (planDAO.updatePlanLeadYn(exitPlanDTO) != 1) {
                 throw new GuideMessageException("플랜 리더 변경 처리 중 오류가 발생하였습니다.");
             }
