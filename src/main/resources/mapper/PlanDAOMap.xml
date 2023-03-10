@@ -419,4 +419,11 @@
                UPT_DTIME = now()
          WHERE PLAN_NO = #{planNo:VARCHAR};
     </update>
+
+    <select id="getPlanMateCntWithMateNoAndPlanNo" parameterType="ExitPlanDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM CT_PLAN_MATE
+        WHERE MATE_NO = #{mateNo:VARCHAR}
+          AND PLAN_NO = #{planNo:VARCHAR};
+    </select>
 </mapper>

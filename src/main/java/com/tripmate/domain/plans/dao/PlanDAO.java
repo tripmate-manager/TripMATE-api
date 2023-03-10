@@ -133,4 +133,8 @@ public class PlanDAO {
     public int updatePlanUseYn(ExitPlanDTO exitPlanDTO) {
         return sqlSession.getMapper(PlanDAOMapper.class).updatePlanUseYn(exitPlanDTO);
     }
+
+    public int getPlanMateCntWithMateNoAndPlanNo(ExitPlanDTO exitPlanDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanMateCntWithMateNoAndPlanNo(exitPlanDTO);
+    }
 }

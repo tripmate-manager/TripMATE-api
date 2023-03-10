@@ -220,20 +220,28 @@ public class PlanServiceImpl implements PlanService {
     @Override
     @Transactional
     public boolean exitPlan(ExitPlanDTO exitPlanDTO) {
+
+        if (exitPlanDTO.getPlanNo().equals(exitPlanDTO.getMateNo()) || planDAO.getPlanMateCnt(exitPlanDTO.getPlanNo()) == 0) {
+            throw new GuideMessageException("플랜 나가기 처리 중 오류가 발생하였습니다.");
+        }
+
         if (exitPlanDTO.getMemberNo().equals(planDAO.getPlanLeaderMemberNo(exitPlanDTO.getPlanNo()))) {
-            if (planDAO.updatePlanLeadYn(exitPlanDTO) != 1) {
-                throw new GuideMessageException("플랜 리더 변경 처리 중 오류가 발생하였습니다.");
+            if (planDAO.getPlanMateCnt(exitPlanDTO.getPlanNo()) == 1) {
+                if (planDAO.updatePlanUseYn(exitPlanDTO) != 1) {
+                    throw new GuideMessageException("플랜 나가기 처리 중 오류가 발생하였습니다.");
+                }
+            } else {
+                if (planDAO.getPlanMateCntWithMateNoAndPlanNo(exitPlanDTO) != 1) {
+                    throw new GuideMessageException("플랜 리더 변경 처리 중 오류가 발생하였습니다.");
+                }
+                if (planDAO.updatePlanLeadYn(exitPlanDTO) != 1) {
+                    throw new GuideMessageException("플랜 리더 변경 처리 중 오류가 발생하였습니다.");
+                }
             }
         }
 
         if (planDAO.deletePlanMate(exitPlanDTO) != 1) {
             throw new GuideMessageException("플랜 나가기 처리 중 오류가 발생하였습니다.");
-        }
-
-        if (planDAO.getPlanMateCnt(exitPlanDTO.getPlanNo()) == 0) {
-            if (planDAO.updatePlanUseYn(exitPlanDTO) != 1) {
-                throw new GuideMessageException("플랜 나가기 처리 중 오류가 발생하였습니다.");
-            }
         }
 
         return true;

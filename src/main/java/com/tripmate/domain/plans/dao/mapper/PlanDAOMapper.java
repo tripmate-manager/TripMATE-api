@@ -42,4 +42,5 @@ public interface PlanDAOMapper {
     int deletePlanMate(ExitPlanDTO exitPlanDTO);
     int getPlanMateCnt(String planNo);
     int updatePlanUseYn(ExitPlanDTO exitPlanDTO);
+    int getPlanMateCntWithMateNoAndPlanNo(ExitPlanDTO exitPlanDTO);
 }
