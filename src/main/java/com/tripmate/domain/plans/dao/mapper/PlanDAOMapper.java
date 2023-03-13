@@ -38,7 +38,7 @@ public interface PlanDAOMapper {
     int getUnreadNotificationCnt(String memberNo);
     int updateNotificationReadDateTime(UpdateNotificationReadDateTimeDTO updateNotificationReadDateTimeDTO);
     String getPlanLeaderMemberNo(String planNo);
-    int updatePlanLeadYn(ExitPlanDTO exitPlanDTO);
+    int updatePlanLeaderYn(ExitPlanDTO exitPlanDTO);
     int deletePlanMate(ExitPlanDTO exitPlanDTO);
     int getPlanMateCnt(String planNo);
     int updatePlanUseYn(ExitPlanDTO exitPlanDTO);

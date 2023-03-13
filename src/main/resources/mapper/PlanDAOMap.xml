@@ -391,10 +391,10 @@
           AND LEAD_YN = 'Y';
     </select>
 
-    <update id="updatePlanLeadYn" parameterType="ExitPlanDTO">
+    <update id="updatePlanLeaderYn" parameterType="ExitPlanDTO">
         UPDATE CT_PLAN_MATE
         SET LEAD_YN = 'Y',
-            UPT_NO = #{memberNo:NUMERIC},
+            UPT_NO = #{memberNo:VARCHAR},
             UPT_DTIME = now()
         WHERE MATE_NO = #{mateNo:VARCHAR};
     </update>
@@ -415,7 +415,7 @@
     <update id="updatePlanUseYn" parameterType="ExitPlanDTO">
         UPDATE CT_PLAN_MGMT
            SET USE_YN = 'N',
-               UPT_NO = #{memberNo:NUMERIC},
+               UPT_NO = #{memberNo:VARCHAR},
                UPT_DTIME = now()
          WHERE PLAN_NO = #{planNo:VARCHAR};
     </update>

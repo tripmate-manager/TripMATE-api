@@ -234,7 +234,7 @@ public class PlanServiceImpl implements PlanService {
                 if (planDAO.getPlanMateCntWithMateNoAndPlanNo(exitPlanDTO) != 1) {
                     throw new GuideMessageException("플랜 리더 변경 처리 중 오류가 발생하였습니다.");
                 }
-                if (planDAO.updatePlanLeadYn(exitPlanDTO) != 1) {
+                if (planDAO.updatePlanLeaderYn(exitPlanDTO) != 1) {
                     throw new GuideMessageException("플랜 리더 변경 처리 중 오류가 발생하였습니다.");
                 }
             }

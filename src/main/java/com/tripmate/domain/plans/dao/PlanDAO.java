@@ -118,8 +118,8 @@ public class PlanDAO {
         return sqlSession.getMapper(PlanDAOMapper.class).getPlanLeaderMemberNo(planNo);
     }
 
-    public int updatePlanLeadYn(ExitPlanDTO exitPlanDTO) {
-        return sqlSession.getMapper(PlanDAOMapper.class).updatePlanLeadYn(exitPlanDTO);
+    public int updatePlanLeaderYn(ExitPlanDTO exitPlanDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).updatePlanLeaderYn(exitPlanDTO);
     }
 
     public int deletePlanMate(ExitPlanDTO exitPlanDTO) {
