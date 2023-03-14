@@ -45,4 +45,6 @@ public class NotificationVO {
     private String readDateTime;
 
     private String notificationDateTime;
+
+    private String useYn;
 }

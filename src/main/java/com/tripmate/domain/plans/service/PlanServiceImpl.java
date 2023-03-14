@@ -8,6 +8,7 @@ import com.tripmate.domain.common.Encrypt;
 import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.plans.dao.PlanDAO;
+import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
@@ -108,7 +109,13 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public PlanVO getPlanInfo(String planNo) {
-        return planDAO.getPlanInfoWithPlanNo(planNo);
+        List<PlanVO> planVO = planDAO.getPlanInfoWithPlanNo(planNo);
+
+        if (planVO.isEmpty()) {
+            throw new NoResultException("해당 플랜 정보가 존재하지 않습니다.");
+        }
+
+        return planDAO.getPlanInfoWithPlanNo(planNo).get(0);
     }
 
     @Override
@@ -119,10 +126,10 @@ public class PlanServiceImpl implements PlanService {
     @Override
     @Transactional
     public boolean updatePlan(String planNo, PlanDTO planDTO) {
-        PlanVO planVO = planDAO.getPlanInfoWithPlanNo(planNo);
+        List<PlanVO> planVO = planDAO.getPlanInfoWithPlanNo(planNo);
 
         if (planVO == null) {
-            throw new NoResultException("플랜 번호에 해당하는 플랜 정보가 존재하지 않습니다.");
+            throw new NoResultException("해당 플랜 정보가 존재하지 않습니다.");
         }
 
         if (planDTO.getPlanAddressList() != null) {
@@ -208,6 +215,36 @@ public class PlanServiceImpl implements PlanService {
                 .notificationNo(notificationNo)
                 .build()
         ) == 1;
+    }
+
+    @Override
+    @Transactional
+    public boolean exitPlan(ExitPlanDTO exitPlanDTO) {
+
+        if (exitPlanDTO.getPlanNo().equals(exitPlanDTO.getMateNo()) || planDAO.getPlanMateCnt(exitPlanDTO.getPlanNo()) == 0) {
+            throw new GuideMessageException("플랜 나가기 처리 중 오류가 발생하였습니다.");
+        }
+
+        if (exitPlanDTO.getMemberNo().equals(planDAO.getPlanLeaderMemberNo(exitPlanDTO.getPlanNo()))) {
+            if (planDAO.getPlanMateCnt(exitPlanDTO.getPlanNo()) == 1) {
+                if (planDAO.updatePlanUseYn(exitPlanDTO) != 1) {
+                    throw new GuideMessageException("플랜 나가기 처리 중 오류가 발생하였습니다.");
+                }
+            } else {
+                if (planDAO.getPlanMateCntWithMateNoAndPlanNo(exitPlanDTO) != 1) {
+                    throw new GuideMessageException("플랜 리더 변경 처리 중 오류가 발생하였습니다.");
+                }
+                if (planDAO.updatePlanLeaderYn(exitPlanDTO) != 1) {
+                    throw new GuideMessageException("플랜 리더 변경 처리 중 오류가 발생하였습니다.");
+                }
+            }
+        }
+
+        if (planDAO.deletePlanMate(exitPlanDTO) != 1) {
+            throw new GuideMessageException("플랜 나가기 처리 중 오류가 발생하였습니다.");
+        }
+
+        return true;
     }
 
     private void insertPlanAddress(PlanDTO planDTO) {

@@ -23,5 +23,6 @@
         <typeAlias type="com.tripmate.domain.plans.dto.NotificationDTO" alias="NotificationDTO"/>
         <typeAlias type="com.tripmate.domain.plans.vo.NotificationVO" alias="NotificationVO"/>
         <typeAlias type="com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO" alias="UpdateNotificationReadDateTimeDTO"/>
+        <typeAlias type="com.tripmate.domain.plans.dto.ExitPlanDTO" alias="ExitPlanDTO"/>
     </typeAliases>
 </configuration>

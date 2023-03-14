@@ -164,6 +164,7 @@
                plan.REG_DTIME
         FROM CT_PLAN_MGMT plan, CT_PLAN_MATE mate
         WHERE plan.PLAN_NO = mate.PLAN_NO
+          AND plan.USE_YN = 'Y'
           AND mate.MBR_NO = #{memberNo:VARCHAR};
     </select>
 
@@ -210,10 +211,12 @@
                plan.REV_AVG_SCORE,
                plan.REG_DTIME
         FROM CT_PLAN_MGMT plan
-        WHERE plan.PLAN_NO = #{planNo:VARCHAR};
+        WHERE plan.PLAN_NO = #{planNo:VARCHAR}
+          AND plan.USE_YN = 'Y';
     </select>
 
     <resultMap id="searchPlanMateList" type="PlanMateVO">
+        <result property="mateNo" column="MATE_NO"/>
         <result property="planNo" column="PLAN_NO"/>
         <result property="memberNo" column="MBR_NO"/>
         <result property="leadYn" column="LEAD_YN"/>
@@ -223,14 +226,17 @@
     </resultMap>
 
     <select id="searchPlanMateListWithPlanNo" parameterType="String" resultMap="searchPlanMateList">
-        SELECT mate.PLAN_NO,
+        SELECT mate.MATE_NO,
+               mate.PLAN_NO,
                mbr.MBR_NO,
                mate.LEAD_YN,
                mbr.MBR_NM,
                mbr.NICK_NM
-        FROM CT_PLAN_MATE mate, MB_MBR_MGMT mbr
+        FROM CT_PLAN_MATE mate, MB_MBR_MGMT mbr, CT_PLAN_MGMT plan
         WHERE mate.MBR_NO = mbr.MBR_NO
-          AND mate.PLAN_NO = #{planNo:VARCHAR};
+          AND mate.PLAN_NO = plan.PLAN_NO
+          AND plan.PLAN_NO = #{planNo:VARCHAR}
+          AND plan.USE_YN = 'Y';
     </select>
 
     <update id="updatePlan" parameterType="PlanDTO">
@@ -339,6 +345,7 @@
         <result property="receiverNo" column="RCVER_NO"/>
         <result property="readDateTime" column="READ_DTIME"/>
         <result property="notificationDateTime" column="NOTI_DTIME"/>
+        <result property="useYn" column="USE_YN"/>
     </resultMap>
 
     <select id="searchNotificationList" parameterType="String" resultMap="searchNotificationList">
@@ -353,7 +360,8 @@
                 (SELECT PLAN_TITLE FROM CT_PLAN_MGMT WHERE PLAN_NO = noti.PLAN_NO) AS PLAN_TITLE,
                 (SELECT POST_TITLE FROM CT_POST_MGMT WHERE POST_NO = noti.POST_NO) AS POST_TITLE,
                 (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = (SELECT MBR_NO FROM CT_PLAN_MATE WHERE PLAN_NO = noti.PLAN_NO AND LEAD_YN = 'Y')) AS LEADER_NAME,
-                (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = noti.SENDER_NO) AS SENDER_NAME
+                (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = noti.SENDER_NO) AS SENDER_NAME,
+                (SELECT USE_YN FROM CT_PLAN_MGMT WHERE PLAN_NO = noti.PLAN_NO) AS USE_YN
         FROM CT_NOTI_MGMT noti
         WHERE noti.RCVER_NO = #{memberNo:VARCHAR}
           AND noti.NOTI_DTIME <![CDATA[<]]> now()
@@ -375,4 +383,47 @@
             UPT_DTIME = now()
         WHERE NOTI_NO = #{notificationNo:VARCHAR};
     </update>
+
+    <select id="getPlanLeaderMemberNo" parameterType="String" resultType="String">
+        SELECT MBR_NO
+        FROM CT_PLAN_MATE
+        WHERE PLAN_NO = #{planNo:VARCHAR}
+          AND LEAD_YN = 'Y';
+    </select>
+
+    <update id="updatePlanLeaderYn" parameterType="ExitPlanDTO">
+        UPDATE CT_PLAN_MATE
+        SET LEAD_YN = 'Y',
+            UPT_NO = #{memberNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE MATE_NO = #{mateNo:VARCHAR};
+    </update>
+
+    <delete id="deletePlanMate" parameterType="ExitPlanDTO">
+        DELETE FROM CT_PLAN_MATE
+        WHERE PLAN_NO = #{planNo:VARCHAR}
+          AND MBR_NO = #{memberNo:VARCHAR};
+    </delete>
+
+    <select id="getPlanMateCnt" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM CT_PLAN_MATE mate, CT_PLAN_MGMT plan
+        WHERE mate.PLAN_NO = plan.PLAN_NO
+          AND plan.PLAN_NO = #{planNo:VARCHAR};
+    </select>
+
+    <update id="updatePlanUseYn" parameterType="ExitPlanDTO">
+        UPDATE CT_PLAN_MGMT
+           SET USE_YN = 'N',
+               UPT_NO = #{memberNo:VARCHAR},
+               UPT_DTIME = now()
+         WHERE PLAN_NO = #{planNo:VARCHAR};
+    </update>
+
+    <select id="getPlanMateCntWithMateNoAndPlanNo" parameterType="ExitPlanDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM CT_PLAN_MATE
+        WHERE MATE_NO = #{mateNo:VARCHAR}
+          AND PLAN_NO = #{planNo:VARCHAR};
+    </select>
 </mapper>

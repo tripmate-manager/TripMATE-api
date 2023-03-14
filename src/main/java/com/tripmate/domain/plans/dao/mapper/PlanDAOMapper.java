@@ -1,5 +1,6 @@
 package com.tripmate.domain.plans.dao.mapper;
 
+import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
@@ -36,4 +37,10 @@ public interface PlanDAOMapper {
     List<NotificationVO> searchNotificationList(String memberNo);
     int getUnreadNotificationCnt(String memberNo);
     int updateNotificationReadDateTime(UpdateNotificationReadDateTimeDTO updateNotificationReadDateTimeDTO);
+    String getPlanLeaderMemberNo(String planNo);
+    int updatePlanLeaderYn(ExitPlanDTO exitPlanDTO);
+    int deletePlanMate(ExitPlanDTO exitPlanDTO);
+    int getPlanMateCnt(String planNo);
+    int updatePlanUseYn(ExitPlanDTO exitPlanDTO);
+    int getPlanMateCntWithMateNoAndPlanNo(ExitPlanDTO exitPlanDTO);
 }

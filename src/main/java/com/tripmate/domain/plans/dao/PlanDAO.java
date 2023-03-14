@@ -1,6 +1,7 @@
 package com.tripmate.domain.plans.dao;
 
 import com.tripmate.domain.plans.dao.mapper.PlanDAOMapper;
+import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
@@ -69,8 +70,8 @@ public class PlanDAO {
         return sqlSession.getMapper(PlanDAOMapper.class).searchPlanListWithMemberNo(memberNo);
     }
 
-    public PlanVO getPlanInfoWithPlanNo(String planNo) {
-        return sqlSession.getMapper(PlanDAOMapper.class).getPlanInfoWithPlanNo(planNo).get(0);
+    public List<PlanVO> getPlanInfoWithPlanNo(String planNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanInfoWithPlanNo(planNo);
     }
 
     public List<PlanMateVO> searchPlanMateListWithPlanNo(String planNo) {
@@ -111,5 +112,29 @@ public class PlanDAO {
 
     public int updateNotificationReadDateTime(UpdateNotificationReadDateTimeDTO updateNotificationReadDateTimeDTO) {
         return sqlSession.getMapper(PlanDAOMapper.class).updateNotificationReadDateTime(updateNotificationReadDateTimeDTO);
+    }
+
+    public String getPlanLeaderMemberNo(String planNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanLeaderMemberNo(planNo);
+    }
+
+    public int updatePlanLeaderYn(ExitPlanDTO exitPlanDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).updatePlanLeaderYn(exitPlanDTO);
+    }
+
+    public int deletePlanMate(ExitPlanDTO exitPlanDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).deletePlanMate(exitPlanDTO);
+    }
+
+    public int getPlanMateCnt(String planNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanMateCnt(planNo);
+    }
+
+    public int updatePlanUseYn(ExitPlanDTO exitPlanDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).updatePlanUseYn(exitPlanDTO);
+    }
+
+    public int getPlanMateCntWithMateNoAndPlanNo(ExitPlanDTO exitPlanDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanMateCntWithMateNoAndPlanNo(exitPlanDTO);
     }
 }
