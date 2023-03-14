@@ -4,7 +4,9 @@ import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.service.PlanService;
+import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
@@ -118,9 +120,9 @@ public class PlanController {
 
     @Operation(summary = "초대 인증코드 생성", description = "비회원 초대 시 인증코드를 생성합니다.")
     @PostMapping("/invite-code")
-    public ResponseWrapper<String> createInviteAuthCode(@RequestParam(value = "planNo") @NotBlank @Schema(example = "플랜번호") String planNo,
+    public ResponseWrapper<InviteCodeVO> createInviteAuthCode(@RequestParam(value = "planNo") @NotBlank @Schema(example = "플랜번호") String planNo,
                                                         @RequestParam(value = "inviteTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "초대타입코드(10: 회원, 20: 비회원)") String inviteTypeCode) {
-        return ResponseWrapper.<String>builder()
+        return ResponseWrapper.<InviteCodeVO>builder()
                 .data(Collections.singletonList(planService.createInviteAuthCode(planNo, inviteTypeCode)))
                 .build();
     }
@@ -163,6 +165,22 @@ public class PlanController {
     public ResponseWrapper<Boolean> exitPlanMember(@Valid @RequestBody ExitPlanDTO exitPlanDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.exitPlan(exitPlanDTO)))
+                .build();
+    }
+
+    @Operation(summary = "플랜 초대코드 정보 조회", description = "플랜 초대코드에 대한 정보를 조회합니다.")
+    @GetMapping("/invite-code")
+    public ResponseWrapper<InviteCodeVO> getInviteCodeInfo(@Valid @RequestParam(value = "inviteCodeNo") @NotBlank @Schema(example = "초대코드번호") String inviteCodeNo) {
+        return ResponseWrapper.<InviteCodeVO>builder()
+                .data(Collections.singletonList(planService.getPlanInviteInfoWithInviteCodeNo(inviteCodeNo)))
+                .build();
+    }
+
+    @Operation(summary = "플랜 메이트 추가", description = "플랜 메이트를 추가합니다.")
+    @PostMapping("/plan-mate")
+    public ResponseWrapper<Boolean> insertPlanMate(@Valid @RequestBody PlanMateDTO planMateDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.insertPlanMate(planMateDTO)))
                 .build();
     }
 }

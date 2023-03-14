@@ -6,8 +6,10 @@ import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
 import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
+import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
@@ -62,8 +64,8 @@ public class PlanDAO {
         return sqlSession.getMapper(PlanDAOMapper.class).insertPlanAttributeMgmt(planAttributeVO);
     }
 
-    public int insertPlanMate(PlanMateVO planMateVO) {
-        return sqlSession.getMapper(PlanDAOMapper.class).insertPlanMate(planMateVO);
+    public int insertPlanMate(PlanMateDTO planMateDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).insertPlanMate(planMateDTO);
     }
 
     public List<PlanVO> searchPlanListWithMemberNo(String memberNo) {
@@ -136,5 +138,13 @@ public class PlanDAO {
 
     public int getPlanMateCntWithMateNoAndPlanNo(ExitPlanDTO exitPlanDTO) {
         return sqlSession.getMapper(PlanDAOMapper.class).getPlanMateCntWithMateNoAndPlanNo(exitPlanDTO);
+    }
+
+    public InviteCodeVO getPlanInviteInfoWithInviteCodeNo(String inviteCodeNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanInviteInfoWithInviteCodeNo(inviteCodeNo);
+    }
+
+    public int getPlanMateCntWithMemberNoAndPlanNo(PlanMateDTO planMateDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanMateCntWithMemberNoAndPlanNo(planMateDTO);
     }
 }
