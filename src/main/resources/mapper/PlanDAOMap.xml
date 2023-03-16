@@ -113,7 +113,7 @@
                 now());
     </insert>
 
-    <insert id="insertPlanMate" parameterType="PlanMateVO">
+    <insert id="insertPlanMate" parameterType="PlanMateDTO">
         INSERT INTO CT_PLAN_MATE (PLAN_NO,
                                   MBR_NO,
                                   LEAD_YN,
@@ -318,18 +318,21 @@
         <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
                     , POST_NO
                 </if>)
-        VALUES (#{planNo:NUMERIC},
+        VALUES
+        <foreach collection="receiverNoList" item="receiverNoList" separator=",">
+               (#{planNo:VARCHAR},
                 #{notificationTypeCode:VARCHAR},
-                #{senderNo:NUMERIC},
-                #{receiverNo:NUMERIC},
-                #{senderNo:NUMERIC},
+                #{senderNo:VARCHAR},
+                #{receiverNoList:VARCHAR},
+                #{senderNo:VARCHAR},
                 now(),
-                #{senderNo:NUMERIC},
+                #{senderNo:VARCHAR},
                 now(),
                 now()
             <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
-                , #{postNo:NUMERIC}
-            </if>);
+                , #{postNo:VARCHAR}
+            </if>)
+        </foreach>;
     </insert>
 
     <resultMap id="searchNotificationList" type="NotificationVO">
@@ -424,6 +427,23 @@
         SELECT COUNT(*)
         FROM CT_PLAN_MATE
         WHERE MATE_NO = #{mateNo:VARCHAR}
+          AND PLAN_NO = #{planNo:VARCHAR};
+    </select>
+    
+    <select id="getPlanInviteInfoWithInviteCodeNo" parameterType="String" resultType="InviteCodeVO">
+        SELECT INVI_CD_NO AS inviteCodeNo,
+               PLAN_NO AS planNo,
+               INVI_TP_CD AS inviteTypeCode,
+               INVI_CD AS inviteCode,
+               INVI_CD_EXPIRE_DTIME AS inviteCodeExpireDateTime
+        FROM CT_INVI_CD_MGMT
+        WHERE INVI_CD_NO = #{inviteCodeNo:VARCHAR};
+    </select>
+
+    <select id="getPlanMateCntWithMemberNoAndPlanNo" parameterType="PlanMateDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM CT_PLAN_MATE
+        WHERE MBR_NO = #{memberNo:VARCHAR}
           AND PLAN_NO = #{planNo:VARCHAR};
     </select>
 </mapper>

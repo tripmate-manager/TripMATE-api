@@ -13,8 +13,10 @@ import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
 import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
+import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
@@ -80,12 +82,12 @@ public class PlanServiceImpl implements PlanService {
             throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
         }
 
-        PlanMateVO planMateVO = PlanMateVO.builder()
-                .planNo(planDTO.getPlanNo())
-                .memberNo(planDTO.getMemberNo())
+        PlanMateDTO planMateDTO = PlanMateDTO.builder()
+                .planNo(String.valueOf(planDTO.getPlanNo()))
+                .memberNo(String.valueOf(planDTO.getMemberNo()))
                 .leadYn(Const.Y)
                 .build();
-        if (planDAO.insertPlanMate(planMateVO) != 1) {
+        if (planDAO.insertPlanMate(planMateDTO) != 1) {
             throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
         }
 
@@ -172,7 +174,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public String createInviteAuthCode(String planNo, String inviteTypeCode) {
+    public InviteCodeVO createInviteAuthCode(String planNo, String inviteTypeCode) {
         Encrypt encrypt = new Encrypt();
         String encryptString = encrypt.getEncrypt(encrypt.getSalt(), Const.SERVICE_NAME);
 
@@ -182,17 +184,42 @@ public class PlanServiceImpl implements PlanService {
                 .inviteCode(encryptString.substring(0, 6))
                 .build();
 
-        if (planDAO.insertInviteCode(planAuthCodeDTO) == 0) {
+        if (planDAO.insertInviteCode(planAuthCodeDTO) != 1) {
             throw new GuideMessageException("초대 인증 코드 생성 처리 중 오류가 발생하였습니다.");
         }
 
-        return planAuthCodeDTO.getInviteCode();
+        return planDAO.getPlanInviteInfoWithInviteCodeNo(String.valueOf(planAuthCodeDTO.getInviteCodeNo()));
     }
 
     @Override
     public boolean createNotification(NotificationDTO notificationDTO) {
-        if (planDAO.insertNotification(notificationDTO) != 1) {
-            throw new GuideMessageException("초대 인증 코드 생성 처리 중 오류가 발생하였습니다.");
+
+        if (ConstCode.NOTIFICATION_TYPE_CODE_CHANGE_LEADER.equals(notificationDTO.getNotificationTypeCode())) {
+            List<PlanMateVO> planMateVOList = planDAO.searchPlanMateListWithPlanNo(String.valueOf(notificationDTO.getPlanNo()));
+            List<String> receiverNoList = new ArrayList<>();
+
+            for (PlanMateVO planMateVO : planMateVOList) {
+                if (!notificationDTO.getSenderNo().equals(String.valueOf(planMateVO.getMemberNo()))) {
+                    receiverNoList.add(String.valueOf(planMateVO.getMemberNo()));
+                }
+            }
+
+            NotificationDTO changeLeaderNotificationDTO = NotificationDTO.builder()
+                    .planNo(notificationDTO.getPlanNo())
+                    .postNo(notificationDTO.getPostNo())
+                    .notificationTypeCode(notificationDTO.getNotificationTypeCode())
+                    .senderNo(notificationDTO.getSenderNo())
+                    .receiverNoList(receiverNoList)
+                    .notificationDateTime(notificationDTO.getNotificationDateTime())
+                    .build();
+
+            if (planDAO.insertNotification(changeLeaderNotificationDTO) != receiverNoList.size()) {
+                throw new GuideMessageException("초대 인증 코드 생성 처리 중 오류가 발생하였습니다.");
+            }
+        } else {
+            if (planDAO.insertNotification(notificationDTO) != 1) {
+                throw new GuideMessageException("초대 인증 코드 생성 처리 중 오류가 발생하였습니다.");
+            }
         }
 
         return true;
@@ -245,6 +272,20 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return true;
+    }
+
+    @Override
+    public InviteCodeVO getPlanInviteInfoWithInviteCodeNo(String inviteCodeNo) {
+        return planDAO.getPlanInviteInfoWithInviteCodeNo(inviteCodeNo);
+    }
+
+    @Override
+    public boolean insertPlanMate(PlanMateDTO planMateDTO) {
+        if (planDAO.getPlanMateCntWithMemberNoAndPlanNo(planMateDTO) > 0) {
+            throw new GuideMessageException("해당 플랜에 이미 가입된 회원입니다.");
+        }
+
+        return planDAO.insertPlanMate(planMateDTO) == 1;
     }
 
     private void insertPlanAddress(PlanDTO planDTO) {

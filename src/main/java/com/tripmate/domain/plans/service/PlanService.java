@@ -3,6 +3,8 @@ package com.tripmate.domain.plans.service;
 import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.PlanMateDTO;
+import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
@@ -21,10 +23,12 @@ public interface PlanService {
     List<PlanMateVO> searchPlanMateList(String planNo);
     boolean updatePlan(String planNo, PlanDTO planDTO);
     List<PlanMateVO> searchMemberList(String searchDiviCode, String searchKeyword);
-    String createInviteAuthCode(String planNo, String inviteTypeCode);
+    InviteCodeVO createInviteAuthCode(String planNo, String inviteTypeCode);
     boolean createNotification(NotificationDTO notificationDTO);
     List<NotificationVO> searchNotificationList(String memberNo);
     int getUnreadNotificationCnt(String memberNo);
     boolean updateNotificationReadDateTime(String memberNo, String notificationNo);
     boolean exitPlan(ExitPlanDTO exitPlanDTO);
+    InviteCodeVO getPlanInviteInfoWithInviteCodeNo(String inviteCodeNo);
+    boolean insertPlanMate(PlanMateDTO planMateDTO);
 }
