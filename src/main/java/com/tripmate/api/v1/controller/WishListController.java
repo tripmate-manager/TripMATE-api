@@ -33,7 +33,7 @@ public class WishListController {
         this.wishListService = wishListService;
     }
 
-    @Operation(summary = "게시글 생성", description = "게시글을 생성합니다.")
+    @Operation(summary = "게시글 생성", description = "위시리스트 게시글을 생성합니다.")
     @PostMapping("/create-post")
     public ResponseWrapper<String> createPost(@Valid @RequestBody PostDTO postDTO) {
         return ResponseWrapper.<String>builder()
@@ -41,7 +41,7 @@ public class WishListController {
                 .build();
     }
 
-    @Operation(summary = "게시글 조회", description = "게시글을 생성합니다.")
+    @Operation(summary = "위시리스트 조회", description = "해당 플랜의 위시리스트 목록을 조회합니다.")
     @GetMapping("/{planNo}")
     public ResponseWrapper<PostVO> searchWishList(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
         return ResponseWrapper.<PostVO>builder()
