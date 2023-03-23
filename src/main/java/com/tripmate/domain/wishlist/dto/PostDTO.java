@@ -26,8 +26,8 @@ public class PostDTO {
     private String memberNo;
 
     @NotBlank(message = "위시리스트 게시글 타입을 입력해주세요.")
-    @Pattern(regexp = "^[1239]0$", message = "게시글 타입코드는 10, 20, 30, 40만 입력 가능합니다.")
-    @Schema(description = "회원상태코드(10: 숙소, 20: 관광지, 30: 식당, 90: 기타", example = "10")
+    @Pattern(regexp = "^[1239]0$", message = "게시글 타입코드는 10, 20, 30, 90만 입력 가능합니다.")
+    @Schema(description = "위시리스트 게시글 타입코드(10: 숙소, 20: 관광지, 30: 식당, 90: 기타", example = "10")
     private String postTypeCode;
 
     @NotBlank(message = "플랜 본문 내용을 입력해주세요.")
