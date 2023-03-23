@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tripmate.domain.wishlist.dao.mapper.WishListDAOMapper">
+    <insert id="insertPostInfo" parameterType="PostDTO">
+        <selectKey keyProperty="postNo" keyColumn="POST_NO" resultType="String" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CT_POST_MGMT (PLAN_NO,
+                                  POST_TP_CD,
+                                  POST_CONTS,
+                                  POST_TITLE,
+                                  INFO_URL,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME,
+                                  <choose>
+                                      <when test="postTypeCode != null and '90'.toString() eq postTypeCode">
+                                          REMARK
+                                      </when>
+                                      <otherwise>
+                                          <if test="postTypeCode != null and '20'.toString() eq postTypeCode">
+                                              AMT,
+                                              BIZ_HOURS,
+                                          </if>
+                                          <if test="postTypeCode != null and '30'.toString() eq postTypeCode">
+                                              MAIN_MENU,
+                                              BIZ_HOURS,
+                                          </if>
+                                          SPOT_ADDR,
+                                          SPOT_LTTD,
+                                          SPOT_LNGTT
+                                      </otherwise>
+                                  </choose>)
+        VALUES (#{planNo:VARCHAR},
+        #{postTypeCode:VARCHAR},
+        #{postContents:VARCHAR},
+        #{postTitle:VARCHAR},
+        #{informationUrl:VARCHAR},
+        #{memberNo:VARCHAR},
+        now(),
+        0,
+        now(),
+        <choose>
+            <when test="postTypeCode != null and '90'.toString() eq postTypeCode">
+                #{remark:VARCHAR}
+            </when>
+            <otherwise>
+                <if test="postTypeCode != null and '20'.toString() eq postTypeCode">
+                    #{amount:VARCHAR},
+                    #{businessHours:VARCHAR},
+                </if>
+                <if test="postTypeCode != null and '30'.toString() eq postTypeCode">
+                    #{mainMenu:VARCHAR},
+                    #{businessHours:VARCHAR},
+                </if>
+                #{spotAddress:VARCHAR},
+                #{spotLatitude:VARCHAR},
+                #{spotLongitude:VARCHAR}
+            </otherwise>
+        </choose>);
+    </insert>
+
+    <resultMap id="searchWishList" type="PostVO">
+        <result property="postNo" column="POST_NO"/>
+        <result property="planNo" column="PLAN_NO"/>
+        <result property="postTypeCode" column="POST_TP_CD"/>
+        <result property="postContents" column="POST_CONTS"/>
+        <result property="postTitle" column="POST_TITLE"/>
+        <result property="spotAddress" column="SPOT_ADDR"/>
+        <result property="informationUrl" column="INFO_URL"/>
+        <result property="remark" column="REMARK"/>
+        <result property="mainMenu" column="MAIN_MENU"/>
+        <result property="businessHours" column="BIZ_HOURS"/>
+        <result property="amount" column="AMT"/>
+        <result property="mappingYn" column="MPPG_YN"/>
+        <result property="registrationDateTime" column="REG_DTIME"/>
+        <result property="commentCount" column="COMMENT_CNT"/>
+    </resultMap>
+
+    <select id="searchWishList" parameterType="String" resultMap="searchWishList">
+        SELECT POST_NO,
+               PLAN_NO,
+               POST_TP_CD,
+               POST_CONTS,
+               POST_TITLE,
+               SPOT_ADDR,
+               INFO_URL,
+               REMARK,
+               MAIN_MENU,
+               BIZ_HOURS,
+               AMT,
+               MPPG_YN,
+               REG_DTIME,
+               (SELECT COUNT(*) FROM CT_COMMENT comm WHERE comm.POST_NO = POST_NO) AS COMMENT_CNT
+        FROM CT_POST_MGMT
+        WHERE PLAN_NO = #{planNo:VARCHAR};
+    </select>
+</mapper>

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Builder
 @NoArgsConstructor
@@ -14,9 +14,9 @@ import javax.validation.constraints.Min;
 @Getter
 @Schema(description = "알림 확인 일시 수정 Request DTO")
 public class UpdateNotificationReadDateTimeDTO {
-    @Min(value = 1, message = "회원 번호는 필수이며, 양수만 입력 가능합니다.")
+    @NotBlank(message = "회원 번호를 입력해주세요.")
     private String memberNo;
 
-    @Min(value = 1, message = "알림 번호는 필수이며, 양수만 입력 가능합니다.")
+    @NotBlank(message = "알림 번호를 입력해주세요.")
     private String notificationNo;
 }

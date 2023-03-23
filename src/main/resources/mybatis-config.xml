@@ -26,5 +26,7 @@
         <typeAlias type="com.tripmate.domain.plans.dto.ExitPlanDTO" alias="ExitPlanDTO"/>
         <typeAlias type="com.tripmate.domain.plans.vo.InviteCodeVO" alias="InviteCodeVO"/>
         <typeAlias type="com.tripmate.domain.plans.dto.PlanMateDTO" alias="PlanMateDTO"/>
+        <typeAlias type="com.tripmate.domain.wishlist.dto.PostDTO" alias="PostDTO"/>
+        <typeAlias type="com.tripmate.domain.wishlist.vo.PostVO" alias="PostVO"/>
     </typeAliases>
 </configuration>
