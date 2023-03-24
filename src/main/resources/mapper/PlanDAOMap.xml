@@ -446,4 +446,13 @@
         WHERE MBR_NO = #{memberNo:VARCHAR}
           AND PLAN_NO = #{planNo:VARCHAR};
     </select>
+
+    <select id="getPlanMateCntWithPostNo" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM CT_PLAN_MATE mate
+        WHERE mate.PLAN_NO = (SELECT PLAN_NO
+                                FROM CT_POST_MGMT cpm
+                               WHERE cpm.POST_NO = #{postNo:VARCHAR})
+          AND mate.MBR_NO = #{memberNo:VARCHAR};
+    </select>
 </mapper>

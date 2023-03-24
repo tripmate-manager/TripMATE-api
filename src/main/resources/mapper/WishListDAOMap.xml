@@ -100,4 +100,23 @@
         WHERE PLAN_NO = #{planNo:VARCHAR}
           AND cpm.POST_NO = cc.POST_NO;
     </select>
+
+    <select id="getPostInfo" parameterType="String" resultType="PostVO">
+        SELECT POST_NO AS postNo,
+               PLAN_NO AS planNo,
+               POST_TP_CD AS postTypeCode,
+               POST_CONTS AS postContents,
+               POST_TITLE AS postTitle,
+               SPOT_ADDR AS spotAddress,
+               INFO_URL AS informationUrl,
+               REMARK AS remark,
+               MAIN_MENU AS mainMenu,
+               BIZ_HOURS AS businessHours,
+               AMT AS amount,
+               MPPG_YN AS mappingYn,
+               REG_DTIME AS registrationDateTime,
+               (SELECT COUNT(*) FROM CT_COMMENT comm WHERE comm.POST_NO = POST_NO) AS commentCnt
+        FROM CT_POST_MGMT
+        WHERE POST_NO = #{postNo:VARCHAR};
+    </select>
 </mapper>

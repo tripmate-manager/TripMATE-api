@@ -8,4 +8,5 @@ import java.util.List;
 public interface WishListService {
     String createPost(PostDTO postDTO);
     List<PostVO> searchWishList(String planNo);
+    PostVO getPostInfo(String postNo);
 }

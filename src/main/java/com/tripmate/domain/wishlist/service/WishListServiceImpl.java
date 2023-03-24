@@ -22,7 +22,7 @@ public class WishListServiceImpl implements WishListService {
 
     @Override
     public String createPost(PostDTO postDTO) {
-        if (wishListDAO.insertPostInfo(postDTO) <= 0 ) {
+        if (wishListDAO.insertPostInfo(postDTO) <= 0) {
             throw new GuideMessageException("게시글 생성 중 오류가 발생하였습니다.");
         }
 
@@ -32,5 +32,10 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public List<PostVO> searchWishList(String planNo) {
         return wishListDAO.searchWishList(planNo);
+    }
+
+    @Override
+    public PostVO getPostInfo(String postNo) {
+        return wishListDAO.getPostInfo(postNo);
     }
 }

@@ -43,9 +43,17 @@ public class WishListController {
 
     @Operation(summary = "위시리스트 조회", description = "해당 플랜의 위시리스트 목록을 조회합니다.")
     @GetMapping("/{planNo}")
-    public ResponseWrapper<PostVO> searchWishList(@Valid @PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
+    public ResponseWrapper<PostVO> searchWishList(@PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
         return ResponseWrapper.<PostVO>builder()
                 .data(wishListService.searchWishList(planNo))
+                .build();
+    }
+
+    @Operation(summary = "게시글 정보 조회", description = "해당 플랜의 위시리스트 목록을 조회합니다.")
+    @GetMapping("/post/{postNo}")
+    public ResponseWrapper<PostVO> getPostInfo(@PathVariable(value = "postNo") @Schema(example = "게시글번호") String postNo) {
+        return ResponseWrapper.<PostVO>builder()
+                .data(Collections.singletonList(wishListService.getPostInfo(postNo)))
                 .build();
     }
 }

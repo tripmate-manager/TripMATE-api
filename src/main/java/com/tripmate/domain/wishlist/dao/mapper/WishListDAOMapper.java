@@ -8,4 +8,5 @@ import java.util.List;
 public interface WishListDAOMapper {
     int insertPostInfo(PostDTO postDTO);
     List<PostVO> searchWishList(String planNo);
+    PostVO getPostInfo(String planNo);
 }

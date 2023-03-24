@@ -25,4 +25,8 @@ public class WishListDAO {
     public List<PostVO> searchWishList(String planNo) {
         return sqlSession.getMapper(WishListDAOMapper.class).searchWishList(planNo);
     }
+
+    public PostVO getPostInfo(String postNo) {
+        return sqlSession.getMapper(WishListDAOMapper.class).getPostInfo(postNo);
+    }
 }
