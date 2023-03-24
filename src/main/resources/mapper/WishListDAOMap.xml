@@ -119,4 +119,98 @@
         FROM CT_POST_MGMT
         WHERE POST_NO = #{postNo:VARCHAR};
     </select>
+
+    <insert id="insertComment" parameterType="CommentDTO">
+        <selectKey keyProperty="commentNo" keyColumn="CMNT_NO" resultType="String" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        INSERT INTO CT_COMMENT(POST_NO
+                                ,CMNT_DEPTH
+                                ,CMNT_TXT
+                                ,REG_NO
+                                ,REG_DTIME
+                                ,UPT_NO
+                                ,UPT_DTIME
+                                ,CMNT_GRP_NO
+                            <if test="commentDepth != null and '1'.toString() neq commentDepth">
+                                ,CMNT_GRP_NO2
+                            </if>
+        )
+        SELECT #{postNo:VARCHAR}
+                ,#{commentDepth:VARCHAR}
+                ,#{commentText:VARCHAR}
+                ,#{commenterNo:VARCHAR}
+                ,now()
+                ,0
+                ,now()
+                <choose>
+                    <when test="commentDepth != null and '1'.toString() eq commentDepth">
+                        ,CMNT_NO + 1 FROM CT_COMMENT ORDER BY CMNT_NO DESC LIMIT 1
+                    </when>
+                    <otherwise>
+                        ,#{commentGroupNo:VARCHAR}
+                    </otherwise>
+                </choose>
+                <if test="commentDepth != null and '1'.toString() neq commentDepth">
+                    <choose>
+                        <when test="commentDepth != null and '2'.toString() eq commentDepth">
+                            ,CMNT_NO + 1 FROM CT_COMMENT ORDER BY CMNT_NO DESC LIMIT 1
+                        </when>
+                        <otherwise>
+                            ,#{commentGroupNo2:VARCHAR}
+                        </otherwise>
+                    </choose>
+                </if>;
+    </insert>
+
+    <resultMap id="searchCommentList" type="CommentVO">
+        <result property="commentNo" column="CMNT_NO"/>
+        <result property="postNo" column="POST_NO"/>
+        <result property="commentGroupNo" column="CMNT_GRP_NO"/>
+        <result property="commentGroupNo2" column="CMNT_GRP_NO2"/>
+        <result property="commentDepth" column="CMNT_DEPTH"/>
+        <result property="commentText" column="CMNT_TXT"/>
+        <result property="nickName" column="NICK_NM"/>
+        <result property="commenterNo" column="REG_NO"/>
+        <result property="registrationDateTime" column="REG_DTIME"/>
+        <result property="useYn" column="USE_YN"/>
+    </resultMap>
+
+    <select id="searchCommentList" parameterType="String" resultMap="searchCommentList">
+        SELECT cc.CMNT_NO,
+               cc.POST_NO,
+               cc.CMNT_GRP_NO,
+               cc.CMNT_GRP_NO2,
+               cc.CMNT_DEPTH,
+               cc.CMNT_TXT,
+               (SELECT NICK_NM FROM MB_MBR_MGMT WHERE MBR_NO = cc.REG_NO) AS NICK_NM,
+               cc.REG_NO,
+               cc.REG_DTIME,
+               cc.USE_YN
+        FROM CT_COMMENT cc
+        WHERE POST_NO = #{postNo:VARCHAR}
+        ORDER BY cc.CMNT_GRP_NO, cc.CMNT_GRP_NO2, cc.REG_DTIME;
+    </select>
+
+    <select id="getPlanMateCntWithPostNo" parameterType="CommentDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM CT_PLAN_MATE mate
+        WHERE mate.PLAN_NO = (SELECT PLAN_NO FROM CT_POST_MGMT cpm WHERE cpm.POST_NO = #{postNo:VARCHAR})
+          AND mate.MBR_NO = #{commenterNo:VARCHAR};
+    </select>
+
+    <select id="getCommenterMemberNo" parameterType="String" resultType="String">
+        SELECT REG_NO
+        FROM CT_COMMENT
+        WHERE CMNT_NO = #{commentNo:VARCHAR};
+    </select>
+
+    <update id="updateCommentUseYn" parameterType="DeleteCommentDTO">
+        UPDATE CT_COMMENT
+        SET USE_YN = 'N',
+            UPT_NO = #{commenterNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE CMNT_NO = #{commentNo:VARCHAR};
+    </update>
 </mapper>
