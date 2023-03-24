@@ -45,7 +45,9 @@ public class PostVO {
 
     private String mappingYn;
 
+    @NotBlank
     private String registrationDateTime;
 
-    private int commentCount;
+    @NotBlank
+    private int commentCnt;
 }

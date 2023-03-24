@@ -78,25 +78,26 @@
         <result property="amount" column="AMT"/>
         <result property="mappingYn" column="MPPG_YN"/>
         <result property="registrationDateTime" column="REG_DTIME"/>
-        <result property="commentCount" column="COMMENT_CNT"/>
+        <result property="commentCnt" column="COMMENT_CNT"/>
     </resultMap>
 
     <select id="searchWishList" parameterType="String" resultMap="searchWishList">
-        SELECT POST_NO,
-               PLAN_NO,
-               POST_TP_CD,
-               POST_CONTS,
-               POST_TITLE,
-               SPOT_ADDR,
-               INFO_URL,
-               REMARK,
-               MAIN_MENU,
-               BIZ_HOURS,
-               AMT,
-               MPPG_YN,
-               REG_DTIME,
-               (SELECT COUNT(*) FROM CT_COMMENT comm WHERE comm.POST_NO = POST_NO) AS COMMENT_CNT
-        FROM CT_POST_MGMT
-        WHERE PLAN_NO = #{planNo:VARCHAR};
+        SELECT cpm.POST_NO,
+               cpm.PLAN_NO,
+               cpm.POST_TP_CD,
+               cpm.POST_CONTS,
+               cpm.POST_TITLE,
+               cpm.SPOT_ADDR,
+               cpm.INFO_URL,
+               cpm.REMARK,
+               cpm.MAIN_MENU,
+               cpm.BIZ_HOURS,
+               cpm.AMT,
+               cpm.MPPG_YN,
+               cpm.REG_DTIME,
+               count(*) AS COMMENT_CNT
+        FROM CT_POST_MGMT cpm, CT_COMMENT cc
+        WHERE PLAN_NO = #{planNo:VARCHAR}
+          AND cpm.POST_NO = cc.POST_NO;
     </select>
 </mapper>
