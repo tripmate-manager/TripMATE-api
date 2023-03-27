@@ -42,7 +42,7 @@
         #{informationUrl:VARCHAR},
         #{memberNo:VARCHAR},
         now(),
-        0,
+        #{memberNo:VARCHAR},
         now(),
         <choose>
             <when test="postTypeCode != null and '90'.toString() eq postTypeCode">
@@ -142,7 +142,7 @@
                 ,#{commentText:VARCHAR}
                 ,#{commenterNo:VARCHAR}
                 ,now()
-                ,0
+                ,#{commenterNo:VARCHAR}
                 ,now()
                 <choose>
                     <when test="commentDepth != null and '1'.toString() eq commentDepth">
@@ -209,7 +209,6 @@
     <update id="updateCommentUseYn" parameterType="DeleteCommentDTO">
         UPDATE CT_COMMENT
         SET USE_YN = 'N',
-            UPT_NO = #{commenterNo:VARCHAR},
             UPT_DTIME = now()
         WHERE CMNT_NO = #{commentNo:VARCHAR};
     </update>
