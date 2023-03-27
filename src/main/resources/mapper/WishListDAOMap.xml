@@ -114,6 +114,7 @@
                BIZ_HOURS AS businessHours,
                AMT AS amount,
                MPPG_YN AS mappingYn,
+               REG_NO AS registrationNo,
                REG_DTIME AS registrationDateTime,
                (SELECT COUNT(*) FROM CT_COMMENT comm WHERE comm.POST_NO = POST_NO) AS commentCnt
         FROM CT_POST_MGMT

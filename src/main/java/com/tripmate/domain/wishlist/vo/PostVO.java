@@ -46,6 +46,9 @@ public class PostVO {
     private String mappingYn;
 
     @NotBlank
+    private String registrationNo;
+
+    @NotBlank
     private String registrationDateTime;
 
     @NotBlank
