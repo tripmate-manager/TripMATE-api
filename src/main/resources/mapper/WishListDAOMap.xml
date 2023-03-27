@@ -196,8 +196,9 @@
 
     <select id="getPlanMateCntWithPostNo" parameterType="CommentDTO" resultType="int">
         SELECT COUNT(*)
-        FROM CT_PLAN_MATE mate
-        WHERE mate.PLAN_NO = (SELECT PLAN_NO FROM CT_POST_MGMT cpm WHERE cpm.POST_NO = #{postNo:VARCHAR})
+        FROM CT_PLAN_MATE mate, CT_POST_MGMT cpm
+        WHERE mate.PLAN_NO = cpm.PLAN_NO
+          AND cpm.POST_NO = #{postNo:VARCHAR}
           AND mate.MBR_NO = #{commenterNo:VARCHAR};
     </select>
 
