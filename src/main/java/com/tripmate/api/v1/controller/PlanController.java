@@ -77,7 +77,7 @@ public class PlanController {
                 .build();
     }
 
-    @Operation(summary = "회원 플랜 조회", description = "회원의 플랜 을 조회합니다. (return: 플랜 리스트)")
+    @Operation(summary = "회원 플랜 조회", description = "회원의 플랜을 조회합니다. (return: 플랜 리스트)")
     @GetMapping("/{memberNo}")
     public ResponseWrapper<PlanVO> searchMemberPlanList(@Valid @PathVariable(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
         return ResponseWrapper.<PlanVO>builder()
