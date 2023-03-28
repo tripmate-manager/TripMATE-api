@@ -62,7 +62,7 @@ public class WishListServiceImpl implements WishListService {
     }
 
     @Override
-    public Boolean deleteComment(String commentNo, DeleteCommentDTO deleteCommentDTO) {
+    public boolean deleteComment(String commentNo, DeleteCommentDTO deleteCommentDTO) {
         if (!commentNo.equals(deleteCommentDTO.getCommentNo())) {
             throw new WrongParameterException("댓글 삭제 처리 중 오류가 발생하였습니다.");
         }

@@ -14,5 +14,5 @@ public interface WishListService {
     PostVO getPostInfo(String postNo);
     String createComment(CommentDTO commentDTO);
     List<CommentVO> searchCommentList(String postNo);
-    Boolean deleteComment(String commentNo, DeleteCommentDTO deleteCommentDTO);
+    boolean deleteComment(String commentNo, DeleteCommentDTO deleteCommentDTO);
 }

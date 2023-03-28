@@ -95,10 +95,9 @@
                cpm.AMT,
                cpm.MPPG_YN,
                cpm.REG_DTIME,
-               count(*) AS COMMENT_CNT
-        FROM CT_POST_MGMT cpm, CT_COMMENT cc
-        WHERE PLAN_NO = #{planNo:VARCHAR}
-          AND cpm.POST_NO = cc.POST_NO;
+               (SELECT COUNT(*) FROM CT_COMMENT WHERE POST_NO = cpm.POST_NO) AS COMMENT_CNT
+        FROM CT_POST_MGMT cpm
+        WHERE PLAN_NO = #{planNo:VARCHAR};
     </select>
 
     <select id="getPostInfo" parameterType="String" resultType="PostVO">
