@@ -73,4 +73,18 @@ public class WishListServiceImpl implements WishListService {
 
         return wishListDAO.updateCommentUseYn(deleteCommentDTO) == 1;
     }
+
+    @Override
+    public boolean updatePost(String postNo, PostDTO postDTO) {
+        if (!postNo.equals(postDTO.getPostNo())) {
+            throw new WrongParameterException("게시글 수정 처리 중 오류가 발생하였습니다.");
+        }
+
+        return wishListDAO.updatePost(postDTO) == 1;
+    }
+
+    @Override
+    public boolean deletePost(String postNo) {
+        return wishListDAO.deletePost(postNo) == 1;
+    }
 }

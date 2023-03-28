@@ -52,4 +52,12 @@ public class WishListDAO {
     public int updateCommentUseYn(DeleteCommentDTO deleteCommentDTO) {
         return sqlSession.getMapper(WishListDAOMapper.class).updateCommentUseYn(deleteCommentDTO);
     }
+
+    public int updatePost(PostDTO postDTO) {
+        return sqlSession.getMapper(WishListDAOMapper.class).updatePost(postDTO);
+    }
+
+    public int deletePost(String postNo) {
+        return sqlSession.getMapper(WishListDAOMapper.class).deletePost(postNo);
+    }
 }
