@@ -86,4 +86,21 @@ public class WishListController {
                 .data(Collections.singletonList(wishListService.deleteComment(commentNo, deleteCommentDTO)))
                 .build();
     }
+
+    @Operation(summary = "게시글 수정", description = "위시리스트 게시글을 수정합니다.")
+    @PutMapping("/post/{postNo}")
+    public ResponseWrapper<Boolean> updatePost(@PathVariable(value = "postNo") @Schema(example = "게시글번호") String postNo,
+                                            @Valid @RequestBody PostDTO postDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(wishListService.updatePost(postNo, postDTO)))
+                .build();
+    }
+
+    @Operation(summary = "게시글 삭제", description = "위시리스트 게시글을 삭제합니다.")
+    @DeleteMapping("/post/{postNo}")
+    public ResponseWrapper<Boolean> deletePost(@PathVariable(value = "postNo") @Schema(example = "게시글번호") String postNo) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(wishListService.deletePost(postNo)))
+                .build();
+    }
 }

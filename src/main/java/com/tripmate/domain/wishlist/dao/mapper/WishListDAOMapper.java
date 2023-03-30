@@ -17,4 +17,6 @@ public interface WishListDAOMapper {
     int getPlanMateCntWithPostNo(CommentDTO commentDTO);
     String getCommenterMemberNo(String commentNo);
     int updateCommentUseYn(DeleteCommentDTO deleteCommentDTO);
+    int updatePost(PostDTO postDTO);
+    int deletePost(String postNo);
 }

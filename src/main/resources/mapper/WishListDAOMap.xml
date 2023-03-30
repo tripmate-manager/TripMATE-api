@@ -213,4 +213,36 @@
             UPT_DTIME = now()
         WHERE CMNT_NO = #{commentNo:VARCHAR};
     </update>
+
+    <update id="updatePost" parameterType="PostDTO">
+        UPDATE CT_POST_MGMT
+        SET POST_CONTS = #{postContents:VARCHAR}
+            ,POST_TITLE = #{postTitle:VARCHAR}
+            ,INFO_URL = #{informationUrl:VARCHAR}
+            ,UPT_NO = #{memberNo:VARCHAR}
+            ,UPT_DTIME = now()
+            <choose>
+                <when test="postTypeCode != null and '90'.toString() eq postTypeCode">
+                    ,REMARK = #{remark:VARCHAR}
+                </when>
+                <otherwise>
+                    <if test="postTypeCode != null and '20'.toString() eq postTypeCode">
+                        ,AMT = #{amount:VARCHAR}
+                        ,BIZ_HOURS = #{businessHours:VARCHAR}
+                    </if>
+                    <if test="postTypeCode != null and '30'.toString() eq postTypeCode">
+                        ,MAIN_MENU = #{mainMenu:VARCHAR}
+                        ,BIZ_HOURS = #{businessHours:VARCHAR}
+                    </if>
+                    ,SPOT_ADDR = #{spotAddress:VARCHAR}
+                    ,SPOT_LTTD = #{spotLatitude:VARCHAR}
+                    ,SPOT_LNGTT = #{spotLongitude:VARCHAR}
+                </otherwise>
+            </choose>
+        WHERE POST_NO = #{postNo:VARCHAR};
+    </update>
+
+    <delete id="deletePost" parameterType="String">
+        DELETE FROM CT_POST_MGMT WHERE POST_NO = #{postNo:VARCHAR};
+    </delete>
 </mapper>
