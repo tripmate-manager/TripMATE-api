@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Schema(description = "데일리플랜 등록 DTO")
+@Schema(description = "데일리플랜 등록 Request DTO")
 public class DailyPlanDTO {
     private String dailyPlanNo;
 
