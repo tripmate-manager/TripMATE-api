@@ -70,6 +70,7 @@
         FROM CT_DAILYPLAN cd, CT_POST_MGMT cpm
         WHERE cd.POST_NO = cpm.POST_NO
           AND cd.PLAN_NO = #{planNo:VARCHAR}
-          AND cd.DAY_GRP = #{dayGroup:VARCHAR};
+          AND cd.DAY_GRP = #{dayGroup:VARCHAR}
+        ORDER BY cd.DAILYPLAN_DTIME;
     </select>
 </mapper>
