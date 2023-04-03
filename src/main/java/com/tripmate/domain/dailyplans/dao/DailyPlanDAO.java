@@ -33,6 +33,10 @@ public class DailyPlanDAO {
         return sqlSession.getMapper(DailyPlanDAOMapper.class).deleteDailyPlan(dailyPlanNo);
     }
 
+    public int getDailyPlanCntWithDailyPlanNo(String dailyPlanNo) {
+        return sqlSession.getMapper(DailyPlanDAOMapper.class).getDailyPlanCntWithDailyPlanNo(dailyPlanNo);
+    }
+
     public int updatePostMappingYnWithDailyPlanNo(DeleteDailyPlanDTO deleteDailyPlanDTO) {
         return sqlSession.getMapper(DailyPlanDAOMapper.class).updatePostMappingYnWithDailyPlanNo(deleteDailyPlanDTO);
     }

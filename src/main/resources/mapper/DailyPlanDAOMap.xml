@@ -36,14 +36,20 @@
         WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
     </delete>
 
+    <select id="getDailyPlanCntWithDailyPlanNo" parameterType="String" resultType="int">
+        SELECT COUNT(1)
+        FROM CT_DAILYPLAN
+        WHERE POST_NO = (SELECT POST_NO FROM CT_DAILYPLAN WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR});
+    </select>
+
     <update id="updatePostMappingYnWithDailyPlanNo" parameterType="DeleteDailyPlanDTO">
-        UPDATE CT_POST_MGMT
-        SET MPPG_YN = 'N',
-            UPT_NO = #{memberNo:VARCHAR},
-            UPT_DTIME = now()
-        WHERE POST_NO = (SELECT POST_NO
-                         FROM CT_DAILYPLAN
-                         WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR});
+        UPDATE CT_POST_MGMT cpm
+        INNER JOIN CT_DAILYPLAN cd
+        ON cpm.POST_NO  = cd.POST_NO
+        SET cpm.MPPG_YN = 'N',
+            cpm.UPT_NO = #{memberNo:VARCHAR},
+            cpm.UPT_DTIME = now()
+        WHERE cd.DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
     </update>
 
     <select id="searchDailyPlanCntByDay" parameterType="String" resultType="DailyPlanCntVO">

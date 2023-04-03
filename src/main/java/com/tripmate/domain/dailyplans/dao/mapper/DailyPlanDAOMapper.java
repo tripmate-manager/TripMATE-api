@@ -12,6 +12,7 @@ public interface DailyPlanDAOMapper {
     int insertDailyPlan(DailyPlanDTO dailyPlanDTO);
     int updatePostMappingYnWithPostNo(DailyPlanDTO dailyPlanDTO);
     int deleteDailyPlan(String dailyPlanNo);
+    int getDailyPlanCntWithDailyPlanNo(String dailyPlanNo);
     int updatePostMappingYnWithDailyPlanNo(DeleteDailyPlanDTO deleteDailyPlanDTO);
     List<DailyPlanCntVO> searchDailyPlanCntByDay(String planNo);
     List<DailyPlanVO> searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO);
