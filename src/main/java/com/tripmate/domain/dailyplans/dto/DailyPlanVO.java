@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,47 +14,39 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Schema(description = "데일리플랜 조회 Response VO")
 public class DailyPlanVO {
-    @NotBlank
+    @Schema(description = "데일리플랜 번호", example = "1")
     private String dailyPlanNo;
 
-    @NotBlank
-    @Schema(description = "플랜 번호")
+    @Schema(description = "플랜 번호", example = "1")
     private String planNo;
 
-    @NotBlank
-    @Schema(description = "게시글 번호")
+    @Schema(description = "게시글 번호", example = "1")
     private String postNo;
 
-    @NotBlank
-    @Schema(description = "데일리플랜 그룹 번호")
+    @Schema(description = "데일리플랜 그룹 번호", example = "1")
     private String dayGroupNo;
 
-    @NotBlank
-    @Schema(description = "데일리플랜 일시")
+    @Schema(description = "데일리플랜 일시", example = "2023-03-30 15:00:00.0")
     private String dailyPlanDateTime;
 
-    @NotBlank
-    @Schema(description = "알림 설정 여부")
+    @Schema(description = "알림 설정 여부", example = "N")
     private String notificationYn;
 
-    @Schema(description = "리뷰 평점")
+    @Schema(description = "리뷰 평점", example = "1.0")
     private String reviewAverageScore;
 
-    @Schema(description = "게시글 타입 코드")
+    @Schema(description = "게시글 타입 코드", example = "10")
     private String postTypeCode;
 
-    @NotBlank
-    @Schema(description = "게시글 제목")
+    @Schema(description = "게시글 제목", example = "제목")
     private String postTitle;
 
-    @NotBlank
-    @Schema(description = "게시글 본문")
+    @Schema(description = "게시글 본문", example = "본문")
     private String postContents;
 
-    @Schema(description = "장소 위치(주소)")
+    @Schema(description = "장소 위치(주소)", example = "주소")
     private String spotAddress;
 
-    @NotBlank
-    @Schema(description = "게시글 작성자")
+    @Schema(description = "게시글 작성자", example = "1")
     private String postRegistrationNo;
 }
