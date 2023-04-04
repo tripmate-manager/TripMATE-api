@@ -86,4 +86,14 @@
           AND DAILYPLAN_NO = #{dailyPlanNo:VARCHAR}
           AND SENDER_NO = #{memberNo:VARCHAR};
     </delete>
+
+    <update id="updateDailyPlanNotification" parameterType="NotificationDTO">
+        UPDATE CT_NOTI_MGMT
+        SET NOTI_DTIME = STR_TO_DATE(#{notificationDateTime:VARCHAR}, '%Y%m%d%H%i%s'),
+            UPT_NO = #{senderNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE NOTI_TP_CD = '10'
+          AND DAILYPLAN_NO = #{dailyPlanNo:VARCHAR}
+          AND SENDER_NO = #{senderNo:VARCHAR};
+    </update>
 </mapper>
