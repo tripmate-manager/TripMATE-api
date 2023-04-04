@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Getter
 @Setter
-@Schema(description = "일별 데일리플랜 카운트 수 조회 Response DTO")
+@Schema(description = "플랜 일자별 데일리플랜 목록 조회 Request DTO")
 public class DailyPlanByDayDTO {
     @NotBlank(message = "플랜 번호를 입력해주세요.")
     @Schema(description = "플랜 번호")
