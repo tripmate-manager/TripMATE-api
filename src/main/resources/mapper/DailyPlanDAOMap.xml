@@ -66,7 +66,7 @@
              ,cd.POST_NO AS postNo
              ,cd.DAY_GRP AS dayGroupNo
              ,cd.DAILYPLAN_DTIME AS dailyPlanDateTime
-             ,cd.NOTI_YN AS notificationYn
+             ,(SELECT IF((SELECT COUNT(1) FROM CT_NOTI_MGMT WHERE DAILYPLAN_NO = cd.DAILYPLAN_NO  AND RCVER_NO = #{memberNo:VARCHAR}) > 0, 'Y', 'N')) AS notificationYn
              ,cd.REV_AVG_SCORE AS reviewAverageScore
              ,cpm.POST_TP_CD AS postTypeCode
              ,cpm.POST_TITLE AS postTitle
@@ -79,4 +79,11 @@
           AND cd.DAY_GRP = #{dayGroup:VARCHAR}
         ORDER BY cd.DAILYPLAN_DTIME;
     </select>
+
+    <delete id="deleteDailyPlanNotification" parameterType="DeleteDailyPlanNotificationDTO">
+        DELETE FROM CT_NOTI_MGMT
+        WHERE NOTI_TP_CD = '10'
+          AND DAILYPLAN_NO = #{dailyPlanNo:VARCHAR}
+          AND SENDER_NO = #{memberNo:VARCHAR};
+    </delete>
 </mapper>

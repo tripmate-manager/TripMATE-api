@@ -306,33 +306,52 @@
     </insert>
 
     <insert id="insertNotification" parameterType="NotificationDTO">
-        INSERT INTO CT_NOTI_MGMT (PLAN_NO,
-                                  NOTI_TP_CD,
-                                  SENDER_NO,
-                                  RCVER_NO,
-                                  REG_NO,
-                                  REG_DTIME,
-                                  UPT_NO,
-                                  UPT_DTIME,
-                                  NOTI_DTIME
+        INSERT INTO CT_NOTI_MGMT (PLAN_NO
+                                , NOTI_TP_CD
+                                , SENDER_NO
+                                , RCVER_NO
+                                , REG_NO
+                                , REG_DTIME
+                                , UPT_NO
+                                , UPT_DTIME
+                                , NOTI_DTIME
         <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
-                    , POST_NO
-                </if>)
-        VALUES
-        <foreach collection="receiverNoList" item="receiverNoList" separator=",">
-               (#{planNo:VARCHAR},
-                #{notificationTypeCode:VARCHAR},
-                #{senderNo:VARCHAR},
-                #{receiverNoList:VARCHAR},
-                #{senderNo:VARCHAR},
-                now(),
-                #{senderNo:VARCHAR},
-                now(),
-                now()
-            <if test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
-                , #{postNo:VARCHAR}
-            </if>)
-        </foreach>;
+                                , DAILYPLAN_NO
+        </if>)
+        <choose>
+        <when test="notificationTypeCode != null and '20'.toString() eq notificationTypeCode">
+        SELECT #{planNo:VARCHAR}
+                ,#{notificationTypeCode:VARCHAR}
+                ,#{senderNo:VARCHAR}
+                ,cpm.MBR_NO
+                ,#{senderNo:VARCHAR}
+                ,now()
+                ,#{senderNo:VARCHAR}
+                ,now()
+                ,now()
+        FROM CT_PLAN_MATE cpm
+        WHERE cpm.PLAN_NO = #{planNo:VARCHAR}
+        </when>
+        <otherwise>
+        VALUES (#{planNo:VARCHAR}
+                ,#{notificationTypeCode:VARCHAR}
+                ,#{senderNo:VARCHAR}
+                ,#{receiverNo:VARCHAR}
+                ,#{senderNo:VARCHAR}
+                ,now()
+                ,#{senderNo:VARCHAR}
+                ,now()
+            <choose>
+                <when test="notificationTypeCode != null and '10'.toString() eq notificationTypeCode">
+                    ,STR_TO_DATE(#{notificationDateTime:VARCHAR}, '%Y%m%d%H%i%s')
+                    ,#{dailyPlanNo:VARCHAR}
+                </when>
+                <otherwise>
+                    ,now()
+                </otherwise>
+            </choose>)
+        </otherwise>
+        </choose>;
     </insert>
 
     <resultMap id="searchNotificationList" type="NotificationVO">

@@ -5,8 +5,8 @@ import com.tripmate.domain.dailyplans.dto.DailyPlanCntVO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanDTO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanVO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanDTO;
+import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanNotificationDTO;
 
-import javax.validation.Valid;
 import java.util.List;
 
 public interface DailyPlanService {
@@ -14,4 +14,5 @@ public interface DailyPlanService {
     boolean deleteDailyPlan(String dailyPlanNo, DeleteDailyPlanDTO deleteDailyPlanDTO);
     List<DailyPlanCntVO> searchDailyPlanCntByDay(String planNo);
     List<DailyPlanVO> searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO);
+    boolean deleteDailyPlanNotification(DeleteDailyPlanNotificationDTO deleteDailyPlanNotificationDTO);
 }

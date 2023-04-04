@@ -6,6 +6,7 @@ import com.tripmate.domain.dailyplans.dto.DailyPlanCntVO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanDTO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanVO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanDTO;
+import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanNotificationDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -47,5 +48,9 @@ public class DailyPlanDAO {
 
     public List<DailyPlanVO> searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO) {
         return sqlSession.getMapper(DailyPlanDAOMapper.class).searchDailyPlanListByDay(dailyPlanByDayDTO);
+    }
+
+    public int deleteDailyPlanNotification(DeleteDailyPlanNotificationDTO deleteDailyPlanNotificationDTO) {
+        return sqlSession.getMapper(DailyPlanDAOMapper.class).deleteDailyPlanNotification(deleteDailyPlanNotificationDTO);
     }
 }

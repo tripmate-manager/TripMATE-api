@@ -7,6 +7,7 @@ import com.tripmate.domain.dailyplans.dto.DailyPlanCntVO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanDTO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanVO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanDTO;
+import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanNotificationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,5 +61,10 @@ public class DailyPlanServiceImpl implements DailyPlanService {
     @Override
     public List<DailyPlanVO> searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO) {
         return dailyPlanDAO.searchDailyPlanListByDay(dailyPlanByDayDTO);
+    }
+
+    @Override
+    public boolean deleteDailyPlanNotification(DeleteDailyPlanNotificationDTO deleteDailyPlanNotificationDTO) {
+        return dailyPlanDAO.deleteDailyPlanNotification(deleteDailyPlanNotificationDTO) == 1;
     }
 }
