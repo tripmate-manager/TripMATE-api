@@ -6,6 +6,7 @@ import com.tripmate.domain.dailyplans.dto.DailyPlanDTO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanVO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanDTO;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public interface DailyPlanService {

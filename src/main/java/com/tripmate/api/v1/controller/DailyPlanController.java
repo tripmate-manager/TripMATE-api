@@ -48,7 +48,7 @@ public class DailyPlanController {
 
     @Operation(summary = "데일리플랜 삭제(북마크 해제)", description = "해당 게시글을 데일리플랜에서 삭제합니다.(북마크기능)")
     @PostMapping("/dailyplan/{dailyPlanNo}")
-    public ResponseWrapper<Boolean> deleteDailyPlan(@PathVariable(value = "dailyPlanNo") @Schema(example = "데일리플랜 번호") String dailyPlanNo,
+    public ResponseWrapper<Boolean> deleteDailyPlan(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(example = "1") String dailyPlanNo,
                                                     @Valid @RequestBody DeleteDailyPlanDTO deleteDailyPlanDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(dailyPlanService.deleteDailyPlan(dailyPlanNo, deleteDailyPlanDTO)))
@@ -57,7 +57,7 @@ public class DailyPlanController {
 
     @Operation(summary = "플랜 일자별 데일리플랜 개수 조회", description = "해당 플랜에 대해 일자별 데일리플랜 개수를 조회합니다.")
     @GetMapping("/dailyplan-count/{planNo}")
-    public ResponseWrapper<DailyPlanCntVO> searchDailyPlanCntByDay(@PathVariable(value = "planNo") @Schema(example = "플랜 번호") String planNo) {
+    public ResponseWrapper<DailyPlanCntVO> searchDailyPlanCntByDay(@PathVariable(value = "planNo") @NotBlank @Schema(example = "1") String planNo) {
         return ResponseWrapper.<DailyPlanCntVO>builder()
                 .data(dailyPlanService.searchDailyPlanCntByDay(planNo))
                 .build();
@@ -65,8 +65,8 @@ public class DailyPlanController {
 
     @Operation(summary = "플랜 일자별 데일리플랜 목록 조회", description = "해당 플랜에 대해 일자별 데일리플랜 목록을 조회합니다.")
     @GetMapping("/dailyplan/{planNo}")
-    public ResponseWrapper<DailyPlanVO> searchDailyPlanListByDay(@PathVariable(value = "planNo") @Schema(example = "플랜 번호") String planNo,
-                                                                 @RequestParam(value = "dayGroup") @Schema(example = "플랜 일자") @NotBlank String dayGroup) {
+    public ResponseWrapper<DailyPlanVO> searchDailyPlanListByDay(@PathVariable(value = "planNo") @NotBlank @Schema(example = "1") String planNo,
+                                                                 @RequestParam(value = "dayGroup") @NotBlank @Schema(example = "1")String dayGroup) {
         return ResponseWrapper.<DailyPlanVO>builder()
                 .data(dailyPlanService.searchDailyPlanListByDay(DailyPlanByDayDTO.builder()
                                                                 .planNo(planNo)

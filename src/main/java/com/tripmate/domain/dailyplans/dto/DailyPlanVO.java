@@ -26,7 +26,7 @@ public class DailyPlanVO {
     @Schema(description = "데일리플랜 그룹 번호", example = "1")
     private String dayGroupNo;
 
-    @Schema(description = "데일리플랜 일시", example = "2023-03-30 15:00:00.0")
+    @Schema(description = "데일리플랜 일시", example = "2023-01-01 15:00:00.0")
     private String dailyPlanDateTime;
 
     @Schema(description = "알림 설정 여부", example = "N")
