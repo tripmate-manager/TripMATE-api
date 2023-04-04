@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tripmate.domain.dailyplans.dao.mapper.DailyPlanDAOMapper">
+    <insert id="insertDailyPlan" parameterType="DailyPlanDTO">
+        INSERT INTO CT_DAILYPLAN (PLAN_NO,
+                                  POST_NO,
+                                  DAY_GRP,
+                                  DAILYPLAN_DTIME,
+                                  REG_NO,
+                                  REG_DTIME,
+                                  UPT_NO,
+                                  UPT_DTIME)
+        VALUES (#{planNo:VARCHAR}
+                ,#{postNo:VARCHAR}
+                ,#{dayGroupNo:VARCHAR}
+                ,STR_TO_DATE(#{dailyPlanDateTime:VARCHAR}, '%Y%m%d%H%i%s')
+                ,#{memberNo:VARCHAR}
+                ,now()
+                ,#{memberNo:VARCHAR}
+                ,now());
+    </insert>
+
+    <update id="updatePostMappingYnWithPostNo" parameterType="DailyPlanDTO">
+        UPDATE CT_POST_MGMT
+        SET MPPG_YN = 'Y',
+            UPT_NO = #{memberNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE POST_NO = #{postNo:VARCHAR};
+    </update>
+
+    <delete id="deleteDailyPlan" parameterType="String">
+        DELETE FROM CT_DAILYPLAN
+        WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
+    </delete>
+
+    <select id="getDailyPlanCntWithDailyPlanNo" parameterType="String" resultType="int">
+        SELECT COUNT(1)
+        FROM CT_DAILYPLAN
+        WHERE POST_NO = (SELECT POST_NO FROM CT_DAILYPLAN WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR});
+    </select>
+
+    <update id="updatePostMappingYnWithDailyPlanNo" parameterType="DeleteDailyPlanDTO">
+        UPDATE CT_POST_MGMT cpm
+        INNER JOIN CT_DAILYPLAN cd
+        ON cpm.POST_NO  = cd.POST_NO
+        SET cpm.MPPG_YN = 'N',
+            cpm.UPT_NO = #{memberNo:VARCHAR},
+            cpm.UPT_DTIME = now()
+        WHERE cd.DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
+    </update>
+
+    <select id="searchDailyPlanCntByDay" parameterType="String" resultType="DailyPlanCntVO">
+        SELECT DAY_GRP AS dayGroup
+             ,COUNT(1) AS dailyPlanCnt
+        FROM CT_DAILYPLAN
+        WHERE PLAN_NO = #{planNo:VARCHAR}
+        GROUP BY DAY_GRP;
+    </select>
+    
+    <select id="searchDailyPlanListByDay" parameterType="DailyPlanByDayDTO" resultType="DailyPlanVO">
+        SELECT cd.DAILYPLAN_NO AS dailyPlanNo
+             ,cd.PLAN_NO AS planNo
+             ,cd.POST_NO AS postNo
+             ,cd.DAY_GRP AS dayGroupNo
+             ,cd.DAILYPLAN_DTIME AS dailyPlanDateTime
+             ,cd.NOTI_YN AS notificationYn
+             ,cd.REV_AVG_SCORE AS reviewAverageScore
+             ,cpm.POST_TP_CD AS postTypeCode
+             ,cpm.POST_TITLE AS postTitle
+             ,cpm.POST_CONTS AS postContents
+             ,cpm.SPOT_ADDR AS spotAddress
+             ,cpm.REG_NO AS postRegistrationNo
+        FROM CT_DAILYPLAN cd, CT_POST_MGMT cpm
+        WHERE cd.POST_NO = cpm.POST_NO
+          AND cd.PLAN_NO = #{planNo:VARCHAR}
+          AND cd.DAY_GRP = #{dayGroup:VARCHAR}
+        ORDER BY cd.DAILYPLAN_DTIME;
+    </select>
+</mapper>
