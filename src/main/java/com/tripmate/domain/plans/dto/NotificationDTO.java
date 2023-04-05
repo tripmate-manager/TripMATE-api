@@ -1,6 +1,5 @@
 package com.tripmate.domain.plans.dto;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +34,7 @@ public class NotificationDTO {
     @Schema(description = "수신자 회원번호", example = "1")
     private String receiverNo;
 
-    @Hidden
+    @Pattern(regexp = "(19|20)\\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])(2[0-3]|[01][0-9])([0-5][0-9])([0-5][0-9])", message = "데일리플랜 알림 일시는 'yyyyMMddHHmmss' 형태로 입력해주세요.")
+    @Schema(description = "데일리플랜 알림 일시 (알림 수정인 경우 입력한 일시로 알림을 수정합니다.)", example = "20230101150000")
     private String notificationDateTime;
 }

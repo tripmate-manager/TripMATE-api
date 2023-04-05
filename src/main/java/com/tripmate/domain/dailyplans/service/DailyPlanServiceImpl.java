@@ -72,7 +72,7 @@ public class DailyPlanServiceImpl implements DailyPlanService {
 
     @Override
     public boolean updateDailyPlanNotification(String dailyPlanNo, NotificationDTO notificationDTO) {
-        if (!dailyPlanDAO.equals(notificationDTO.getDailyPlanNo())) {
+        if (!dailyPlanNo.equals(notificationDTO.getDailyPlanNo())) {
             throw new WrongParameterException("데일리플랜 수정 처리 중 오류가 발생하였습니다.");
         }
         return dailyPlanDAO.updateDailyPlanNotification(notificationDTO) == 1;

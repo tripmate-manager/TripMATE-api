@@ -85,7 +85,7 @@ public class DailyPlanController {
     }
 
     @Operation(summary = "데일리플랜 알림 삭제", description = "데일리플랜 알림을 삭제합니다.")
-    @DeleteMapping("/dailyplan/notification/{dailyPlanNo}")
+    @DeleteMapping("/notification/{dailyPlanNo}")
     public ResponseWrapper<Boolean> deleteDailyPlanNotification(@PathVariable(value = "dailyPlanNo") @Schema(example = "1") String dailyPlanNo,
                                                                 @RequestParam(value = "memberNo") @NotBlank @Schema(example = "1")String memberNo) {
         return ResponseWrapper.<Boolean>builder()
@@ -96,9 +96,9 @@ public class DailyPlanController {
     }
 
     @Operation(summary = "데일리플랜 알림 수정", description = "데일리플랜 알림을 삭제합니다.")
-    @PutMapping("/dailyplan/notification/{dailyPlanNo}")
-    public ResponseWrapper<Boolean> deleteDailyPlanNotification(@PathVariable(value = "dailyPlanNo") @Schema(example = "1") String dailyPlanNo,
-                                                                @Valid NotificationDTO notificationDTO) {
+    @PutMapping("/notification/{dailyPlanNo}")
+    public ResponseWrapper<Boolean> updateDailyPlanNotification(@PathVariable(value = "dailyPlanNo") @Schema(example = "1") String dailyPlanNo,
+                                                                @Valid @RequestBody NotificationDTO notificationDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(dailyPlanService.updateDailyPlanNotification(dailyPlanNo, notificationDTO)))
                 .build();
