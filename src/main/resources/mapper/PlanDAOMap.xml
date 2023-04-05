@@ -357,6 +357,7 @@
     <resultMap id="searchNotificationList" type="NotificationVO">
         <result property="notificationNo" column="NOTI_NO"/>
         <result property="planNo" column="PLAN_NO"/>
+        <result property="postNo" column="POST_NO"/>
         <result property="planTitle" column="PLAN_TITLE"/>
         <result property="leaderName" column="LEADER_NAME"/>
         <result property="dailyPlanNo" column="DAILYPLAN_NO"/>
@@ -379,6 +380,7 @@
                 noti.RCVER_NO,
                 noti.NOTI_DTIME,
                 noti.READ_DTIME,
+                (SELECT POST_NO FROM CT_POST_MGMT WHERE DAILYPLAN_NO = noti.DAILYPLAN_NO) AS POST_NO,
                 (SELECT PLAN_TITLE FROM CT_PLAN_MGMT WHERE PLAN_NO = noti.PLAN_NO) AS PLAN_TITLE,
                 (SELECT POST_TITLE FROM CT_POST_MGMT WHERE DAILYPLAN_NO = noti.DAILYPLAN_NO) AS POST_TITLE,
                 (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = (SELECT MBR_NO FROM CT_PLAN_MATE WHERE PLAN_NO = noti.PLAN_NO AND LEAD_YN = 'Y')) AS LEADER_NAME,
