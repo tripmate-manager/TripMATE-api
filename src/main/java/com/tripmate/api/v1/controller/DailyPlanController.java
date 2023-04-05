@@ -95,7 +95,7 @@ public class DailyPlanController {
                 .build();
     }
 
-    @Operation(summary = "데일리플랜 알림 수정", description = "데일리플랜 알림을 삭제합니다.")
+    @Operation(summary = "데일리플랜 알림 수정", description = "데일리플랜 알림을 수정합니다.")
     @PutMapping("/notification/{dailyPlanNo}")
     public ResponseWrapper<Boolean> updateDailyPlanNotification(@PathVariable(value = "dailyPlanNo") @Schema(example = "1") String dailyPlanNo,
                                                                 @Valid @RequestBody NotificationDTO notificationDTO) {
