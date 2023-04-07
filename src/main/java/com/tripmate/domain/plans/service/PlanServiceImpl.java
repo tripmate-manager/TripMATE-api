@@ -192,33 +192,20 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    @Transactional
     public boolean createNotification(NotificationDTO notificationDTO) {
 
         if (ConstCode.NOTIFICATION_TYPE_CODE_CHANGE_LEADER.equals(notificationDTO.getNotificationTypeCode())) {
-            List<PlanMateVO> planMateVOList = planDAO.searchPlanMateListWithPlanNo(String.valueOf(notificationDTO.getPlanNo()));
-            List<String> receiverNoList = new ArrayList<>();
-
-            for (PlanMateVO planMateVO : planMateVOList) {
-                if (!notificationDTO.getSenderNo().equals(String.valueOf(planMateVO.getMemberNo()))) {
-                    receiverNoList.add(String.valueOf(planMateVO.getMemberNo()));
-                }
+            if (planDAO.insertNotification(notificationDTO) != planDAO.getPlanMateCnt(notificationDTO.getPlanNo())) {
+                throw new GuideMessageException("리더 변경 알림 생성 중 오류가 발생하였습니다.");
             }
-
-            NotificationDTO changeLeaderNotificationDTO = NotificationDTO.builder()
-                    .planNo(notificationDTO.getPlanNo())
-                    .postNo(notificationDTO.getPostNo())
-                    .notificationTypeCode(notificationDTO.getNotificationTypeCode())
-                    .senderNo(notificationDTO.getSenderNo())
-                    .receiverNoList(receiverNoList)
-                    .notificationDateTime(notificationDTO.getNotificationDateTime())
-                    .build();
-
-            if (planDAO.insertNotification(changeLeaderNotificationDTO) != receiverNoList.size()) {
-                throw new GuideMessageException("초대 인증 코드 생성 처리 중 오류가 발생하였습니다.");
+        } else if (ConstCode.NOTIFICATION_TYPE_CODE_TRIP_SCHEDULE.equals(notificationDTO.getNotificationTypeCode())) {
+            if (planDAO.insertNotification(notificationDTO) != 1) {
+                throw new GuideMessageException("데일리플랜 일정 알림 생성 처리 중 오류가 발생하였습니다.");
             }
         } else {
             if (planDAO.insertNotification(notificationDTO) != 1) {
-                throw new GuideMessageException("초대 인증 코드 생성 처리 중 오류가 발생하였습니다.");
+                throw new GuideMessageException("초대 알림 생성 처리 중 오류가 발생하였습니다.");
             }
         }
 

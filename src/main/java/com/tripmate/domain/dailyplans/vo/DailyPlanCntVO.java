@@ -1,4 +1,4 @@
-package com.tripmate.domain.dailyplans.dto;
+package com.tripmate.domain.dailyplans.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
