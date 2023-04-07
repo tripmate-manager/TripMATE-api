@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tripmate.domain.reviews.dao.mapper.ReviewDAOMapper">
+    <insert id="insertReview" parameterType="ReviewDTO">
+        <selectKey keyProperty="reviewNo" keyColumn="REV_NO" resultType="String" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO CT_REV (DAILYPLAN_NO
+                            ,POST_TP_CD
+                            <if test="postTypeCode != null and '10'.toString() eq postTypeCode">
+                                ,SCORE_LOC
+                                ,SCORE_AMT
+                                ,SCORE_FACI
+                                ,SCORE_SANI
+                            </if>
+                            <if test="postTypeCode != null and '20'.toString() eq postTypeCode">
+                                ,SCORE_LOC
+                                ,SCORE_AMT
+                            </if>
+                            <if test="postTypeCode != null and '30'.toString() eq postTypeCode">
+                                ,SCORE_AMT
+                                ,SCORE_SANI
+                                ,SCORE_SER
+                                ,SCORE_FOOD
+                            </if>
+                            <if test="postTypeCode != null and '90'.toString() eq postTypeCode">
+                            ,SCORE_ALL
+                            </if>
+                            ,REV_CONTS
+                            ,REV_AVG_SCORE
+                            ,REG_NO
+                            ,REG_DTIME
+                            ,UPT_NO
+                            ,UPT_DTIME)
+        VALUES (#{dailyPlanNo:VARCHAR}
+                ,#{postTypeCode:VARCHAR}
+                <if test="postTypeCode != null and '10'.toString() eq postTypeCode">
+                    ,#{scoreLocation:NUMERIC}
+                    ,#{scoreAmount:NUMERIC}
+                    ,#{scoreFacility:NUMERIC}
+                    ,#{scoreSanitary:NUMERIC}
+                </if>
+                <if test="postTypeCode != null and '20'.toString() eq postTypeCode">
+                    ,#{scoreLocation:NUMERIC}
+                    ,#{scoreAmount:NUMERIC}
+                </if>
+                <if test="postTypeCode != null and '30'.toString() eq postTypeCode">
+                    ,#{scoreAmount:NUMERIC}
+                    ,#{scoreAmount:NUMERIC}
+                    ,#{scoreService:NUMERIC}
+                    ,#{scoreFood:NUMERIC}
+                </if>
+                <if test="postTypeCode != null and '90'.toString() eq postTypeCode">
+                    ,#{scoreAll:NUMERIC}
+                </if>
+                ,#{reviewContents:VARCHAR}
+                ,#{reviewAverageScore:NUMERIC}
+                ,#{memberNo:VARCHAR}
+                ,now()
+                ,#{memberNo:VARCHAR}
+                ,now());
+    </insert>
+
+    <insert id="insertReviewImage" parameterType="ReviewDTO">
+        INSERT INTO CT_REV_IMG  (REV_NO
+                                ,IMG_NM
+                                ,IMG_PATH
+                                ,IMG_VOL
+                                ,REG_NO
+                                ,REG_DTIME
+                                ,UPT_NO
+                                ,UPT_DTIME)
+        VALUES (#{reviewNo:VARCHAR}
+                <foreach collection="list" item="ReviewImageDTO" separator=",">
+                ,#{ReviewImageDTO.reviewImageName:VARCHAR}
+                ,#{ReviewImageDTO.reviewImagePath:VARCHAR}
+                ,#{ReviewImageDTO.reviewImageVolume:VARCHAR}
+                </foreach>
+               ,#{memberNo:VARCHAR}
+               ,now()
+               ,#{memberNo:VARCHAR}
+               ,now());
+    </insert>
+
+    <update id="updateDailyPlanReviewAverageScore" parameterType="ReviewDTO">
+        UPDATE CT_DAILYPLAN cd
+        SET cd.REV_AVG_SCORE = (SELECT AVG(REV_AVG_SCORE)
+                                FROM CT_REV
+                                WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR})
+            ,cd.UPT_NO = #{memberNo:VARCHAR}
+            ,cd.UPT_DTIME = now()
+        WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
+    </update>
+
+    <resultMap id="searchReviewList" type="ReviewVO">
+        <result property="reviewNo" column="REV_NO"/>
+        <result property="dailyPlanNo" column="DAILYPLAN_NO"/>
+        <result property="postTypeCode" column="POST_TP_CD"/>
+        <result property="scoreLocation" column="SCORE_LOC"/>
+        <result property="scoreAmount" column="SCORE_AMT"/>
+        <result property="scoreAll" column="SCORE_ALL"/>
+        <result property="scoreFacility" column="SCORE_FACI"/>
+        <result property="scoreSanitary" column="SCORE_SANI"/>
+        <result property="scoreService" column="SCORE_SER"/>
+        <result property="scoreFood" column="SCORE_FOOD"/>
+        <result property="reviewContents" column="REV_CONTS"/>
+        <result property="reviewAverageScore" column="REV_AVG_SCORE"/>
+        <result property="registrationNo" column="REG_NO"/>
+        <result property="nickName" column="NICK_NM"/>
+        <collection property="reviewImageList" column="reviewNo = REV_NO" javaType="List" ofType="ReviewImageDTO" select="searchReviewImageList"/>
+    </resultMap>
+
+    <select id="searchReviewList" parameterType="String" resultMap="searchReviewList">
+        SELECT rev.REV_NO
+             ,rev.DAILYPLAN_NO
+             ,rev.POST_TP_CD
+             ,rev.SCORE_LOC
+             ,rev.SCORE_AMT
+             ,rev.SCORE_ALL
+             ,rev.SCORE_FACI
+             ,rev.SCORE_SANI
+             ,rev.SCORE_SER
+             ,rev.SCORE_FOOD
+             ,rev.REV_CONTS
+             ,rev.REV_AVG_SCORE
+             ,rev.REG_NO
+             ,mmm.NICK_NM
+        FROM CT_REV rev, MB_MBR_MGMT mmm
+        WHERE rev.REG_NO = mmm.MBR_NO
+          AND DAILYPLAN_NO = #{dailyPlanNo:VARCHAR}
+        ORDER BY rev.REG_DTIME DESC;
+    </select>
+
+    <resultMap id="searchReviewImageList" type="ReviewImageDTO">
+        <result property="reviewNo" column="REV_NO"/>
+        <result property="reviewImageNo" column="IMG_NO"/>
+        <result property="reviewImageName" column="IMG_NM"/>
+        <result property="reviewImagePath" column="IMG_PATH"/>
+        <result property="reviewImageVolume" column="IMG_VOL"/>
+    </resultMap>
+
+    <select id="searchReviewImageList" resultMap="searchReviewImageList">
+        SELECT REV_NO
+             ,IMG_NO
+             ,IMG_NM
+             ,IMG_PATH
+             ,IMG_VOL
+        FROM CT_REV_IMG
+        WHERE REV_NO = #{reviewNo:VARCHAR};
+    </select>
+</mapper>
