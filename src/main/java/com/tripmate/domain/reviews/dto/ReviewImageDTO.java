@@ -17,6 +17,9 @@ public class ReviewImageDTO {
     @Schema(description = "리뷰 번호", example = "1")
     private String reviewNo;
 
+    @Schema(description = "회원 번호", example = "1")
+    private String memberNo;
+
     @Schema(description = "리뷰 이미지 번호", example = "1")
     private String reviewImageNo;
 

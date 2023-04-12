@@ -40,5 +40,6 @@
         <typeAlias type="com.tripmate.domain.reviews.dto.ReviewDTO" alias="ReviewDTO"/>
         <typeAlias type="com.tripmate.domain.reviews.dto.ReviewImageDTO" alias="ReviewImageDTO"/>
         <typeAlias type="com.tripmate.domain.reviews.vo.ReviewVO" alias="ReviewVO"/>
+        <typeAlias type="com.tripmate.domain.reviews.dto.DeleteReviewDTO" alias="DeleteReviewDTO"/>
     </typeAliases>
 </configuration>
