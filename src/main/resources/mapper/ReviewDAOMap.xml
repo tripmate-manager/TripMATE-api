@@ -49,7 +49,7 @@
                 </if>
                 <if test="postTypeCode != null and '30'.toString() eq postTypeCode">
                     ,#{scoreAmount:NUMERIC}
-                    ,#{scoreAmount:NUMERIC}
+                    ,#{scoreSanitary:NUMERIC}
                     ,#{scoreService:NUMERIC}
                     ,#{scoreFood:NUMERIC}
                 </if>

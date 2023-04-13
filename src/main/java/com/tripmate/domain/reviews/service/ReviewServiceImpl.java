@@ -31,16 +31,15 @@ public class ReviewServiceImpl implements ReviewService {
             throw new GuideMessageException("리뷰 생성 중 오류가 발생하였습니다.");
         }
 
-        List<ReviewImageDTO> reviewImageDTOList = new ArrayList<>();
-        for (ReviewImageDTO reviewImageDTO : reviewDTO.getReviewImageList()) {
-            reviewImageDTOList.add(ReviewImageDTO.builder()
-                    .reviewNo(reviewDTO.getReviewNo())
-                    .memberNo(reviewDTO.getMemberNo())
-                    .reviewImageName(reviewImageDTO.getReviewImageName())
-                    .reviewImagePath(reviewImageDTO.getReviewImagePath())
-                    .reviewImageVolume(reviewImageDTO.getReviewImageVolume())
-                    .build());
-        }
+        List<ReviewImageDTO> reviewImageDTOList = reviewDTO.getReviewImageList().stream()
+                .map(reviewImageDTO -> ReviewImageDTO.builder()
+                        .reviewNo(reviewDTO.getReviewNo())
+                        .memberNo(reviewDTO.getMemberNo())
+                        .reviewImageName(reviewImageDTO.getReviewImageName())
+                        .reviewImagePath(reviewImageDTO.getReviewImagePath())
+                        .reviewImageVolume(reviewImageDTO.getReviewImageVolume())
+                        .build())
+                .collect(Collectors.toList());
 
         if (reviewDAO.insertReviewImage(reviewImageDTOList) != reviewDTO.getReviewImageList().size()) {
             throw new GuideMessageException("리뷰 이미지 저장 처리 중 오류가 발생하였습니다.");
