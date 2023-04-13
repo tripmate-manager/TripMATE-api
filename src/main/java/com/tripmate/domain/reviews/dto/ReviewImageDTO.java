@@ -26,9 +26,9 @@ public class ReviewImageDTO {
     @Schema(description = "리뷰 이미지명", example = "image")
     private String reviewImageName;
 
-    @Schema(description = "리뷰 이미지 경로", example = "")
+    @Schema(description = "리뷰 이미지 경로", example = "/image.jpg")
     private String reviewImagePath;
 
-    @Schema(description = "리뷰 이미지 용량 리스트", example = "")
+    @Schema(description = "리뷰 이미지 용량 리스트", example = "1")
     private String reviewImageVolume;
 }

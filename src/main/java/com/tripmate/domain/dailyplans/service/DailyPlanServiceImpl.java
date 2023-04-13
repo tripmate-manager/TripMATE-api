@@ -10,6 +10,7 @@ import com.tripmate.domain.dailyplans.vo.DailyPlanVO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanDTO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanNotificationDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
+import com.tripmate.domain.reviews.dao.ReviewDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +20,12 @@ import java.util.List;
 @Service
 public class DailyPlanServiceImpl implements DailyPlanService {
     private final DailyPlanDAO dailyPlanDAO;
+    private final ReviewDAO reviewDAO;
 
     @Autowired
-    public DailyPlanServiceImpl(DailyPlanDAO dailyPlanDAO) {
+    public DailyPlanServiceImpl(DailyPlanDAO dailyPlanDAO, ReviewDAO reviewDAO) {
         this.dailyPlanDAO = dailyPlanDAO;
+        this.reviewDAO = reviewDAO;
     }
 
     @Override
@@ -50,6 +53,13 @@ public class DailyPlanServiceImpl implements DailyPlanService {
 
         if (dailyPlanDAO.deleteDailyPlan(dailyPlanNo) != 1) {
             throw new GuideMessageException("데일리플랜(북마크) 삭제 처리 중 오류가 발생하였습니다.");
+        }
+
+        int reviewCnt = reviewDAO.getDailyPlanReviewCnt(dailyPlanNo);
+        if (reviewCnt > 0) {
+            if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != reviewCnt) {
+                throw new GuideMessageException("데일리플랜 리뷰 삭제 처리 중 오류가 발생하였습니다.");
+            }
         }
 
         return true;

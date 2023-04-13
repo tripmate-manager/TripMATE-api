@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -27,6 +27,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public String insertReview(String dailyPlanNo, ReviewDTO reviewDTO) {
+        if (reviewDAO.getReviewRegistrationNoCnt(reviewDTO) != 0) {
+            throw new GuideMessageException("이미 작성한 리뷰가 존재합니다.");
+        }
+
         if (reviewDAO.insertReview(reviewDTO) != 1) {
             throw new GuideMessageException("리뷰 생성 중 오류가 발생하였습니다.");
         }
@@ -41,8 +45,10 @@ public class ReviewServiceImpl implements ReviewService {
                         .build())
                 .collect(Collectors.toList());
 
-        if (reviewDAO.insertReviewImage(reviewImageDTOList) != reviewDTO.getReviewImageList().size()) {
-            throw new GuideMessageException("리뷰 이미지 저장 처리 중 오류가 발생하였습니다.");
+        if (!reviewImageDTOList.isEmpty()) {
+            if (reviewDAO.insertReviewImage(reviewImageDTOList) != reviewDTO.getReviewImageList().size()) {
+                throw new GuideMessageException("리뷰 이미지 저장 처리 중 오류가 발생하였습니다.");
+            }
         }
 
         if (reviewDAO.updateReviewAverageScoreWithReviewDTO(reviewDTO) != 1) {
@@ -60,8 +66,15 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public boolean deleteReview(DeleteReviewDTO deleteReviewDTO) {
-        if (reviewDAO.deleteReview(deleteReviewDTO) != 1) {
-            throw new GuideMessageException("리뷰 삭제 처리 중 오류가 발생하였습니다.");
+        int reviewImageCnt = reviewDAO.getReviewImageCnt(deleteReviewDTO.getReviewNo());
+        if (reviewImageCnt == 0) {
+            if (reviewDAO.deleteReview(deleteReviewDTO) != 1) {
+                throw new GuideMessageException("리뷰 삭제 처리 중 오류가 발생하였습니다.");
+            }
+        } else {
+            if (reviewDAO.deleteReview(deleteReviewDTO) != reviewImageCnt) {
+                throw new GuideMessageException("리뷰 삭제 처리 중 오류가 발생하였습니다.");
+            }
         }
 
         if (reviewDAO.updateReviewAverageScoreWithDeleteReviewDTO(deleteReviewDTO) != 1) {

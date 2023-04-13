@@ -32,8 +32,16 @@ public class ReviewDAO {
         return sqlSession.getMapper(ReviewDAOMapper.class).updateReviewAverageScoreWithReviewDTO(reviewDTO);
     }
 
+    public int getReviewRegistrationNoCnt(ReviewDTO reviewDTO) {
+        return sqlSession.getMapper(ReviewDAOMapper.class).getReviewRegistrationNoCnt(reviewDTO);
+    }
+
     public List<ReviewVO> searchReviewList(String dailyPlanNo) {
         return sqlSession.getMapper(ReviewDAOMapper.class).searchReviewList(dailyPlanNo);
+    }
+
+    public int getReviewImageCnt(String reviewNo) {
+        return sqlSession.getMapper(ReviewDAOMapper.class).getReviewImageCnt(reviewNo);
     }
 
     public int deleteReview(DeleteReviewDTO deleteReviewDTO) {
@@ -42,5 +50,13 @@ public class ReviewDAO {
 
     public int updateReviewAverageScoreWithDeleteReviewDTO(DeleteReviewDTO deleteReviewDTO) {
         return sqlSession.getMapper(ReviewDAOMapper.class).updateReviewAverageScoreWithDeleteReviewDTO(deleteReviewDTO);
+    }
+
+    public int getDailyPlanReviewCnt(String dailyPlanNo) {
+        return sqlSession.getMapper(ReviewDAOMapper.class).getDailyPlanReviewCnt(dailyPlanNo);
+    }
+
+    public int deleteDailyPlanReview(String dailyPlanNo) {
+        return sqlSession.getMapper(ReviewDAOMapper.class).deleteDailyPlanReview(dailyPlanNo);
     }
 }

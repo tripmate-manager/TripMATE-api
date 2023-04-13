@@ -11,7 +11,11 @@ public interface ReviewDAOMapper {
     int insertReview(ReviewDTO reviewDTO);
     int insertReviewImage(List<ReviewImageDTO> reviewImageDTOList);
     int updateReviewAverageScoreWithReviewDTO(ReviewDTO reviewDTO);
+    int getReviewRegistrationNoCnt(ReviewDTO reviewDTO);
     List<ReviewVO> searchReviewList(String dailyPlanNo);
+    int getReviewImageCnt(String reviewNo);
     int deleteReview(DeleteReviewDTO deleteReviewDTO);
     int updateReviewAverageScoreWithDeleteReviewDTO(DeleteReviewDTO deleteReviewDTO);
+    int getDailyPlanReviewCnt(String reviewNo);
+    int deleteDailyPlanReview(String dailyPlanNo);
 }

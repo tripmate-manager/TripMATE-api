@@ -94,6 +94,13 @@
             ,cd.UPT_DTIME = now()
         WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
     </update>
+    
+    <select id="getReviewRegistrationNoCnt" parameterType="ReviewDTO" resultType="int">
+        SELECT COUNT(1)
+        FROM CT_REV
+        WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR}
+          AND REG_NO = #{memberNo:VARCHAR};
+    </select>
 
     <resultMap id="searchReviewList" type="ReviewVO">
         <result property="reviewNo" column="REV_NO"/>
@@ -152,6 +159,12 @@
         WHERE REV_NO = #{reviewNo:VARCHAR};
     </select>
 
+    <select id="getReviewImageCnt" parameterType="String" resultType="int">
+        SELECT COUNT(1)
+        FROM CT_REV_IMG
+        WHERE REV_NO = #{reviewNo:VARCHAR};
+    </select>
+
     <delete id="deleteReview" parameterType="DeleteReviewDTO">
         DELETE FROM rev, img
         USING CT_REV rev
@@ -169,4 +182,18 @@
           ,cd.UPT_DTIME = now()
         WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
     </update>
+
+    <select id="getDailyPlanReviewCnt" parameterType="String" resultType="int">
+        SELECT COUNT(1)
+        FROM CT_REV
+        WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
+    </select>
+
+    <delete id="deleteDailyPlanReview" parameterType="String">
+        DELETE FROM rev, img
+        USING CT_REV rev
+        LEFT JOIN CT_REV_IMG img
+        ON rev.REV_NO = img.REV_NO
+        WHERE rev.DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
+    </delete>
 </mapper>
