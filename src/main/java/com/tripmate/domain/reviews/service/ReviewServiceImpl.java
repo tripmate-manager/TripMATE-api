@@ -67,12 +67,13 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public boolean deleteReview(DeleteReviewDTO deleteReviewDTO) {
         int reviewImageCnt = reviewDAO.getReviewImageCnt(deleteReviewDTO.getReviewNo());
+
         if (reviewImageCnt == 0) {
             if (reviewDAO.deleteReview(deleteReviewDTO) != 1) {
                 throw new GuideMessageException("리뷰 삭제 처리 중 오류가 발생하였습니다.");
             }
         } else {
-            if (reviewDAO.deleteReview(deleteReviewDTO) != reviewImageCnt) {
+            if (reviewDAO.deleteReview(deleteReviewDTO) != reviewImageCnt + 1) {
                 throw new GuideMessageException("리뷰 삭제 처리 중 오류가 발생하였습니다.");
             }
         }
