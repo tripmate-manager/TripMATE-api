@@ -67,7 +67,7 @@
              ,cd.DAY_GRP AS dayGroupNo
              ,cd.DAILYPLAN_DTIME AS dailyPlanDateTime
              ,(SELECT IF((SELECT COUNT(1) FROM CT_NOTI_MGMT WHERE DAILYPLAN_NO = cd.DAILYPLAN_NO  AND RCVER_NO = #{memberNo:VARCHAR}) > 0, 'Y', 'N')) AS notificationYn
-             ,cd.REV_AVG_SCORE AS reviewAverageScore
+             ,ROUND(cd.REV_AVG_SCORE, 1) AS reviewAverageScore
              ,cpm.POST_TP_CD AS postTypeCode
              ,cpm.POST_TITLE AS postTitle
              ,cpm.POST_CONTS AS postContents

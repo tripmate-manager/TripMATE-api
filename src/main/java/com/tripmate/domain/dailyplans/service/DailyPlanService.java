@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface DailyPlanService {
     boolean insertDailyPlan(DailyPlanDTO dailyPlanDTO);
-    boolean deleteDailyPlan(String dailyPlanNo, DeleteDailyPlanDTO deleteDailyPlanDTO);
+    List<String> deleteDailyPlan(String dailyPlanNo, DeleteDailyPlanDTO deleteDailyPlanDTO);
     List<DailyPlanCntVO> searchDailyPlanCntByDay(String planNo);
     List<DailyPlanVO> searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO);
     boolean deleteDailyPlanNotification(DeleteDailyPlanNotificationDTO deleteDailyPlanNotificationDTO);

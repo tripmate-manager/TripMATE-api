@@ -10,6 +10,7 @@ import com.tripmate.domain.dailyplans.vo.DailyPlanVO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanDTO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanNotificationDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
+import com.tripmate.domain.reviews.dao.ReviewDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +20,12 @@ import java.util.List;
 @Service
 public class DailyPlanServiceImpl implements DailyPlanService {
     private final DailyPlanDAO dailyPlanDAO;
+    private final ReviewDAO reviewDAO;
 
     @Autowired
-    public DailyPlanServiceImpl(DailyPlanDAO dailyPlanDAO) {
+    public DailyPlanServiceImpl(DailyPlanDAO dailyPlanDAO, ReviewDAO reviewDAO) {
         this.dailyPlanDAO = dailyPlanDAO;
+        this.reviewDAO = reviewDAO;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class DailyPlanServiceImpl implements DailyPlanService {
 
     @Override
     @Transactional
-    public boolean deleteDailyPlan(String dailyPlanNo, DeleteDailyPlanDTO deleteDailyPlanDTO) {
+    public List<String> deleteDailyPlan(String dailyPlanNo, DeleteDailyPlanDTO deleteDailyPlanDTO) {
         if (dailyPlanDAO.getDailyPlanCntWithDailyPlanNo(dailyPlanNo) == 1) {
             if (dailyPlanDAO.updatePostMappingYnWithDailyPlanNo(deleteDailyPlanDTO) != 1) {
                 throw new GuideMessageException("데일리플랜(북마크) 여부 수정 처리 중 오류가 발생하였습니다.");
@@ -52,7 +55,21 @@ public class DailyPlanServiceImpl implements DailyPlanService {
             throw new GuideMessageException("데일리플랜(북마크) 삭제 처리 중 오류가 발생하였습니다.");
         }
 
-        return true;
+        int reviewCnt = reviewDAO.getDailyPlanReviewCnt(dailyPlanNo);
+        int reviewImageCnt = reviewDAO.getReviewImageCntWithDailyPlanNo(dailyPlanNo);
+        List<String> reviewImageNameList = reviewDAO.searchReviewImageNameListWithDailyPlanNo(dailyPlanNo);
+
+        if (reviewImageCnt == 0) {
+            if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != 1) {
+                throw new GuideMessageException("데일리플랜 리뷰 삭제 처리 중 오류가 발생하였습니다.");
+            }
+        } else {
+            if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != reviewCnt + 1) {
+                throw new GuideMessageException("데일리플랜 리뷰 삭제 처리 중 오류가 발생하였습니다.");
+            }
+        }
+
+        return reviewImageNameList;
     }
 
     @Override
