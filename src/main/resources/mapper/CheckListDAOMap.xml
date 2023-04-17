@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tripmate.domain.checklist.dao.mapper.CheckListDAOMapper">
+    <insert id="insertCheckList" parameterType="CheckListDTO">
+        INSERT INTO CT_CHKLIST (PLAN_NO
+                               ,CHKLIST_TP_CD
+                               ,MTRL_NM
+                               ,REG_NO
+                               ,REG_DTIME
+                               ,UPT_NO
+                               ,UPT_DTIME)
+        VALUES (#{planNo:VARCHAR}
+                ,#{checkListTypeCode:VARCHAR}
+                ,#{materialName:VARCHAR}
+                ,#{memberNo:VARCHAR}
+                ,now()
+                ,#{memberNo:VARCHAR}
+                ,now());
+    </insert>
+
+    <select id="searchTogetherCheckList" parameterType="String" resultType="CheckListVO">
+        SELECT PLAN_NO AS planNo
+             ,MTRL_NO AS materialNo
+             ,CHKLIST_TP_CD AS checkListTypeCode
+             ,MTRL_NM AS materialName
+             ,CHK_YN AS checkYn
+             ,CHK_MBR_NO AS checkMemberNo
+        FROM CT_CHKLIST
+        WHERE CHKLIST_TP_CD = '20'
+          AND PLAN_NO = #{planNo:VARCHAR};
+    </select>
+
+    <select id="searchMyCheckList" parameterType="MyCheckListDTO" resultType="CheckListVO">
+        SELECT PLAN_NO AS planNo
+             ,MTRL_NO AS materialNo
+             ,CHKLIST_TP_CD AS checkListTypeCode
+             ,MTRL_NM AS materialName
+             ,CHK_YN AS checkYn
+             ,CHK_MBR_NO AS checkMemberNo
+        FROM CT_CHKLIST
+        WHERE CHKLIST_TP_CD = '10'
+          AND PLAN_NO = #{planNo:VARCHAR}
+          AND REG_NO = #{memberNo:VARCHAR};
+    </select>
+
+</mapper>

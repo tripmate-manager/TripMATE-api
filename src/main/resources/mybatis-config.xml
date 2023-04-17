@@ -41,5 +41,8 @@
         <typeAlias type="com.tripmate.domain.reviews.dto.ReviewImageDTO" alias="ReviewImageDTO"/>
         <typeAlias type="com.tripmate.domain.reviews.vo.ReviewVO" alias="ReviewVO"/>
         <typeAlias type="com.tripmate.domain.reviews.dto.DeleteReviewDTO" alias="DeleteReviewDTO"/>
+        <typeAlias type="com.tripmate.domain.checklist.dto.CheckListDTO" alias="CheckListDTO"/>
+        <typeAlias type="com.tripmate.domain.checklist.dto.MyCheckListDTO" alias="MyCheckListDTO"/>
+        <typeAlias type="com.tripmate.domain.checklist.vo.CheckListVO" alias="CheckListVO"/>
     </typeAliases>
 </configuration>
