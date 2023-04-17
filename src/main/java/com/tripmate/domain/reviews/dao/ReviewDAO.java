@@ -40,8 +40,12 @@ public class ReviewDAO {
         return sqlSession.getMapper(ReviewDAOMapper.class).searchReviewList(dailyPlanNo);
     }
 
-    public int getReviewImageCnt(String reviewNo) {
-        return sqlSession.getMapper(ReviewDAOMapper.class).getReviewImageCnt(reviewNo);
+    public int getReviewImageCntWithReviewNo(String reviewNo) {
+        return sqlSession.getMapper(ReviewDAOMapper.class).getReviewImageCntWithReviewNo(reviewNo);
+    }
+
+    public int getReviewImageCntWithDailyPlanNo(String dailyPlanNo) {
+        return sqlSession.getMapper(ReviewDAOMapper.class).getReviewImageCntWithDailyPlanNo(dailyPlanNo);
     }
 
     public int deleteReview(DeleteReviewDTO deleteReviewDTO) {
@@ -58,5 +62,13 @@ public class ReviewDAO {
 
     public int deleteDailyPlanReview(String dailyPlanNo) {
         return sqlSession.getMapper(ReviewDAOMapper.class).deleteDailyPlanReview(dailyPlanNo);
+    }
+
+    public List<String> searchReviewImageNameListWithDailyPlanNo(String dailyPlanNo) {
+        return sqlSession.getMapper(ReviewDAOMapper.class).searchReviewImageNameListWithDailyPlanNo(dailyPlanNo);
+    }
+
+    public List<String> searchReviewImageNameListWithReviewNo(String reviewNo) {
+        return sqlSession.getMapper(ReviewDAOMapper.class).searchReviewImageNameListWithReviewNo(reviewNo);
     }
 }

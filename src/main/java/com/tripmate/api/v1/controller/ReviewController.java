@@ -54,9 +54,9 @@ public class ReviewController {
 
     @Operation(summary = "데일리플랜 리뷰 삭제", description = "데일리플랜 리뷰를 삭제합니다.")
     @PostMapping("/delete-review")
-    public ResponseWrapper<Boolean> deleteReview(@Valid @RequestBody DeleteReviewDTO deleteReviewDTO) {
-        return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(reviewService.deleteReview(deleteReviewDTO)))
+    public ResponseWrapper<String> deleteReview(@Valid @RequestBody DeleteReviewDTO deleteReviewDTO) {
+        return ResponseWrapper.<String>builder()
+                .data(reviewService.deleteReview(deleteReviewDTO))
                 .build();
     }
 }

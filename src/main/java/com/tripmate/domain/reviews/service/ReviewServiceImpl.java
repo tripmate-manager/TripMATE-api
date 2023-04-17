@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,14 +66,16 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public boolean deleteReview(DeleteReviewDTO deleteReviewDTO) {
-        int reviewImageCnt = reviewDAO.getReviewImageCnt(deleteReviewDTO.getReviewNo());
+    public List<String> deleteReview(DeleteReviewDTO deleteReviewDTO) {
+        int reviewImageCnt = reviewDAO.getReviewImageCntWithReviewNo(deleteReviewDTO.getReviewNo());
+        List<String> reviewImageNameList = new ArrayList<>();
 
         if (reviewImageCnt == 0) {
             if (reviewDAO.deleteReview(deleteReviewDTO) != 1) {
                 throw new GuideMessageException("리뷰 삭제 처리 중 오류가 발생하였습니다.");
             }
         } else {
+            reviewImageNameList = reviewDAO.searchReviewImageNameListWithReviewNo(deleteReviewDTO.getReviewNo());
             if (reviewDAO.deleteReview(deleteReviewDTO) != reviewImageCnt + 1) {
                 throw new GuideMessageException("리뷰 삭제 처리 중 오류가 발생하였습니다.");
             }
@@ -82,6 +85,6 @@ public class ReviewServiceImpl implements ReviewService {
             throw new GuideMessageException("리뷰 평점 업데이트 처리 중 오류가 발생하였습니다.");
         }
 
-        return true;
+        return reviewImageNameList;
     }
 }

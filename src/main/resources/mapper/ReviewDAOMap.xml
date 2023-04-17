@@ -159,10 +159,17 @@
         WHERE REV_NO = #{reviewNo:VARCHAR};
     </select>
 
-    <select id="getReviewImageCnt" parameterType="String" resultType="int">
+    <select id="getReviewImageCntWithReviewNo" parameterType="String" resultType="int">
         SELECT COUNT(1)
         FROM CT_REV_IMG
         WHERE REV_NO = #{reviewNo:VARCHAR};
+    </select>
+
+    <select id="getReviewImageCntWithDailyPlanNo" parameterType="String" resultType="int">
+        SELECT COUNT(1)
+        FROM CT_REV cr, CT_REV_IMG cri
+        WHERE cr.REV_NO = cri.REV_NO
+          AND cr.DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
     </select>
 
     <delete id="deleteReview" parameterType="DeleteReviewDTO">
@@ -196,4 +203,17 @@
         ON rev.REV_NO = img.REV_NO
         WHERE rev.DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
     </delete>
+
+    <select id="searchReviewImageNameListWithDailyPlanNo" parameterType="String" resultType="String">
+        SELECT cri.IMG_NM
+        FROM CT_REV cr, CT_REV_IMG cri
+        WHERE cr.REV_NO = cri.REV_NO
+          AND cr.DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
+    </select>
+
+    <select id="searchReviewImageNameListWithReviewNo" parameterType="String" resultType="String">
+        SELECT IMG_NM
+        FROM CT_REV_IMG
+        WHERE REV_NO = #{reviewNo:VARCHAR};
+    </select>
 </mapper>

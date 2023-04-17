@@ -55,10 +55,10 @@ public class DailyPlanController {
 
     @Operation(summary = "데일리플랜 삭제(북마크 해제)", description = "해당 게시글을 데일리플랜에서 삭제합니다.(북마크기능)")
     @PostMapping("/dailyplan/{dailyPlanNo}")
-    public ResponseWrapper<Boolean> deleteDailyPlan(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(example = "1") String dailyPlanNo,
+    public ResponseWrapper<String> deleteDailyPlan(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(example = "1") String dailyPlanNo,
                                                     @Valid @RequestBody DeleteDailyPlanDTO deleteDailyPlanDTO) {
-        return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(dailyPlanService.deleteDailyPlan(dailyPlanNo, deleteDailyPlanDTO)))
+        return ResponseWrapper.<String>builder()
+                .data(dailyPlanService.deleteDailyPlan(dailyPlanNo, deleteDailyPlanDTO))
                 .build();
     }
 

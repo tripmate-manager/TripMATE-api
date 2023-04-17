@@ -9,5 +9,5 @@ import java.util.List;
 public interface ReviewService {
     String insertReview(String dailyPlanNo, ReviewDTO reviewDTO);
     List<ReviewVO> searchReviewList(String dailyPlanNo);
-    boolean deleteReview(DeleteReviewDTO deleteReviewDTO);
+    List<String> deleteReview(DeleteReviewDTO deleteReviewDTO);
 }

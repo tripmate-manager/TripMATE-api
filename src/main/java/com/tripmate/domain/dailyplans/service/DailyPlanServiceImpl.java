@@ -44,7 +44,7 @@ public class DailyPlanServiceImpl implements DailyPlanService {
 
     @Override
     @Transactional
-    public boolean deleteDailyPlan(String dailyPlanNo, DeleteDailyPlanDTO deleteDailyPlanDTO) {
+    public List<String> deleteDailyPlan(String dailyPlanNo, DeleteDailyPlanDTO deleteDailyPlanDTO) {
         if (dailyPlanDAO.getDailyPlanCntWithDailyPlanNo(dailyPlanNo) == 1) {
             if (dailyPlanDAO.updatePostMappingYnWithDailyPlanNo(deleteDailyPlanDTO) != 1) {
                 throw new GuideMessageException("데일리플랜(북마크) 여부 수정 처리 중 오류가 발생하였습니다.");
@@ -56,13 +56,20 @@ public class DailyPlanServiceImpl implements DailyPlanService {
         }
 
         int reviewCnt = reviewDAO.getDailyPlanReviewCnt(dailyPlanNo);
-        if (reviewCnt > 0) {
-            if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != reviewCnt) {
+        int reviewImageCnt = reviewDAO.getReviewImageCntWithDailyPlanNo(dailyPlanNo);
+        List<String> reviewImageNameList = reviewDAO.searchReviewImageNameListWithDailyPlanNo(dailyPlanNo);
+
+        if (reviewImageCnt == 0) {
+            if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != 1) {
+                throw new GuideMessageException("데일리플랜 리뷰 삭제 처리 중 오류가 발생하였습니다.");
+            }
+        } else {
+            if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != reviewCnt + 1) {
                 throw new GuideMessageException("데일리플랜 리뷰 삭제 처리 중 오류가 발생하였습니다.");
             }
         }
 
-        return true;
+        return reviewImageNameList;
     }
 
     @Override
