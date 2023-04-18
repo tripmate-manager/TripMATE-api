@@ -8,15 +8,14 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Schema(description = "체크리스트 항목 생성 Request DTO")
-public class CheckListDTO {
-
+@Schema(description = "체크리스트 항목 삭제 Request DTO")
+public class DeleteCheckListDTO {
     @NotBlank(message = "플랜 번호를 입력해주세요.")
     private String planNo;
 
@@ -28,7 +27,6 @@ public class CheckListDTO {
     @Schema(description = "체크리스트 타입코드(10: 개인, 20: 공용", example = "10")
     private String checkListTypeCode;
 
-    @NotBlank(message = "체크리스트 항목을 입력해주세요.")
-    @Size(max = 50, message = "체크리스트 항목은 50자 이하인 값만 입력 가능합니다.")
-    private String materialName;
+    @NotBlank(message = "체크리스트 항목 번호를 입력해주세요.")
+    private List<String> materialNoList;
 }

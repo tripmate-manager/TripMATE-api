@@ -26,4 +26,8 @@ public class CheckListDAO {
     public List<CheckListVO> searchMyCheckList(MyCheckListDTO myCheckListDTO) {
         return sqlSession.getMapper(CheckListDAOMapper.class).searchMyCheckList(myCheckListDTO);
     }
+
+    public int deleteCheckList(List<String> materialNoList) {
+        return sqlSession.getMapper(CheckListDAOMapper.class).deleteCheckList(materialNoList);
+    }
 }

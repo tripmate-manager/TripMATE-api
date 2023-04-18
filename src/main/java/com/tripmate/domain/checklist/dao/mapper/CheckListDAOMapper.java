@@ -10,4 +10,5 @@ public interface CheckListDAOMapper {
     int insertCheckList(CheckListDTO checkListDTO);
     List<CheckListVO> searchTogetherCheckList(String planNo);
     List<CheckListVO> searchMyCheckList(MyCheckListDTO myCheckListDTO);
+    int deleteCheckList(List<String> materialNoList);
 }

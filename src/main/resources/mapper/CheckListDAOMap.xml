@@ -21,15 +21,18 @@
     </insert>
 
     <select id="searchTogetherCheckList" parameterType="String" resultType="CheckListVO">
-        SELECT PLAN_NO AS planNo
-             ,MTRL_NO AS materialNo
-             ,CHKLIST_TP_CD AS checkListTypeCode
-             ,MTRL_NM AS materialName
-             ,CHK_YN AS checkYn
-             ,CHK_MBR_NO AS checkMemberNo
-        FROM CT_CHKLIST
-        WHERE CHKLIST_TP_CD = '20'
-          AND PLAN_NO = #{planNo:VARCHAR};
+        SELECT cc.PLAN_NO AS planNo
+             ,cc.MTRL_NO AS materialNo
+             ,cc.CHKLIST_TP_CD AS checkListTypeCode
+             ,cc.MTRL_NM AS materialName
+             ,cc.CHK_YN AS checkYn
+             ,cc.CHK_MBR_NO AS checkMemberNo
+             ,cpm.MBR_NO  AS planLeaderNo
+        FROM CT_CHKLIST cc, CT_PLAN_MATE cpm
+        WHERE cc.PLAN_NO = cpm.PLAN_NO
+          AND cc.CHKLIST_TP_CD = '20'
+          AND cc.PLAN_NO = #{planNo:VARCHAR}
+          AND cpm.LEAD_YN = 'Y';
     </select>
 
     <select id="searchMyCheckList" parameterType="MyCheckListDTO" resultType="CheckListVO">
@@ -44,5 +47,12 @@
           AND PLAN_NO = #{planNo:VARCHAR}
           AND REG_NO = #{memberNo:VARCHAR};
     </select>
+
+    <delete id="deleteCheckList" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=",">
+            DELETE FROM CT_CHKLIST
+            WHERE MTRL_NO = #{item:VARCHAR};
+        </foreach>
+    </delete>
 
 </mapper>

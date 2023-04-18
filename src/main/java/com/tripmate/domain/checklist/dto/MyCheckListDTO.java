@@ -16,4 +16,5 @@ public class MyCheckListDTO {
     private String planNo;
 
     private String memberNo;
+
 }

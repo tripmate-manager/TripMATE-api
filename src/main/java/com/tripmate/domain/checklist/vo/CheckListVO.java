@@ -1,6 +1,5 @@
 package com.tripmate.domain.checklist.vo;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +23,6 @@ public class CheckListVO {
     private String checkYn;
 
     private String checkMemberNo;
+
+    private String planLeaderNo;
 }
