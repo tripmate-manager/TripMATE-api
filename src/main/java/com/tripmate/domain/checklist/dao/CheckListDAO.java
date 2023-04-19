@@ -3,6 +3,7 @@ package com.tripmate.domain.checklist.dao;
 import com.tripmate.domain.checklist.dao.mapper.CheckListDAOMapper;
 import com.tripmate.domain.checklist.dto.CheckListDTO;
 import com.tripmate.domain.checklist.dto.MyCheckListDTO;
+import com.tripmate.domain.checklist.dto.UpdateCheckYnDTO;
 import com.tripmate.domain.checklist.vo.CheckListVO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
@@ -29,5 +30,13 @@ public class CheckListDAO {
 
     public int deleteCheckList(List<String> materialNoList) {
         return sqlSession.getMapper(CheckListDAOMapper.class).deleteCheckList(materialNoList);
+    }
+
+    public int updateCheckYn(UpdateCheckYnDTO updateCheckYnDTO) {
+        return sqlSession.getMapper(CheckListDAOMapper.class).updateCheckYn(updateCheckYnDTO);
+    }
+
+    public String getCheckMemberNo(UpdateCheckYnDTO updateCheckYnDTO) {
+        return sqlSession.getMapper(CheckListDAOMapper.class).getCheckMemberNo(updateCheckYnDTO);
     }
 }

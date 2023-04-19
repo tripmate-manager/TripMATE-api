@@ -28,11 +28,14 @@
              ,cc.CHK_YN AS checkYn
              ,cc.CHK_MBR_NO AS checkMemberNo
              ,cpm.MBR_NO  AS planLeaderNo
-        FROM CT_CHKLIST cc, CT_PLAN_MATE cpm
-        WHERE cc.PLAN_NO = cpm.PLAN_NO
-          AND cc.CHKLIST_TP_CD = '20'
+             ,mmm.NICK_NM AS checkMemberNickName
+        FROM CT_CHKLIST cc
+            LEFT JOIN CT_PLAN_MATE cpm ON cc.PLAN_NO = cpm.PLAN_NO
+            LEFT JOIN MB_MBR_MGMT mmm ON cc.CHK_MBR_NO = mmm.MBR_NO
+        WHERE cc.CHKLIST_TP_CD = '20'
           AND cc.PLAN_NO = #{planNo:VARCHAR}
-          AND cpm.LEAD_YN = 'Y';
+          AND cpm.LEAD_YN = 'Y'
+        ORDER BY cc.CHK_YN, cc.CHK_MBR_NO;
     </select>
 
     <select id="searchMyCheckList" parameterType="MyCheckListDTO" resultType="CheckListVO">
@@ -49,10 +52,28 @@
     </select>
 
     <delete id="deleteCheckList" parameterType="java.util.List">
-        <foreach collection="list" item="item" separator=",">
-            DELETE FROM CT_CHKLIST
-            WHERE MTRL_NO = #{item:VARCHAR};
-        </foreach>
+        DELETE FROM CT_CHKLIST
+        <where>
+            <foreach collection="list" item="item" separator="OR">
+                (MTRL_NO = #{item:VARCHAR})
+            </foreach>
+        </where>;
     </delete>
+
+    <update id="updateCheckYn" parameterType="UpdateCheckYnDTO">
+        UPDATE CT_CHKLIST
+        SET CHK_YN = IF(CHK_YN = 'N', 'Y', 'N'),
+            CHK_MBR_NO =  IF(CHK_YN = 'N', NULL, #{memberNo:VARCHAR}),
+            UPT_NO = #{memberNo:VARCHAR},
+            UPT_DTIME = now()
+        WHERE MTRL_NO = #{materialNo:VARCHAR};
+    </update>
+
+    <select id="getCheckMemberNo" parameterType="UpdateCheckYnDTO" resultType="String">
+        SELECT IFNULL(CHK_MBR_NO, 0)
+        FROM CT_CHKLIST
+        WHERE MTRL_NO = #{materialNo:VARCHAR}
+          AND CHK_YN = 'Y';
+    </select>
 
 </mapper>

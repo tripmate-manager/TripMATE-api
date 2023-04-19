@@ -18,9 +18,11 @@ import javax.validation.constraints.Size;
 public class CheckListDTO {
 
     @NotBlank(message = "플랜 번호를 입력해주세요.")
+    @Schema(description = "플랜 번호", example = "1")
     private String planNo;
 
     @NotBlank(message = "회원 번호를 입력해주세요.")
+    @Schema(description = "회원 번호", example = "1")
     private String memberNo;
 
     @NotBlank(message = "체크리스트 항목 타입을 입력해주세요.")
@@ -30,5 +32,6 @@ public class CheckListDTO {
 
     @NotBlank(message = "체크리스트 항목을 입력해주세요.")
     @Size(max = 50, message = "체크리스트 항목은 50자 이하인 값만 입력 가능합니다.")
+    @Schema(description = "체크리스트 항목명", example = "name")
     private String materialName;
 }

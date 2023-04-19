@@ -25,4 +25,6 @@ public class CheckListVO {
     private String checkMemberNo;
 
     private String planLeaderNo;
+
+    private String checkMemberNickName;
 }

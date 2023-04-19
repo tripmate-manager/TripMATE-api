@@ -45,5 +45,6 @@
         <typeAlias type="com.tripmate.domain.checklist.dto.MyCheckListDTO" alias="MyCheckListDTO"/>
         <typeAlias type="com.tripmate.domain.checklist.vo.CheckListVO" alias="CheckListVO"/>
         <typeAlias type="com.tripmate.domain.checklist.dto.DeleteCheckListDTO" alias="DeleteCheckListDTO"/>
+        <typeAlias type="com.tripmate.domain.checklist.dto.UpdateCheckYnDTO" alias="UpdateCheckYnDTO"/>
     </typeAliases>
 </configuration>

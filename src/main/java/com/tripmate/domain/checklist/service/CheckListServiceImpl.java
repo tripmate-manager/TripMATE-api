@@ -6,6 +6,7 @@ import com.tripmate.domain.checklist.dao.CheckListDAO;
 import com.tripmate.domain.checklist.dto.CheckListDTO;
 import com.tripmate.domain.checklist.dto.DeleteCheckListDTO;
 import com.tripmate.domain.checklist.dto.MyCheckListDTO;
+import com.tripmate.domain.checklist.dto.UpdateCheckYnDTO;
 import com.tripmate.domain.checklist.vo.CheckListVO;
 import com.tripmate.domain.common.ConstCode;
 import com.tripmate.domain.plans.dao.PlanDAO;
@@ -48,6 +49,18 @@ public class CheckListServiceImpl implements CheckListService{
         }
 
         return checkListDAO.deleteCheckList(deleteCheckListDTO.getMaterialNoList()) == deleteCheckListDTO.getMaterialNoList().size();
+    }
+
+    @Override
+    public boolean updateCheckYn(String materialNo, UpdateCheckYnDTO updateCheckYnDTO) {
+
+        if (ConstCode.CHECKLIST_TYPE_CODE_TOGETHER.equals(updateCheckYnDTO.getCheckListTypeCode())) {
+            if (updateCheckYnDTO.getMaterialNo().equals(checkListDAO.getCheckMemberNo(updateCheckYnDTO))) {
+                throw new GuideMessageException("이미 체크된 항목입니다.");
+            }
+        }
+
+        return checkListDAO.updateCheckYn(updateCheckYnDTO) == 1;
     }
 
 }

@@ -3,6 +3,7 @@ package com.tripmate.api.v1.controller;
 import com.tripmate.domain.checklist.dto.CheckListDTO;
 import com.tripmate.domain.checklist.dto.DeleteCheckListDTO;
 import com.tripmate.domain.checklist.dto.MyCheckListDTO;
+import com.tripmate.domain.checklist.dto.UpdateCheckYnDTO;
 import com.tripmate.domain.checklist.service.CheckListService;
 import com.tripmate.domain.checklist.vo.CheckListVO;
 import com.tripmate.domain.common.vo.ResponseWrapper;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,6 +66,15 @@ public class CheckListController {
     public ResponseWrapper<Boolean> deleteCheckList(@Valid @RequestBody DeleteCheckListDTO deleteCheckListDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(checkListService.deleteCheckList(deleteCheckListDTO)))
+                .build();
+    }
+
+    @Operation(summary = "체크리스트 항목 상태(체크박스 상태) 업데이트", description = "체크리스트 항목 상태를 업데이트합니다.")
+    @PutMapping("/{materialNo}")
+    public ResponseWrapper<Boolean> updateCheckYn(@PathVariable(value = "materialNo") String materialNo,
+                                                  @Valid @RequestBody UpdateCheckYnDTO updateCheckYnDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(checkListService.updateCheckYn(materialNo, updateCheckYnDTO)))
                 .build();
     }
 
