@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Schema(description = "플랜 나가기 DTO")
+@Schema(description = "플랜 나가기 Request DTO")
 public class ExitPlanDTO {
     @Schema(description = "리더 권한 변경할 메이트번호 (플랜을 나가는 회원이 리더인 경우에만 해당 메이트의 리더 권한을 변경합니다.)")
     private String mateNo;

@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Schema(description = "플랜메이트 DTO")
+@Schema(description = "플랜메이트 추가 Request DTO")
 public class PlanMateDTO {
     @Schema(description = "플랜번호")
     private String planNo;

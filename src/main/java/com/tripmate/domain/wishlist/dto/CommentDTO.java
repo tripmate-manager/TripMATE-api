@@ -42,6 +42,6 @@ public class CommentDTO {
     private String commentDepth;
 
     @NotBlank(message = "댓글 내용을 입력해주세요.")
-    @Schema(description = "댓글 내용", example = "example")
+    @Schema(description = "댓글 내용", example = "댓글 내용")
     private String commentText;
 }

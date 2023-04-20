@@ -16,6 +16,8 @@ import javax.validation.constraints.Pattern;
 @Getter
 public class UpdatePasswordDTO {
 
+    @NotBlank(message = "회원 번호를 입력해주세요.")
+    @Schema(description = "회원 번호", example = "1")
     private int memberNo;
 
     @NotBlank(message = "비밀번호를 입력해주세요.", groups = ValidationGroups.NotBlankGroup.class)

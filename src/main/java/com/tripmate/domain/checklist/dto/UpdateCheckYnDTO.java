@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Schema(description = "체크리스트 항목 체크 상태 Request DTO")
+@Schema(description = "체크리스트 항목 체크 상태 변경 Request DTO")
 public class UpdateCheckYnDTO {
 
     @NotBlank(message = "회원 번호를 입력해주세요.")

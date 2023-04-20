@@ -6,51 +6,54 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Schema(description = "위시리스트 게시글 조회 Response VO")
 public class PostVO {
-    @NotBlank
+    @Schema(description = "게시글 번호", example = "1")
     private String postNo;
 
-    @NotBlank(message = "플랜 번호를 입력해주세요.")
+    @Schema(description = "플랜 번호", example = "1")
     private String planNo;
 
-    @NotBlank(message = "위시리스트 게시글 타입을 입력해주세요.")
-    @Pattern(regexp = "^[1239]0$", message = "게시글 타입코드는 10, 20, 30, 40만 입력 가능합니다.")
+    @Schema(description = "게시글 타입 코드", example = "10")
     private String postTypeCode;
 
-    @NotBlank
+    @Schema(description = "게시글 본문", example = "게시글 본문")
     private String postContents;
 
-    @NotBlank
+    @Schema(description = "게시글 제목", example = "게시글 제목")
     private String postTitle;
 
+    @Schema(description = "주소", example = "주소")
     private String spotAddress;
 
+    @Schema(description = "정보 URL", example = "정보 URL")
     private String informationUrl;
 
+    @Schema(description = "이용 금액", example = "이용 금액")
     private String amount;
 
+    @Schema(description = "영업 시간", example = "영업 시간")
     private String businessHours;
 
+    @Schema(description = "대표 메뉴", example = "대표 메뉴")
     private String mainMenu;
 
+    @Schema(description = "특이 사항", example = "특이 사항")
     private String remark;
 
+    @Schema(description = "매핑여부(데일리플랜 북마크 추가 여부)", example = "Y")
     private String mappingYn;
 
-    @NotBlank
+    @Schema(description = "게시글 본문", example = "2023-01-01 15:00:00.0")
     private String registrationNo;
 
-    @NotBlank
+    @Schema(description = "게시글 작성 일시", example = "게시글 본문")
     private String registrationDateTime;
 
-    @NotBlank
+    @Schema(description = "댓글 개수", example = "1")
     private int commentCnt;
 }

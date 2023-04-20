@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Schema(description = "알림 DTO")
+@Schema(description = "알림 생성/수정 Request DTO")
 public class NotificationDTO {
     @NotBlank(message = "플랜 번호를 입력해주세요.")
     @Schema(description = "플랜 번호", example = "1")

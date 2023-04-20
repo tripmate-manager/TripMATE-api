@@ -28,7 +28,7 @@ public class SignInDTO {
     private String memberId;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
-    @Schema(description = "비밀번호")
+    @Schema(description = "비밀번호", example = "비밀번호")
     private String memberPassword;
 
     @Hidden
