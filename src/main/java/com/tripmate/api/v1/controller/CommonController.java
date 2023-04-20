@@ -7,8 +7,8 @@ import com.tripmate.domain.common.vo.ResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,15 +18,11 @@ import java.util.Collections;
 
 @Slf4j
 @RestController
-@Tag(name = "공통 API", description = "Common API")
+@Tag(name = "Common", description = "공통 API")
 @RequestMapping("/v1/common")
+@RequiredArgsConstructor
 public class CommonController {
     private final CodeService codeService;
-
-    @Autowired
-    public CommonController(CodeService codeService) {
-        this.codeService = codeService;
-    }
 
     @Operation(summary = "공통 상세 코드 목록 조회", description = "commonCode 기준 ST_COMM_CD_DTL 테이블에서 데이터 조회")
     @GetMapping("codes/{commonCode}")

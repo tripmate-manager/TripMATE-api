@@ -1,5 +1,6 @@
 package com.tripmate.api.v1.controller;
 
+import com.tripmate.common.config.ValidationSequence;
 import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.reviews.dto.DeleteReviewDTO;
 import com.tripmate.domain.reviews.dto.ReviewDTO;
@@ -8,8 +9,8 @@ import com.tripmate.domain.reviews.vo.ReviewVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,21 +25,17 @@ import java.util.Collections;
 
 @Slf4j
 @RestController
-@Tag(name = "리뷰 API", description = "Review API")
+@Tag(name = "Review", description = "리뷰 API")
 @RequestMapping("v1/reviews")
 @Validated
+@RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @Autowired
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
-
     @Operation(summary = "데일리플랜 리뷰 생성", description = "데일리플랜 리뷰를 생성합니다.")
     @PostMapping("/{dailyPlanNo}")
-    public ResponseWrapper<String> insertReview(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(example = "1") String dailyPlanNo,
-                                                @Valid @RequestBody ReviewDTO reviewDTO) {
+    public ResponseWrapper<String> insertReview(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(example = "데일리플랜 번호") String dailyPlanNo,
+                                                @Validated(ValidationSequence.class) @RequestBody ReviewDTO reviewDTO) {
         return ResponseWrapper.<String>builder()
                 .data(Collections.singletonList(reviewService.insertReview(dailyPlanNo, reviewDTO)))
                 .build();
@@ -46,7 +43,7 @@ public class ReviewController {
 
     @Operation(summary = "데일리플랜 리뷰 조회", description = "데일리플랜 리뷰 목록을 조회합니다.")
     @GetMapping("/{dailyPlanNo}")
-    public ResponseWrapper<ReviewVO> searchReviewList(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(example = "1") String dailyPlanNo) {
+    public ResponseWrapper<ReviewVO> searchReviewList(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(example = "데일리플랜 번호") String dailyPlanNo) {
         return ResponseWrapper.<ReviewVO>builder()
                 .data(reviewService.searchReviewList(dailyPlanNo))
                 .build();
