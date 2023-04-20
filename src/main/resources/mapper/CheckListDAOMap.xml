@@ -63,7 +63,7 @@
     <update id="updateCheckYn" parameterType="UpdateCheckYnDTO">
         UPDATE CT_CHKLIST
         SET CHK_YN = IF(CHK_YN = 'N', 'Y', 'N'),
-            CHK_MBR_NO =  IF(CHK_YN = 'N', NULL, #{memberNo:VARCHAR}),
+            CHK_MBR_NO = #{memberNo:VARCHAR},
             UPT_NO = #{memberNo:VARCHAR},
             UPT_DTIME = now()
         WHERE MTRL_NO = #{materialNo:VARCHAR};
