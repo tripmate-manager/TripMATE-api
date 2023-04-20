@@ -1,5 +1,6 @@
 package com.tripmate.domain.members.dto;
 
+import com.tripmate.common.config.ValidationGroups;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -19,9 +20,9 @@ import javax.validation.constraints.Size;
 @Schema(description = "메일 DTO")
 public class MemberMailDTO {
 
-    @NotBlank(message = "메일수신자 주소를 입력하세요")
+    @NotBlank(message = "메일수신자 주소를 입력하세요", groups = ValidationGroups.NotBlankGroup.class)
+    @Email(groups = ValidationGroups.PatternCheckGroup.class)
     @Schema(description = "메일주소", example = "test@test.com")
-    @Email
     private String to;
 
     @Schema(description = "메일 제목")

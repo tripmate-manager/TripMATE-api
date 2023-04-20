@@ -1,5 +1,6 @@
 package com.tripmate.domain.reviews.dto;
 
+import com.tripmate.common.config.ValidationGroups;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,8 @@ public class ReviewDTO {
     @Schema(description = "데일리플랜 번호", example = "1")
     private String dailyPlanNo;
 
-    @NotBlank(message = "게시글 타입을 입력해주세요.")
-    @Pattern(regexp = "^[1239]0$", message = "게시글 타입코드는 10, 20, 30, 90만 입력 가능합니다.")
+    @NotBlank(message = "게시글 타입을 입력해주세요.", groups = ValidationGroups.NotBlankGroup.class)
+    @Pattern(regexp = "^[1239]0$", message = "게시글 타입코드는 10, 20, 30, 90만 입력 가능합니다.", groups = ValidationGroups.PatternCheckGroup.class)
     @Schema(description = "게시글 타입코드(10: 숙소, 20: 관광지, 30: 식당, 90: 기타", example = "10")
     private String postTypeCode;
 
