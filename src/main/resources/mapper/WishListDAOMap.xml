@@ -101,23 +101,24 @@
     </select>
 
     <select id="getPostInfo" parameterType="String" resultType="PostVO">
-        SELECT POST_NO AS postNo,
-               PLAN_NO AS planNo,
-               POST_TP_CD AS postTypeCode,
-               POST_CONTS AS postContents,
-               POST_TITLE AS postTitle,
-               SPOT_ADDR AS spotAddress,
-               INFO_URL AS informationUrl,
-               REMARK AS remark,
-               MAIN_MENU AS mainMenu,
-               BIZ_HOURS AS businessHours,
-               AMT AS amount,
-               MPPG_YN AS mappingYn,
-               REG_NO AS registrationNo,
-               REG_DTIME AS registrationDateTime,
-               (SELECT COUNT(*) FROM CT_COMMENT comm WHERE comm.POST_NO = POST_NO) AS commentCnt
-        FROM CT_POST_MGMT
-        WHERE POST_NO = #{postNo:VARCHAR};
+        SELECT cpm.POST_NO AS postNo,
+               cpm.PLAN_NO AS planNo,
+               cpm.POST_TP_CD AS postTypeCode,
+               cpm.POST_CONTS AS postContents,
+               cpm.POST_TITLE AS postTitle,
+               cpm.SPOT_ADDR AS spotAddress,
+               cpm.INFO_URL AS informationUrl,
+               cpm.REMARK AS remark,
+               cpm.MAIN_MENU AS mainMenu,
+               cpm.BIZ_HOURS AS businessHours,
+               cpm.AMT AS amount,
+               cpm.MPPG_YN AS mappingYn,
+               cpm.REG_NO AS registrationNo,
+               cpm.REG_DTIME AS registrationDateTime,
+               COUNT(comm.CMNT_NO) AS commentCnt
+        FROM CT_POST_MGMT cpm, CT_COMMENT comm
+        WHERE cpm.POST_NO = comm.POST_NO
+          AND cpm.POST_NO = #{postNo:VARCHAR};
     </select>
 
     <insert id="insertComment" parameterType="CommentDTO">
@@ -184,12 +185,13 @@
                cc.CMNT_GRP_NO2,
                cc.CMNT_DEPTH,
                cc.CMNT_TXT,
-               (SELECT NICK_NM FROM MB_MBR_MGMT WHERE MBR_NO = cc.REG_NO) AS NICK_NM,
+               mmm.NICK_NM,
                cc.REG_NO,
                cc.REG_DTIME,
                cc.USE_YN
-        FROM CT_COMMENT cc
-        WHERE POST_NO = #{postNo:VARCHAR}
+        FROM CT_COMMENT cc, MB_MBR_MGMT mmm
+        WHERE mmm.MBR_NO = cc.REG_NO
+          AND cc.POST_NO = #{postNo:VARCHAR}
         ORDER BY cc.CMNT_GRP_NO, cc.CMNT_GRP_NO2, cc.REG_DTIME;
     </select>
 

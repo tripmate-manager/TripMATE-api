@@ -85,9 +85,7 @@
     </insert>
 
     <select id="getPlanAttributeNo" parameterType="PlanAttributeVO" resultType="int">
-        SELECT CASE WHEN COUNT(*) > 0 THEN ATTR_NO
-                    ELSE 0
-                   END
+        SELECT CASE WHEN COUNT(*) > 0 THEN ATTR_NO ELSE 0 END
         FROM CT_PLAN_ATTR_MGMT
         WHERE ATTR_NM = #{attributeName:VARCHAR}
           AND ATTR_TP_CD = #{attributeTypeCode:VARCHAR};
@@ -380,13 +378,17 @@
                 noti.RCVER_NO,
                 noti.NOTI_DTIME,
                 noti.READ_DTIME,
-                (SELECT POST_NO FROM CT_POST_MGMT WHERE DAILYPLAN_NO = noti.DAILYPLAN_NO) AS POST_NO,
-                (SELECT PLAN_TITLE FROM CT_PLAN_MGMT WHERE PLAN_NO = noti.PLAN_NO) AS PLAN_TITLE,
-                (SELECT POST_TITLE FROM CT_POST_MGMT WHERE DAILYPLAN_NO = noti.DAILYPLAN_NO) AS POST_TITLE,
-                (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = (SELECT MBR_NO FROM CT_PLAN_MATE WHERE PLAN_NO = noti.PLAN_NO AND LEAD_YN = 'Y')) AS LEADER_NAME,
-                (SELECT MBR_NM FROM MB_MBR_MGMT WHERE MBR_NO = noti.SENDER_NO) AS SENDER_NAME,
-                (SELECT USE_YN FROM CT_PLAN_MGMT WHERE PLAN_NO = noti.PLAN_NO) AS USE_YN
+                plan.PLAN_TITLE,
+                plan.USE_YN,
+                post.POST_NO,
+                post.POST_TITLE,
+                mmm.NICK_NM AS SENDER_NAME,
+                (SELECT NICK_NM FROM MB_MBR_MGMT WHERE MBR_NO = (SELECT MBR_NO FROM CT_PLAN_MATE WHERE PLAN_NO = noti.PLAN_NO AND LEAD_YN = 'Y')) AS LEADER_NAME
         FROM CT_NOTI_MGMT noti
+            LEFT JOIN CT_DAILYPLAN cd ON noti.DAILYPLAN_NO = cd.DAILYPLAN_NO
+            LEFT JOIN CT_POST_MGMT post ON cd.POST_NO = post.POST_NO
+            INNER JOIN CT_PLAN_MGMT plan ON noti.PLAN_NO = plan.PLAN_NO
+            INNER JOIN MB_MBR_MGMT mmm ON noti.SENDER_NO = mmm.MBR_NO
         WHERE noti.RCVER_NO = #{memberNo:VARCHAR}
           AND noti.NOTI_DTIME <![CDATA[<]]> now()
         ORDER BY noti.NOTI_NO DESC;

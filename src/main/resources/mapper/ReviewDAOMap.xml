@@ -65,7 +65,7 @@
     </insert>
 
     <insert id="insertReviewImage" parameterType="java.util.List">
-        INSERT INTO CT_REV_IMG  (REV_NO
+        INSERT INTO CT_REV_IMG (REV_NO
                                 ,IMG_NM
                                 ,IMG_PATH
                                 ,IMG_VOL
