@@ -44,7 +44,7 @@ public class PlanController {
 
     @Operation(summary = "플랜 속성 조회", description = "플랜 속성을 조회합니다.")
     @GetMapping("/plan-attributes")
-    public ResponseWrapper<PlanAttributeVO> searchPlanAttributeList(@RequestParam(value = "attributeTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "플랜속성타입코드(10: 해시태그, 20: 여행테마)") String attributeTypeCode) {
+    public ResponseWrapper<PlanAttributeVO> searchPlanAttributeList(@RequestParam(value = "attributeTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(description = "플랜속성타입코드(10: 해시태그, 20: 여행테마)", example = "10") String attributeTypeCode) {
         return ResponseWrapper.<PlanAttributeVO>builder()
                 .data(planService.searchPlanAttributeList(attributeTypeCode))
                 .build();
@@ -60,7 +60,7 @@ public class PlanController {
 
     @Operation(summary = "지역 정보 조회", description = "시도별 시군구 지역 정보를 조회합니다.")
     @GetMapping("/trip-address/{sidoName}")
-    public ResponseWrapper<PlanAddressVO> searchAddressList(@PathVariable(value = "sidoName") @NotBlank @Schema(example = "시도명") String sidoName) {
+    public ResponseWrapper<PlanAddressVO> searchAddressList(@PathVariable(value = "sidoName") @NotBlank @Schema(description = "시도명", example = "경기도") String sidoName) {
         return ResponseWrapper.<PlanAddressVO>builder()
                 .data(planService.searchAddressList(sidoName))
                 .build();
@@ -76,7 +76,7 @@ public class PlanController {
 
     @Operation(summary = "회원 플랜 조회", description = "회원의 플랜을 조회합니다. (return: 플랜 리스트)")
     @GetMapping("/{memberNo}")
-    public ResponseWrapper<PlanVO> searchMemberPlanList(@PathVariable(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+    public ResponseWrapper<PlanVO> searchMemberPlanList(@PathVariable(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
         return ResponseWrapper.<PlanVO>builder()
                 .data(planService.searchMemberPlanList(memberNo))
                 .build();
@@ -84,7 +84,7 @@ public class PlanController {
 
     @Operation(summary = "플랜 상세 조회", description = "플랜 상세 정보를 조회합니다. (return: 플랜 정보)")
     @GetMapping("/plan-detail/{planNo}")
-    public ResponseWrapper<PlanVO> getPlanInfo(@PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
+    public ResponseWrapper<PlanVO> getPlanInfo(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo) {
         return ResponseWrapper.<PlanVO>builder()
                 .data(Collections.singletonList(planService.getPlanInfo(planNo)))
                 .build();
@@ -92,7 +92,7 @@ public class PlanController {
 
     @Operation(summary = "플랜 메이트 조회", description = "입력한 플랜의 플랜 메이트 목록을 조회합니다. (return: 플랜 메이트 정보)")
     @GetMapping("/plan-mate/{planNo}")
-    public ResponseWrapper<PlanMateVO> searchPlanMateList(@PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
+    public ResponseWrapper<PlanMateVO> searchPlanMateList(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo) {
         return ResponseWrapper.<PlanMateVO>builder()
                 .data(planService.searchPlanMateList(planNo))
                 .build();
@@ -100,7 +100,7 @@ public class PlanController {
 
     @Operation(summary = "플랜 수정", description = "플랜을 수정합니다. (return: 플랜 정보)")
     @PutMapping("/{planNo}")
-    public ResponseWrapper<Boolean> updatePlan(@PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo, @Validated(GroupSequence.class) @RequestBody PlanDTO planDTO) {
+    public ResponseWrapper<Boolean> updatePlan(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo, @Validated(GroupSequence.class) @RequestBody PlanDTO planDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.updatePlan(planNo, planDTO)))
                 .build();
@@ -108,8 +108,8 @@ public class PlanController {
 
     @Operation(summary = "회원(플랜메이트) 검색", description = "입력한 아이디/닉네임/이메일 조건에 부합하는 회원을 조회합니다.")
     @GetMapping("/search-member")
-    public ResponseWrapper<PlanMateVO> searchMemberList(@RequestParam(value = "searchDiviCode") @NotBlank @Pattern(regexp = "^[123]0$") @Schema(example = "검색구분코드(10: 아이디, 20: 닉네임, 30: 이메일)") String searchDiviCode,
-                                                        @RequestParam(value = "searchKeyword") @NotBlank @Schema(example = "검색어") String searchKeyword) {
+    public ResponseWrapper<PlanMateVO> searchMemberList(@RequestParam(value = "searchDiviCode") @NotBlank @Pattern(regexp = "^[123]0$") @Schema(description = "검색구분코드(10: 아이디, 20: 닉네임, 30: 이메일)", example = "10") String searchDiviCode,
+                                                        @RequestParam(value = "searchKeyword") @NotBlank @Schema(description = "검색어", example = "검색어") String searchKeyword) {
         return ResponseWrapper.<PlanMateVO>builder()
                 .data(planService.searchMemberList(searchDiviCode, searchKeyword))
                 .build();
@@ -118,7 +118,7 @@ public class PlanController {
     @Operation(summary = "초대 인증코드 생성", description = "비회원 초대 시 인증코드를 생성합니다.")
     @PostMapping("/invite-code")
     public ResponseWrapper<InviteCodeVO> createInviteAuthCode(@RequestParam(value = "planNo") @NotBlank @Schema(example = "플랜번호") String planNo,
-                                                              @RequestParam(value = "inviteTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(example = "초대타입코드(10: 회원, 20: 비회원)") String inviteTypeCode) {
+                                                              @RequestParam(value = "inviteTypeCode") @NotBlank @Pattern(regexp = "^[12]0$") @Schema(description = "초대타입코드(10: 회원, 20: 비회원)", example = "10") String inviteTypeCode) {
         return ResponseWrapper.<InviteCodeVO>builder()
                 .data(Collections.singletonList(planService.createInviteAuthCode(planNo, inviteTypeCode)))
                 .build();
@@ -134,7 +134,7 @@ public class PlanController {
 
     @Operation(summary = "알림 조회", description = "알림을 조회합니다.")
     @GetMapping("/notification")
-    public ResponseWrapper<NotificationVO> searchNotificationList(@RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+    public ResponseWrapper<NotificationVO> searchNotificationList(@RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
         return ResponseWrapper.<NotificationVO>builder()
                 .data(planService.searchNotificationList(memberNo))
                 .build();
@@ -142,7 +142,7 @@ public class PlanController {
 
     @Operation(summary = "미확인 알림 카운트 조회", description = "읽지 않은 알림 카운트 수를 조회합니다.")
     @GetMapping("/notification/unread")
-    public ResponseWrapper<Integer> getUnreadNotificationCnt(@RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo) {
+    public ResponseWrapper<Integer> getUnreadNotificationCnt(@RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
         return ResponseWrapper.<Integer>builder()
                 .data(Collections.singletonList(planService.getUnreadNotificationCnt(memberNo)))
                 .build();
@@ -150,8 +150,8 @@ public class PlanController {
 
     @Operation(summary = "알림 확인 일시 수정", description = "알림 확인 일시를 수정합니다.")
     @PutMapping("/notification")
-    public ResponseWrapper<Boolean> updateNotificationReadDateTime(@RequestParam(value = "memberNo") @NotBlank @Schema(example = "회원번호") String memberNo,
-                                                                   @RequestParam(value = "notificationNo") @NotBlank @Schema(example = "알림번호") String notificationNo) {
+    public ResponseWrapper<Boolean> updateNotificationReadDateTime(@RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo,
+                                                                   @RequestParam(value = "notificationNo") @NotBlank @Schema(description = "알림번호", example = "1") String notificationNo) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.updateNotificationReadDateTime(memberNo, notificationNo)))
                 .build();
@@ -167,7 +167,7 @@ public class PlanController {
 
     @Operation(summary = "플랜 초대코드 정보 조회", description = "플랜 초대코드에 대한 정보를 조회합니다.")
     @GetMapping("/invite-code")
-    public ResponseWrapper<InviteCodeVO> getInviteCodeInfo(@RequestParam(value = "inviteCodeNo") @NotBlank @Schema(example = "초대코드번호") String inviteCodeNo) {
+    public ResponseWrapper<InviteCodeVO> getInviteCodeInfo(@RequestParam(value = "inviteCodeNo") @NotBlank @Schema(description = "초대코드번호", example = "1") String inviteCodeNo) {
         return ResponseWrapper.<InviteCodeVO>builder()
                 .data(Collections.singletonList(planService.getPlanInviteInfoWithInviteCodeNo(inviteCodeNo)))
                 .build();

@@ -35,7 +35,7 @@ public class CheckListController {
 
     @Operation(summary = "체크리스트 항목 생성", description = "체크리스트 항목을 생성합니다.")
     @PostMapping("/{planNo}")
-    public ResponseWrapper<Boolean> insertCheckList(@PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo,
+    public ResponseWrapper<Boolean> insertCheckList(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo,
                                                     @Validated(ValidationSequence.class) @RequestBody CheckListDTO checkListDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(checkListService.createCheckList(planNo, checkListDTO)))
@@ -44,7 +44,7 @@ public class CheckListController {
 
     @Operation(summary = "공용 체크리스트 조회", description = "공용 체크리스트(Together) 목록을 조회합니다.")
     @GetMapping("/{planNo}")
-    public ResponseWrapper<CheckListVO> searchTogetherCheckList(@PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
+    public ResponseWrapper<CheckListVO> searchTogetherCheckList(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo) {
         return ResponseWrapper.<CheckListVO>builder()
                 .data(checkListService.searchTogetherCheckList(planNo))
                 .build();
@@ -52,8 +52,8 @@ public class CheckListController {
 
     @Operation(summary = "개인 체크리스트 조회", description = "개인 체크리스트(My) 목록을 조회합니다.")
     @GetMapping("/{planNo}/{memberNo}")
-    public ResponseWrapper<CheckListVO> searchMyCheckList(@PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo,
-                                                          @PathVariable(value = "memberNo") @Schema(example = "회원번호") String memberNo) {
+    public ResponseWrapper<CheckListVO> searchMyCheckList(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo,
+                                                          @PathVariable(value = "memberNo") @Schema(description = "회원번호", example = "1") String memberNo) {
         return ResponseWrapper.<CheckListVO>builder()
                 .data(checkListService.searchMyCheckList(MyCheckListDTO.builder()
                         .planNo(planNo)
@@ -72,7 +72,7 @@ public class CheckListController {
 
     @Operation(summary = "체크리스트 항목 상태(체크박스 상태) 업데이트", description = "체크리스트 항목 상태를 업데이트합니다.")
     @PutMapping("/{materialNo}")
-    public ResponseWrapper<Boolean> updateCheckYn(@PathVariable(value = "materialNo") @Schema(example = "체크리스트 항목 번호") String materialNo,
+    public ResponseWrapper<Boolean> updateCheckYn(@PathVariable(value = "materialNo") @Schema(description = "체크리스트 항목 번호", example = "1") String materialNo,
                                                   @Validated(ValidationSequence.class) @RequestBody UpdateCheckYnDTO updateCheckYnDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(checkListService.updateCheckYn(materialNo, updateCheckYnDTO)))

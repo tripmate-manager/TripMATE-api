@@ -26,21 +26,21 @@ public class CommonController {
 
     @Operation(summary = "공통 상세 코드 목록 조회", description = "commonCode 기준 ST_COMM_CD_DTL 테이블에서 데이터 조회")
     @GetMapping("codes/{commonCode}")
-    public ResponseWrapper<CodeVO> getCode(@PathVariable(value = "commonCode") @Schema(example = "MB001") String commonCode) {
+    public ResponseWrapper<CodeVO> getCode(@PathVariable(value = "commonCode") @Schema(description = "공통 코드", example = "MB001") String commonCode) {
         return ResponseWrapper.<CodeVO>builder()
-                              .data(codeService.getCode(commonCode))
-                              .build();
+                .data(codeService.getCode(commonCode))
+                .build();
     }
 
     @Operation(summary = "공통 상세 코드 조회", description = "commonCode, commonDetailCode 기준 ST_COMM_CD_DTL 테이블에서 데이터 조회")
     @GetMapping("codes/{commonCode}/{commonDetailCode}")
-    public ResponseWrapper<CodeVO> getCode(@PathVariable(value = "commonCode") @Schema(example = "MB001") String commonCode,
-                                           @PathVariable(value = "commonDetailCode") @Schema(example = "10") String commonDetailCode) {
+    public ResponseWrapper<CodeVO> getCode(@PathVariable(value = "commonCode") @Schema(description = "공통 코드", example = "MB001") String commonCode,
+                                           @PathVariable(value = "commonDetailCode") @Schema(description = "공통 상세 코드", example = "10") String commonDetailCode) {
         return ResponseWrapper.<CodeVO>builder()
-                              .data(Collections.singletonList(codeService.getCode(CodeDTO.builder()
-                                                                                         .commonCode(commonCode)
-                                                                                         .commonDetailCode(commonDetailCode)
-                                                                                         .build())))
-                              .build();
+                .data(Collections.singletonList(codeService.getCode(CodeDTO.builder()
+                        .commonCode(commonCode)
+                        .commonDetailCode(commonDetailCode)
+                        .build())))
+                .build();
     }
 }

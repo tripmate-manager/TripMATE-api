@@ -33,6 +33,6 @@ public class CheckListDTO {
 
     @NotBlank(message = "체크리스트 항목을 입력해주세요.")
     @Size(max = 50, message = "체크리스트 항목은 50자 이하인 값만 입력 가능합니다.")
-    @Schema(description = "체크리스트 항목명")
+    @Schema(description = "체크리스트 항목명", example = "체크리스트 항목명")
     private String materialName;
 }

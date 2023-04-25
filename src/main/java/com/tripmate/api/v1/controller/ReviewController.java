@@ -34,7 +34,7 @@ public class ReviewController {
 
     @Operation(summary = "데일리플랜 리뷰 생성", description = "데일리플랜 리뷰를 생성합니다.")
     @PostMapping("/{dailyPlanNo}")
-    public ResponseWrapper<String> insertReview(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(example = "데일리플랜 번호") String dailyPlanNo,
+    public ResponseWrapper<String> insertReview(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(description = "데일리플랜 번호", example = "1") String dailyPlanNo,
                                                 @Validated(ValidationSequence.class) @RequestBody ReviewDTO reviewDTO) {
         return ResponseWrapper.<String>builder()
                 .data(Collections.singletonList(reviewService.insertReview(dailyPlanNo, reviewDTO)))
@@ -43,7 +43,7 @@ public class ReviewController {
 
     @Operation(summary = "데일리플랜 리뷰 조회", description = "데일리플랜 리뷰 목록을 조회합니다.")
     @GetMapping("/{dailyPlanNo}")
-    public ResponseWrapper<ReviewVO> searchReviewList(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(example = "데일리플랜 번호") String dailyPlanNo) {
+    public ResponseWrapper<ReviewVO> searchReviewList(@PathVariable(value = "dailyPlanNo") @NotBlank @Schema(description = "데일리플랜 번호", example = "1") String dailyPlanNo) {
         return ResponseWrapper.<ReviewVO>builder()
                 .data(reviewService.searchReviewList(dailyPlanNo))
                 .build();

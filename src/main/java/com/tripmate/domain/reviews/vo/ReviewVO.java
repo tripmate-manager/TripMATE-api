@@ -23,7 +23,7 @@ public class ReviewVO {
     @Schema(description = "데일리플랜 번호", example = "1")
     private String dailyPlanNo;
 
-    @Schema(description = "게시글 타입코드(10: 숙소, 20: 관광지, 30: 식당, 90: 기타", example = "10")
+    @Schema(description = "게시글 타입코드(10: 숙소, 20: 관광지, 30: 식당, 90: 기타)", example = "10")
     private String postTypeCode;
 
     @Schema(description = "리뷰 '위치' 항목 점수", example = "1")

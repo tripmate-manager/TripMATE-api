@@ -18,7 +18,7 @@ import javax.validation.constraints.Pattern;
 @Schema(description = "게시글 댓글 생성 Request DTO")
 public class CommentDTO {
     @Hidden
-    @Schema(description = "댓글 번호")
+    @Schema(description = "댓글 번호", example = "1")
     private String commentNo;
 
     @NotBlank(message = "게시글 번호를 입력해주세요.")

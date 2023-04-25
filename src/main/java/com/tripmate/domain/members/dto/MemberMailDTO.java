@@ -24,18 +24,18 @@ public class MemberMailDTO {
     @Schema(description = "메일주소", example = "test@test.com")
     private String to;
 
-    @Schema(description = "메일 제목")
+    @Schema(description = "메일 제목", example = "메일 제목")
     private String subject;
 
-    @Schema(description = "메일 본문")
+    @Schema(description = "메일 본문", example = "메일 본문 내용")
     private String message;
 
-    @Schema(description = "회원 번호")
+    @Schema(description = "회원 번호", example = "1")
     private int memberNo;
 
     @Pattern(regexp="^[0-9a-zA-Z]{5,20}$",
             message = "영문, 숫자로 이루어진 5자 ~ 20자의 아이디만 입력 가능합니다.")
-    @Schema(description = "회원 아이디")
+    @Schema(description = "회원 아이디", example = "testId")
     private String memberId;
 
     @Hidden

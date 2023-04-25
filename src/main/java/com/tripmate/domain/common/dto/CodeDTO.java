@@ -16,10 +16,10 @@ import javax.validation.constraints.NotBlank;
 public class CodeDTO {
     @NonNull
     @NotBlank(message = "공통코드를 입력하세요")
-    @Schema(description = "공통코드")
+    @Schema(description = "공통 코드", example = "MB001")
     private String commonCode;
     @NonNull
     @NotBlank(message = "공통상세코드를 입력하세요")
-    @Schema(description = "공통상세코드")
+    @Schema(description = "공통 상세 코드", example = "10")
     private String commonDetailCode;
 }

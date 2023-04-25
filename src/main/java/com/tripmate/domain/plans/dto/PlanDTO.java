@@ -22,6 +22,7 @@ import java.util.List;
 @Schema(description = "플랜 생성/수정 Request DTO")
 public class PlanDTO {
     @Min(value = 1, message = "회원 번호는 필수이며, 양수만 입력 가능합니다.")
+    @Schema(description = "회원 번호", example = "1")
     private int memberNo;
 
     @Hidden
@@ -29,12 +30,12 @@ public class PlanDTO {
 
     @NotBlank(message = "플랜 제목을 입력해주세요.", groups = ValidationGroups.NotBlankGroup.class)
     @Size(max = 20, groups = ValidationGroups.PatternCheckGroup.class)
-    @Schema(description = "플랜제목", example = "플랜제목")
+    @Schema(description = "플랜 제목", example = "플랜 제목")
     private String planTitle;
 
     @NotBlank(message = "플랜 설명을 입력해주세요.", groups = ValidationGroups.NotBlankGroup.class)
     @Size(max = 100, groups = ValidationGroups.PatternCheckGroup.class)
-    @Schema(description = "플랜설명", pattern = "yyyy.MM.dd", example = "2023.01.01")
+    @Schema(description = "플랜 설명", pattern = "yyyy.MM.dd", example = "2023.01.01")
     private String planDescription;
 
     @NotBlank(message = "플랜 공개 여부를 입력해주세요.", groups = ValidationGroups.NotBlankGroup.class)

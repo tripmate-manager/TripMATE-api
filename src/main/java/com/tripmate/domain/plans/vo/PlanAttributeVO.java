@@ -21,9 +21,9 @@ public class PlanAttributeVO {
     @Schema(description = "속성 번호", example = "1")
     private int attributeNo;
 
-    @Schema(description = "플랜 속성명 (여행테마 또는 해시태그명)")
+    @Schema(description = "플랜 속성명 (여행테마 또는 해시태그명)", example = "플랜 속성명")
     private String attributeName;
 
-    @Schema(description = "속성타입코드(10: 해시태그, 20: 여행테마)")
+    @Schema(description = "속성타입코드(10: 해시태그, 20: 여행테마)", example = "10")
     private String attributeTypeCode;
 }

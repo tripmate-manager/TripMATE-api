@@ -45,7 +45,7 @@ public class WishListController {
 
     @Operation(summary = "위시리스트 조회", description = "해당 플랜의 위시리스트 목록을 조회합니다.")
     @GetMapping("/{planNo}")
-    public ResponseWrapper<PostVO> searchWishList(@PathVariable(value = "planNo") @Schema(example = "플랜번호") String planNo) {
+    public ResponseWrapper<PostVO> searchWishList(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo) {
         return ResponseWrapper.<PostVO>builder()
                 .data(wishListService.searchWishList(planNo))
                 .build();
@@ -53,7 +53,7 @@ public class WishListController {
 
     @Operation(summary = "게시글 정보 조회", description = "해당 플랜의 위시리스트 목록을 조회합니다.")
     @GetMapping("/post/{postNo}")
-    public ResponseWrapper<PostVO> getPostInfo(@PathVariable(value = "postNo") @Schema(example = "게시글번호") String postNo) {
+    public ResponseWrapper<PostVO> getPostInfo(@PathVariable(value = "postNo") @Schema(description = "게시글번호", example = "1") String postNo) {
         return ResponseWrapper.<PostVO>builder()
                 .data(Collections.singletonList(wishListService.getPostInfo(postNo)))
                 .build();
@@ -69,7 +69,7 @@ public class WishListController {
 
     @Operation(summary = "댓글 조회", description = "해당 플랜의 댓글 목록을 조회합니다.")
     @GetMapping("/comment/{postNo}")
-    public ResponseWrapper<CommentVO> searchCommentList(@PathVariable(value = "postNo") @Schema(example = "게시글번호") String postNo) {
+    public ResponseWrapper<CommentVO> searchCommentList(@PathVariable(value = "postNo") @Schema(description = "게시글번호", example = "1") String postNo) {
         return ResponseWrapper.<CommentVO>builder()
                 .data(wishListService.searchCommentList(postNo))
                 .build();
@@ -77,7 +77,7 @@ public class WishListController {
 
     @Operation(summary = "댓글 삭제", description = "게시글의 댓글을 삭제합니다.")
     @PostMapping("/comment/{commentNo}")
-    public ResponseWrapper<Boolean> deleteComment(@PathVariable(value = "commentNo") @Schema(example = "댓글번호") String commentNo,
+    public ResponseWrapper<Boolean> deleteComment(@PathVariable(value = "commentNo") @Schema(description = "댓글번호", example = "1") String commentNo,
                                                   @Valid @RequestBody DeleteCommentDTO deleteCommentDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(wishListService.deleteComment(commentNo, deleteCommentDTO)))
@@ -86,7 +86,7 @@ public class WishListController {
 
     @Operation(summary = "게시글 수정", description = "위시리스트 게시글을 수정합니다.")
     @PutMapping("/post/{postNo}")
-    public ResponseWrapper<Boolean> updatePost(@PathVariable(value = "postNo") @Schema(example = "게시글번호") String postNo,
+    public ResponseWrapper<Boolean> updatePost(@PathVariable(value = "postNo") @Schema(description = "게시글번호", example = "1") String postNo,
                                                @Validated(ValidationSequence.class) @RequestBody PostDTO postDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(wishListService.updatePost(postNo, postDTO)))
@@ -95,7 +95,7 @@ public class WishListController {
 
     @Operation(summary = "게시글 삭제", description = "위시리스트 게시글을 삭제합니다.")
     @DeleteMapping("/post/{postNo}")
-    public ResponseWrapper<Boolean> deletePost(@PathVariable(value = "postNo") @Schema(example = "게시글번호") String postNo) {
+    public ResponseWrapper<Boolean> deletePost(@PathVariable(value = "postNo") @Schema(description = "게시글번호", example = "1") String postNo) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(wishListService.deletePost(postNo)))
                 .build();

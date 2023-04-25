@@ -18,7 +18,7 @@ public class PostVO {
     @Schema(description = "플랜 번호", example = "1")
     private String planNo;
 
-    @Schema(description = "게시글 타입 코드", example = "10")
+    @Schema(description = "게시글 타입 코드(10: 숙소, 20: 관광지, 30: 식당, 90: 기타)", example = "10")
     private String postTypeCode;
 
     @Schema(description = "게시글 본문", example = "게시글 본문")
@@ -27,10 +27,10 @@ public class PostVO {
     @Schema(description = "게시글 제목", example = "게시글 제목")
     private String postTitle;
 
-    @Schema(description = "주소", example = "주소")
+    @Schema(description = "주소", example = "서울 강서구 마곡동로 36")
     private String spotAddress;
 
-    @Schema(description = "정보 URL", example = "정보 URL")
+    @Schema(description = "정보 URL", example = "https://www.google.com/")
     private String informationUrl;
 
     @Schema(description = "이용 금액", example = "이용 금액")

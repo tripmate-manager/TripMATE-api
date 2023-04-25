@@ -33,7 +33,7 @@ public class CommentVO {
     @Schema(description = "댓글 depth", example = "1")
     private String commentDepth;
 
-    @Schema(description = "댓글 내용", example = "commentText")
+    @Schema(description = "댓글 내용", example = "댓글 내용")
     private String commentText;
 
     @Schema(description = "작성 일시", example = "2023-01-01 15:00:00.0")
