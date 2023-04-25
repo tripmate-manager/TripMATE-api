@@ -15,6 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Schema(description = "리뷰 삭제 Request DTO")
 public class DeleteReviewDTO {
     @NotBlank(message = "리뷰 번호를 입력해주세요.")
+    @Schema(description = "리뷰 번호", example = "1")
     private String reviewNo;
 
     @NotBlank(message = "회원 번호를 입력해주세요.")

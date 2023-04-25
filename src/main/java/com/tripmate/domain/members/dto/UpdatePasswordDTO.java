@@ -1,5 +1,6 @@
 package com.tripmate.domain.members.dto;
 
+import com.tripmate.common.config.ValidationGroups;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,15 +16,21 @@ import javax.validation.constraints.Pattern;
 @Getter
 public class UpdatePasswordDTO {
 
+    @NotBlank(message = "회원 번호를 입력해주세요.")
+    @Schema(description = "회원 번호", example = "1")
     private int memberNo;
 
-    @NotBlank(message = "비밀번호를 입력해주세요.")
-    @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",
-            message = "영문, 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 20자의 비밀번호만 입력 가능합니다.")
+    @NotBlank(message = "비밀번호를 입력해주세요.", groups = ValidationGroups.NotBlankGroup.class)
+    @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}"
+            , message = "영문, 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 20자의 비밀번호만 입력 가능합니다."
+            , groups = ValidationGroups.PatternCheckGroup.class)
+    @Schema(description = "비밀번호", example = "password1!")
     private String memberPassword;
 
-    @NotBlank(message = "새비밀번호를 입력해주세요.")
-    @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",
-            message = "영문, 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 20자의 비밀번호만 입력 가능합니다.")
+    @NotBlank(message = "새 비밀번호를 입력해주세요.", groups = ValidationGroups.NotBlankGroup.class)
+    @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}"
+            , message = "영문, 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 20자의 비밀번호만 입력 가능합니다."
+            , groups = ValidationGroups.PatternCheckGroup.class)
+    @Schema(description = "새 비밀번호", example = "password2!")
     private String newMemberPassword;
 }

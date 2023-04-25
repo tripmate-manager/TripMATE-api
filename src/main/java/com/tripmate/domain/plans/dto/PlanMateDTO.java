@@ -13,16 +13,16 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Schema(description = "플랜메이트 DTO")
+@Schema(description = "플랜메이트 추가 Request DTO")
 public class PlanMateDTO {
-    @Schema(description = "플랜번호")
+    @Schema(description = "플랜 번호", example = "1")
     private String planNo;
 
     @NotBlank
-    @Schema(description = "회원번호")
+    @Schema(description = "회원 번호", example = "1")
     private String memberNo;
 
     @Pattern(regexp = "^[YN]$", message = "플랜 리더(생성자) 여부는 Y, N만 입력 가능합니다.")
-    @Schema(description = "플랜리더여부")
+    @Schema(description = "플랜 리더 여부", example = "Y")
     private String leadYn;
 }
