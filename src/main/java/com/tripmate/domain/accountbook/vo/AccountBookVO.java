@@ -34,5 +34,6 @@ public class AccountBookVO {
     @Schema(description = "플랜 사용 경비 총액", example = "50,000")
     private int planAmountSum;
 
-    List<AccountVO> accountList;
+    @Schema(description = "일자별 여행가계부 항목 리스트")
+    private List<AccountVO> accountList;
 }

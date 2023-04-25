@@ -1,5 +1,7 @@
 package com.tripmate.domain.accountbook.service;
 
+import com.tripmate.common.exception.GuideMessageException;
+import com.tripmate.common.exception.WrongParameterException;
 import com.tripmate.domain.accountbook.dao.AccountBookDAO;
 import com.tripmate.domain.accountbook.dto.AccountBookDTO;
 import com.tripmate.domain.accountbook.dto.UpdateAccountBookDTO;
@@ -21,7 +23,7 @@ public class AccountBookServiceImpl implements AccountBookService {
 
         AccountBookVO accountBookVOS = accountBookDAO.searchAccountListByDay(dailyPlanByDayDTO);
 
-        AccountBookVO accountBookVOS2 = AccountBookVO.builder()
+        return AccountBookVO.builder()
                 .planNo(accountBookVOS.getPlanNo())
                 .dayGroup(dailyPlanByDayDTO.getDayGroup())
                 .tripTerm(accountBookVOS.getTripTerm())
@@ -31,24 +33,34 @@ public class AccountBookServiceImpl implements AccountBookService {
                 .planAmountSum(accountBookVOS.getPlanAmountSum())
                 .accountList(accountBookVOS.getAccountList())
                 .build();
-
-        return accountBookVOS2;
     }
 
     @Override
     public boolean insertAccountWithAccountBookDTO(String planNo, AccountBookDTO accountBookDTO) {
+        if (!planNo.equals(accountBookDTO.getPlanNo())) {
+            throw new WrongParameterException("여행 가계부 항목 생성 처리 중 오류가 발생하였습니다.");
+        }
+
         return accountBookDAO.insertAccountWithAccountBookDTO(accountBookDTO) == 1;
     }
 
     @Override
     public boolean updateAccountAmount(String planNo, UpdateAccountBookDTO updateAccountBookDTO) {
+        if (!planNo.equals(updateAccountBookDTO.getPlanNo())) {
+            throw new WrongParameterException("여행 가계부 금액 변경 처리 중 오류가 발생하였습니다.");
+        }
+
         return accountBookDAO.updateAccountAmount(updateAccountBookDTO) == 1;
     }
 
     @Override
     public boolean updateAccountSortSequence(String planNo, UpdateAccountBookDTO updateAccountBookDTO) {
+        if (accountBookDAO.updateAccountSortSequence(updateAccountBookDTO) != 1) {
+            throw new GuideMessageException("여행 가계부 항목 정렬 순서 변경 처리 중 오류가 발생하였습니다.");
+        }
+
         accountBookDAO.updatePlanDayGroupAccountSortSequence(updateAccountBookDTO);
-        accountBookDAO.updateAccountSortSequence(updateAccountBookDTO);
+
         return true;
     }
 }

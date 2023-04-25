@@ -39,13 +39,13 @@
         <result property="tripTerm" column="TRIP_TERM"/>
         <result property="dayAmountSum" column="DAY_AMT_SUM"/>
         <result property="planAmountSum" column="PLAN_AMT_SUM"/>
-        <collection property="accountList" javaType="List" ofType="AccountVO" select="getAccountList"/>
+        <collection property="accountList" column="{planNo=PLAN_NO,dayGroup=DAY_GRP}" javaType="List" ofType="AccountVO" select="getAccountList"/>
     </resultMap>
 
     <select id="searchAccountListByDay" parameterType="DailyPlanByDayDTO" resultMap="searchAccountListByDay">
-        SELECT cta.PLAN_NO AS planNo
-             ,cta.DAY_GRP AS dayGroup
-             ,cpm.TRIP_TERM AS tripTerm
+        SELECT cta.PLAN_NO
+             ,cta.DAY_GRP
+             ,cpm.TRIP_TERM
              ,(SELECT SUM(cc.AMT) FROM CT_TRIP_ACNT cc WHERE DAY_GRP = #{dayGroup:VARCHAR}) AS DAY_AMT_SUM
              ,SUM(cta.AMT) AS PLAN_AMT_SUM
         FROM CT_TRIP_ACNT cta, CT_PLAN_MGMT cpm
