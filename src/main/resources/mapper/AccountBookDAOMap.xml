@@ -113,7 +113,7 @@
 
     <update id="updateAccountAmount" parameterType="UpdateAccountBookDTO">
         UPDATE CT_TRIP_ACNT
-        SET AMOUNT = #{amount:VARCHAR}
+        SET AMT = #{amount:VARCHAR}
           ,UPT_NO = #{memberNo:VARCHAR}
           ,UPT_DTIME = now()
         WHERE ACNT_NO = #{accountNo:VARCHAR};
@@ -135,16 +135,6 @@
           ,UPT_NO = #{memberNo:VARCHAR}
           ,UPT_DTIME = now()
         WHERE ACNT_NO = #{accountNo:VARCHAR};
-    </update>
-
-    <update id="updateAccountSortSequenceWithDeleteAccountBookDTO" parameterType="DeleteAccountBookDTO">
-        UPDATE CT_TRIP_ACNT
-        SET SORT_SEQ = SORT_SEQ - 1
-          ,UPT_NO = #{memberNo:VARCHAR}
-          ,UPT_DTIME = now()
-        WHERE PLAN_NO = #{planNo:VARCHAR}
-          AND DAY_GRP = #{dayGroup:VARCHAR}
-          AND SORT_SEQ <![CDATA[>=]]> #{sortSequence:VARCHAR};
     </update>
 
 </mapper>

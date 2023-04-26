@@ -2,7 +2,6 @@ package com.tripmate.domain.accountbook.dao;
 
 import com.tripmate.domain.accountbook.dao.mapper.AccountBookDAOMapper;
 import com.tripmate.domain.accountbook.dto.AccountBookDTO;
-import com.tripmate.domain.accountbook.dto.DeleteAccountBookDTO;
 import com.tripmate.domain.accountbook.dto.UpdateAccountBookDTO;
 import com.tripmate.domain.accountbook.vo.AccountBookVO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanByDayDTO;
@@ -44,9 +43,5 @@ public class AccountBookDAO {
 
     public int updateAccountSortSequence(UpdateAccountBookDTO updateAccountBookDTO) {
         return sqlSession.getMapper(AccountBookDAOMapper.class).updateAccountSortSequence(updateAccountBookDTO);
-    }
-
-    public int updateAccountSortSequenceWithDeleteAccountBookDTO(DeleteAccountBookDTO deleteAccountBookDTO) {
-        return sqlSession.getMapper(AccountBookDAOMapper.class).updateAccountSortSequenceWithDeleteAccountBookDTO(deleteAccountBookDTO);
     }
 }

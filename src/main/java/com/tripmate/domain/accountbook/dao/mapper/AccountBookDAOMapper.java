@@ -1,7 +1,6 @@
 package com.tripmate.domain.accountbook.dao.mapper;
 
 import com.tripmate.domain.accountbook.dto.AccountBookDTO;
-import com.tripmate.domain.accountbook.dto.DeleteAccountBookDTO;
 import com.tripmate.domain.accountbook.dto.UpdateAccountBookDTO;
 import com.tripmate.domain.accountbook.vo.AccountBookVO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanByDayDTO;
@@ -17,5 +16,4 @@ public interface AccountBookDAOMapper {
     int updateAccountAmount(UpdateAccountBookDTO updateAccountBookDTO);
     int updatePlanDayGroupAccountSortSequence(UpdateAccountBookDTO updateAccountBookDTO);
     int updateAccountSortSequence(UpdateAccountBookDTO updateAccountBookDTO);
-    int updateAccountSortSequenceWithDeleteAccountBookDTO(DeleteAccountBookDTO deleteAccountBookDTO);
 }

@@ -37,8 +37,6 @@ public class AccountBookServiceImpl implements AccountBookService {
 
     @Override
     public boolean deleteAccount(DeleteAccountBookDTO deleteAccountBookDTO) {
-        accountBookDAO.updateAccountSortSequenceWithDeleteAccountBookDTO(deleteAccountBookDTO);
-
         return accountBookDAO.deleteAccount(deleteAccountBookDTO.getAccountNoList()) == deleteAccountBookDTO.getAccountNoList().size();
     }
 
