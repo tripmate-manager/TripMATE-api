@@ -2,6 +2,7 @@ package com.tripmate.domain.accountbook.dao;
 
 import com.tripmate.domain.accountbook.dao.mapper.AccountBookDAOMapper;
 import com.tripmate.domain.accountbook.dto.AccountBookDTO;
+import com.tripmate.domain.accountbook.dto.DeleteAccountBookDTO;
 import com.tripmate.domain.accountbook.dto.UpdateAccountBookDTO;
 import com.tripmate.domain.accountbook.vo.AccountBookVO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanByDayDTO;
@@ -9,6 +10,8 @@ import com.tripmate.domain.dailyplans.dto.DailyPlanDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,8 +22,8 @@ public class AccountBookDAO {
         return sqlSession.getMapper(AccountBookDAOMapper.class).insertAccountWithDailyPlanDTO(dailyPlanDTO);
     }
 
-    public int deleteAccount(String dailyPlanNo) {
-        return sqlSession.getMapper(AccountBookDAOMapper.class).deleteAccount(dailyPlanNo);
+    public int deleteAccount(List<String> accountNoList) {
+        return sqlSession.getMapper(AccountBookDAOMapper.class).deleteAccount(accountNoList);
     }
 
     public AccountBookVO searchAccountListByDay(DailyPlanByDayDTO dailyPlanByDayDTO) {
@@ -41,5 +44,9 @@ public class AccountBookDAO {
 
     public int updateAccountSortSequence(UpdateAccountBookDTO updateAccountBookDTO) {
         return sqlSession.getMapper(AccountBookDAOMapper.class).updateAccountSortSequence(updateAccountBookDTO);
+    }
+
+    public int updateAccountSortSequenceWithDeleteAccountBookDTO(DeleteAccountBookDTO deleteAccountBookDTO) {
+        return sqlSession.getMapper(AccountBookDAOMapper.class).updateAccountSortSequenceWithDeleteAccountBookDTO(deleteAccountBookDTO);
     }
 }

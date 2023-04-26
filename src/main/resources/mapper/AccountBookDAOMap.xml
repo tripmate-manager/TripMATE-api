@@ -5,6 +5,7 @@
 <mapper namespace="com.tripmate.domain.accountbook.dao.mapper.AccountBookDAOMapper">
     <insert id="insertAccountWithDailyPlanDTO" parameterType="DailyPlanDTO">
         INSERT INTO CT_TRIP_ACNT (PLAN_NO
+                                ,POST_TP_CD
                                 ,DAILYPLAN_NO
                                 ,POST_NO
                                 ,ACNT_NM
@@ -15,6 +16,7 @@
                                 ,UPT_NO
                                 ,UPT_DTIME)
         SELECT #{planNo:VARCHAR}
+                ,cpm.POST_TP_CD
                 ,#{dailyPlanNo:VARCHAR}
                 ,#{postNo:VARCHAR}
                 ,cpm.POST_TITLE
@@ -29,14 +31,19 @@
           AND cd.DAILYPLAN_no = #{dailyPlanNo:VARCHAR};
     </insert>
 
-    <delete id="deleteAccount" parameterType="String">
-        DELETE FROM CT_TRIP_ACNT WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
+    <delete id="deleteAccount" parameterType="java.util.List">
+        DELETE FROM CT_TRIP_ACNT
+        <where>
+            <foreach collection="list" item="item" separator="OR">
+                (ACNT_NO = #{item:VARCHAR})
+            </foreach>
+        </where>;
     </delete>
 
     <resultMap id="searchAccountListByDay" type="AccountBookVO">
         <result property="planNo" column="PLAN_NO"/>
-        <result property="dayGroup" column="DAY_GRP"/>
         <result property="tripTerm" column="TRIP_TERM"/>
+        <result property="dayGroup" column="DAY_GRP"/>
         <result property="dayAmountSum" column="DAY_AMT_SUM"/>
         <result property="planAmountSum" column="PLAN_AMT_SUM"/>
         <collection property="accountList" column="{planNo=PLAN_NO,dayGroup=DAY_GRP}" javaType="List" ofType="AccountVO" select="getAccountList"/>
@@ -44,7 +51,7 @@
 
     <select id="searchAccountListByDay" parameterType="DailyPlanByDayDTO" resultMap="searchAccountListByDay">
         SELECT cta.PLAN_NO
-             ,cta.DAY_GRP
+             ,#{dayGroup:VARCHAR} AS DAY_GRP
              ,cpm.TRIP_TERM
              ,(SELECT SUM(cc.AMT) FROM CT_TRIP_ACNT cc WHERE DAY_GRP = #{dayGroup:VARCHAR}) AS DAY_AMT_SUM
              ,SUM(cta.AMT) AS PLAN_AMT_SUM
@@ -67,21 +74,20 @@
         SELECT cta.ACNT_NO
              ,cta.DAILYPLAN_NO
              ,cta.POST_NO
-             ,post.POST_TP_CD
+             ,cta.POST_TP_CD
              ,cta.ACNT_NM
              ,cta.SORT_SEQ
              ,cta.AMT
-        FROM CT_TRIP_ACNT cta, CT_POST_MGMT post
-        WHERE cta.POST_NO = post.POST_NO
-          AND cta.PLAN_NO = #{planNo:VARCHAR}
+        FROM CT_TRIP_ACNT cta
+        LEFT JOIN CT_POST_MGMT post ON cta.POST_NO = post.POST_NO
+        WHERE cta.PLAN_NO = #{planNo:VARCHAR}
           AND cta.DAY_GRP = #{dayGroup:VARCHAR}
         ORDER BY cta.SORT_SEQ, cta.REG_DTIME;
     </select>
 
     <insert id="insertAccountWithAccountBookDTO" parameterType="AccountBookDTO">
         INSERT INTO CT_TRIP_ACNT (PLAN_NO
-                                ,DAILYPLAN_NO
-                                ,POST_NO
+                                ,POST_TP_CD
                                 ,ACNT_NM
                                 ,DAY_GRP
                                 ,SORT_SEQ
@@ -90,16 +96,19 @@
                                 ,REG_DTIME
                                 ,UPT_NO
                                 ,UPT_DTIME)
-        VALUES (#{planNo:VARCHAR}
-               ,#{dailyPlanNo:VARCHAR}
-               ,#{postNo:VARCHAR}
+        SELECT #{planNo:VARCHAR}
+               ,#{postTypeCode:VARCHAR}
                ,#{accountName:VARCHAR}
-               ,#{dayGroupNo:VARCHAR}
-               ,IFNULL((SELECT MAX(SORT_SEQ) FROM CT_TRIP_ACNT WHERE PLAN_NO = #{planNo:VARCHAR} AND DAY_GRP = #{dayGroupNo:VARCHAR}) + 1, 0)
+               ,#{dayGroup:VARCHAR}
+               ,IFNULL(MAX(SORT_SEQ) + 1, 0)
+               ,#{amount:VARCHAR}
                ,#{memberNo:VARCHAR}
                ,now()
                ,#{memberNo:VARCHAR}
-               ,now());
+               ,now()
+        FROM CT_TRIP_ACNT
+        WHERE PLAN_NO = #{planNo:VARCHAR}
+          AND DAY_GRP = #{dayGroup:VARCHAR};
     </insert>
 
     <update id="updateAccountAmount" parameterType="UpdateAccountBookDTO">
@@ -126,6 +135,16 @@
           ,UPT_NO = #{memberNo:VARCHAR}
           ,UPT_DTIME = now()
         WHERE ACNT_NO = #{accountNo:VARCHAR};
+    </update>
+
+    <update id="updateAccountSortSequenceWithDeleteAccountBookDTO" parameterType="DeleteAccountBookDTO">
+        UPDATE CT_TRIP_ACNT
+        SET SORT_SEQ = SORT_SEQ - 1
+          ,UPT_NO = #{memberNo:VARCHAR}
+          ,UPT_DTIME = now()
+        WHERE PLAN_NO = #{planNo:VARCHAR}
+          AND DAY_GRP = #{dayGroup:VARCHAR}
+          AND SORT_SEQ <![CDATA[>=]]> #{sortSequence:VARCHAR};
     </update>
 
 </mapper>

@@ -29,13 +29,9 @@ public class AccountBookDTO {
     @Schema(description = "플랜 번호", example = "1")
     private String planNo;
 
-    @NotBlank(message = "데일리플랜 번호를 입력해주세요.")
-    @Schema(description = "데일리플랜 번호", example = "1")
-    private String dailyPlanNo;
-
-    @NotBlank(message = "게시글 번호를 입력해주세요.")
-    @Schema(description = "게시글 번호", example = "1")
-    private String postNo;
+    @NotBlank(message = "게시글 타입 코드를 입력해주세요.")
+    @Schema(description = "게시글 타입 코드(10: 숙소, 20: 관광지, 30: 식당, 90: 기타)", example = "10")
+    private String postTypeCode;
 
     @NotBlank(message = "여행가계부 항목명을 입력해주세요.")
     @Schema(description = "여행가계부 항목명", example = "여행가계부 항목명")
@@ -44,9 +40,6 @@ public class AccountBookDTO {
     @NotBlank(message = "Day 그룹을 입력해주세요.")
     @Schema(description = "Day 그룹", example = "1")
     private String dayGroup;
-
-    @Schema(description = "정렬순서", example = "1")
-    private String sortSequence;
 
     @NotBlank(message = "여행가계부 금액(사용 경비)을 입력해주세요.")
     @Schema(description = "여행가계부 금액", example = "10000")

@@ -1,6 +1,7 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.accountbook.dto.AccountBookDTO;
+import com.tripmate.domain.accountbook.dto.DeleteAccountBookDTO;
 import com.tripmate.domain.accountbook.dto.UpdateAccountBookDTO;
 import com.tripmate.domain.accountbook.service.AccountBookService;
 import com.tripmate.domain.accountbook.vo.AccountBookVO;
@@ -44,29 +45,36 @@ public class AccountBookController {
     }
 
     @Operation(summary = "여행 가계부 항목 추가", description = "여행 가계부 항목을 추가합니다.")
-    @PostMapping("/{planNo}")
+    @PostMapping("/{planNo}/{dayGroup}")
     public ResponseWrapper<Boolean> insertAccount(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo,
+                                                  @PathVariable(value = "dayGroup") @Schema(description = "Day 그룹", example = "1") String dayGroup,
                                                   @Valid @RequestBody AccountBookDTO accountBookDTO) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(accountBookService.insertAccountWithAccountBookDTO(planNo, accountBookDTO)))
+                .data(Collections.singletonList(accountBookService.insertAccountWithAccountBookDTO(planNo, dayGroup, accountBookDTO)))
                 .build();
     }
 
     @Operation(summary = "여행 가계부 항목 금액 변경", description = "여행 가계부 항목의 금액을 변경합니다.")
-    @PutMapping("/amount/{planNo}")
-    public ResponseWrapper<Boolean> updateAccountAmount(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo,
-                                                  @Valid @RequestBody UpdateAccountBookDTO updateAccountBookDTO) {
+    @PutMapping("/amount")
+    public ResponseWrapper<Boolean> updateAccountAmount(@Valid @RequestBody UpdateAccountBookDTO updateAccountBookDTO) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(accountBookService.updateAccountAmount(planNo, updateAccountBookDTO)))
+                .data(Collections.singletonList(accountBookService.updateAccountAmount(updateAccountBookDTO)))
                 .build();
     }
 
     @Operation(summary = "여행 가계부 항목 정렬 순서 변경", description = "여행 가계부 항목의 정렬 순서를 변경합니다.")
-    @PutMapping("/sorting/{planNo}")
-    public ResponseWrapper<Boolean> updateAccountSortSequence(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo,
-                                                        @Valid @RequestBody UpdateAccountBookDTO updateAccountBookDTO) {
+    @PutMapping("/sort/{planNo}")
+    public ResponseWrapper<Boolean> updateAccountSortSequence(@Valid @RequestBody UpdateAccountBookDTO updateAccountBookDTO) {
         return ResponseWrapper.<Boolean>builder()
-                .data(Collections.singletonList(accountBookService.updateAccountSortSequence(planNo, updateAccountBookDTO)))
+                .data(Collections.singletonList(accountBookService.updateAccountSortSequence(updateAccountBookDTO)))
+                .build();
+    }
+
+    @Operation(summary = "여행 가계부 항목 삭제", description = "여행 가계부 항목을 삭제합니다.")
+    @PostMapping("/delete-account")
+    public ResponseWrapper<Boolean> deleteAccount(@Valid @RequestBody DeleteAccountBookDTO deleteAccountBookDTO) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(accountBookService.deleteAccount(deleteAccountBookDTO)))
                 .build();
     }
 
