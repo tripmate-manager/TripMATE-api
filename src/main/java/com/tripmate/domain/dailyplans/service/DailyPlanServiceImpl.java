@@ -2,31 +2,29 @@ package com.tripmate.domain.dailyplans.service;
 
 import com.tripmate.common.exception.GuideMessageException;
 import com.tripmate.common.exception.WrongParameterException;
+import com.tripmate.domain.accountbook.dao.AccountBookDAO;
 import com.tripmate.domain.dailyplans.dao.DailyPlanDAO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanByDayDTO;
-import com.tripmate.domain.dailyplans.vo.DailyPlanCntVO;
 import com.tripmate.domain.dailyplans.dto.DailyPlanDTO;
-import com.tripmate.domain.dailyplans.vo.DailyPlanVO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanDTO;
 import com.tripmate.domain.dailyplans.dto.DeleteDailyPlanNotificationDTO;
+import com.tripmate.domain.dailyplans.vo.DailyPlanCntVO;
+import com.tripmate.domain.dailyplans.vo.DailyPlanVO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.reviews.dao.ReviewDAO;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DailyPlanServiceImpl implements DailyPlanService {
     private final DailyPlanDAO dailyPlanDAO;
     private final ReviewDAO reviewDAO;
-
-    @Autowired
-    public DailyPlanServiceImpl(DailyPlanDAO dailyPlanDAO, ReviewDAO reviewDAO) {
-        this.dailyPlanDAO = dailyPlanDAO;
-        this.reviewDAO = reviewDAO;
-    }
+    private final AccountBookDAO accountBookDAO;
 
     @Override
     @Transactional
@@ -36,6 +34,10 @@ public class DailyPlanServiceImpl implements DailyPlanService {
         }
 
         if (dailyPlanDAO.updatePostMappingYnWithPostNo(dailyPlanDTO) != 1) {
+            throw new GuideMessageException("데일리플랜(북마크) 여부 수정 처리 중 오류가 발생하였습니다.");
+        }
+
+        if (accountBookDAO.insertAccountWithDailyPlanDTO(dailyPlanDTO) != 1) {
             throw new GuideMessageException("데일리플랜(북마크) 여부 수정 처리 중 오류가 발생하였습니다.");
         }
 
@@ -55,17 +57,23 @@ public class DailyPlanServiceImpl implements DailyPlanService {
             throw new GuideMessageException("데일리플랜(북마크) 삭제 처리 중 오류가 발생하였습니다.");
         }
 
+        if (accountBookDAO.deleteAccount(Collections.singletonList(dailyPlanNo)) != 1) {
+            throw new GuideMessageException("데일리플랜(북마크) 삭제 처리 중 오류가 발생하였습니다.");
+        }
+
         int reviewCnt = reviewDAO.getDailyPlanReviewCnt(dailyPlanNo);
         int reviewImageCnt = reviewDAO.getReviewImageCntWithDailyPlanNo(dailyPlanNo);
         List<String> reviewImageNameList = reviewDAO.searchReviewImageNameListWithDailyPlanNo(dailyPlanNo);
 
-        if (reviewImageCnt == 0) {
-            if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != 1) {
-                throw new GuideMessageException("데일리플랜 리뷰 삭제 처리 중 오류가 발생하였습니다.");
-            }
-        } else {
-            if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != reviewCnt + 1) {
-                throw new GuideMessageException("데일리플랜 리뷰 삭제 처리 중 오류가 발생하였습니다.");
+        if (reviewCnt > 0) {
+            if (reviewImageCnt == 0) {
+                if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != 1) {
+                    throw new GuideMessageException("데일리플랜 리뷰 삭제 처리 중 오류가 발생하였습니다.");
+                }
+            } else {
+                if (reviewDAO.deleteDailyPlanReview(dailyPlanNo) != reviewCnt + 1) {
+                    throw new GuideMessageException("데일리플랜 리뷰 삭제 처리 중 오류가 발생하였습니다.");
+                }
             }
         }
 

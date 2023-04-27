@@ -5,6 +5,9 @@
 
 <mapper namespace="com.tripmate.domain.dailyplans.dao.mapper.DailyPlanDAOMapper">
     <insert id="insertDailyPlan" parameterType="DailyPlanDTO">
+        <selectKey keyProperty="dailyPlanNo" keyColumn="DAILYPLAN_NO" resultType="String" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         INSERT INTO CT_DAILYPLAN (PLAN_NO,
                                   POST_NO,
                                   DAY_GRP,

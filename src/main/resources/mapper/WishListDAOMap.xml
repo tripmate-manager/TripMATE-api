@@ -245,6 +245,10 @@
     </update>
 
     <delete id="deletePost" parameterType="String">
-        DELETE FROM CT_POST_MGMT WHERE POST_NO = #{postNo:VARCHAR};
+        DELETE cpm, cd, cta
+        FROM CT_POST_MGMT cpm
+            LEFT JOIN CT_DAILYPLAN cd ON cpm.POST_NO = cd.POST_NO
+            LEFT JOIN CT_TRIP_ACNT cta ON cpm.POST_NO = cta.POST_NO
+        WHERE cpm.POST_NO = #{postNo:VARCHAR};
     </delete>
 </mapper>
