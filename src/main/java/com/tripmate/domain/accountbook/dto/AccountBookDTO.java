@@ -37,8 +37,8 @@ public class AccountBookDTO {
     @Schema(description = "여행가계부 항목명", example = "여행가계부 항목명")
     private String accountName;
 
-    @NotBlank(message = "Day 그룹을 입력해주세요.")
-    @Schema(description = "Day 그룹", example = "1")
+    @NotBlank(message = "플랜 일자를 입력해주세요.")
+    @Schema(description = "플랜 일자", example = "1")
     private String dayGroup;
 
     @NotBlank(message = "여행가계부 금액(사용 경비)을 입력해주세요.")

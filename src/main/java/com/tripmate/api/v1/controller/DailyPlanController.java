@@ -66,9 +66,9 @@ public class DailyPlanController {
 
     @Operation(summary = "플랜 일자별 데일리플랜 목록 조회", description = "해당 플랜에 대해 일자별 데일리플랜 목록을 조회합니다.")
     @GetMapping("/dailyplan/{planNo}")
-    public ResponseWrapper<DailyPlanVO> searchDailyPlanListByDay(@PathVariable(value = "planNo") @NotBlank @Schema(description = "플랜번호", example = "1") String planNo,
-                                                                 @RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo,
-                                                                 @RequestParam(value = "dayGroup") @NotBlank @Schema(description = "Day 그룹", example = "1") String dayGroup) {
+    public ResponseWrapper<DailyPlanVO> searchDailyPlanListByDay(@PathVariable(value = "planNo") @NotBlank @Schema(description = "플랜 번호", example = "1") String planNo,
+                                                                 @RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원 번호", example = "1") String memberNo,
+                                                                 @RequestParam(value = "dayGroup") @NotBlank @Schema(description = "플랜 일자", example = "1") String dayGroup) {
         return ResponseWrapper.<DailyPlanVO>builder()
                 .data(dailyPlanService.searchDailyPlanListByDay(DailyPlanByDayDTO.builder()
                         .planNo(planNo)
@@ -81,7 +81,7 @@ public class DailyPlanController {
     @Operation(summary = "데일리플랜 알림 삭제", description = "데일리플랜 알림을 삭제합니다.")
     @DeleteMapping("/notification/{dailyPlanNo}")
     public ResponseWrapper<Boolean> deleteDailyPlanNotification(@PathVariable(value = "dailyPlanNo") @Schema(description = "데일리플랜 번호", example = "1") String dailyPlanNo,
-                                                                @RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
+                                                                @RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원 번호", example = "1") String memberNo) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(dailyPlanService.deleteDailyPlanNotification(DeleteDailyPlanNotificationDTO.builder()
                         .dailyPlanNo(dailyPlanNo)

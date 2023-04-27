@@ -35,8 +35,8 @@ public class AccountBookController {
 
     @Operation(summary = "일자별 여행 가계부 목록 조회", description = "일자별 여행 가계부 목록 조회을 조회합니다.")
     @GetMapping("/{planNo}/{dayGroup}")
-    public ResponseWrapper<AccountBookVO> searchAccountListByDay(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo,
-                                                                  @PathVariable(value = "dayGroup") @Schema(description = "Day 그룹", example = "1") String dayGroup) {
+    public ResponseWrapper<AccountBookVO> searchAccountListByDay(@PathVariable(value = "planNo") @Schema(description = "플랜 번호", example = "1") String planNo,
+                                                                  @PathVariable(value = "dayGroup") @Schema(description = "플랜 일자", example = "1") String dayGroup) {
         return ResponseWrapper.<AccountBookVO>builder()
                 .data(Collections.singletonList(accountBookService.searchAccountListByDay(DailyPlanByDayDTO.builder()
                         .planNo(planNo)
@@ -46,8 +46,8 @@ public class AccountBookController {
 
     @Operation(summary = "여행 가계부 항목 추가", description = "여행 가계부 항목을 추가합니다.")
     @PostMapping("/{planNo}/{dayGroup}")
-    public ResponseWrapper<Boolean> insertAccount(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo,
-                                                  @PathVariable(value = "dayGroup") @Schema(description = "Day 그룹", example = "1") String dayGroup,
+    public ResponseWrapper<Boolean> insertAccount(@PathVariable(value = "planNo") @Schema(description = "플랜 번호", example = "1") String planNo,
+                                                  @PathVariable(value = "dayGroup") @Schema(description = "플랜 일자", example = "1") String dayGroup,
                                                   @Valid @RequestBody AccountBookDTO accountBookDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(accountBookService.insertAccountWithAccountBookDTO(planNo, dayGroup, accountBookDTO)))

@@ -19,7 +19,7 @@ public class AccountBookVO {
     @Schema(description = "플랜 번호", example = "1")
     private String planNo;
 
-    @Schema(description = "Day 그룹", example = "1")
+    @Schema(description = "플랜 일자", example = "1")
     private String dayGroup;
 
     @Schema(description = "여행 기간", example = "1")
