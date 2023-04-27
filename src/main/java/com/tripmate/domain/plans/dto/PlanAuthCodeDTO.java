@@ -16,6 +16,8 @@ public class PlanAuthCodeDTO {
 
     private String planNo;
 
+    private String memberNo;
+
     private String inviteTypeCode;
 
     private String inviteCode;

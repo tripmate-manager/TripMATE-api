@@ -174,12 +174,13 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public InviteCodeVO createInviteAuthCode(String planNo, String inviteTypeCode) {
+    public InviteCodeVO createInviteAuthCode(String planNo, String memberNo, String inviteTypeCode) {
         Encrypt encrypt = new Encrypt();
         String encryptString = encrypt.getEncrypt(encrypt.getSalt(), Const.SERVICE_NAME);
 
         PlanAuthCodeDTO planAuthCodeDTO = PlanAuthCodeDTO.builder()
                 .planNo(planNo)
+                .memberNo(memberNo)
                 .inviteTypeCode(inviteTypeCode)
                 .inviteCode(encryptString.substring(0, 6))
                 .build();
