@@ -76,6 +76,7 @@
              ,cpm.POST_CONTS AS postContents
              ,cpm.SPOT_ADDR AS spotAddress
              ,cpm.REG_NO AS postRegistrationNo
+             ,TRUNCATE(((SELECT COUNT(1) FROM CT_DAILYPLAN WHERE PLAN_NO = #{planNo:VARCHAR} AND DAY_GRP = #{dayGroup:VARCHAR} AND REV_AVG_SCORE IS NOT NULL) / COUNT(1)) * 100, 0) AS achieveRate
         FROM CT_DAILYPLAN cd, CT_POST_MGMT cpm
         WHERE cd.POST_NO = cpm.POST_NO
           AND cd.PLAN_NO = #{planNo:VARCHAR}

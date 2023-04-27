@@ -49,4 +49,7 @@ public class DailyPlanVO {
 
     @Schema(description = "게시글 작성자", example = "1")
     private String postRegistrationNo;
+
+    @Schema(description = "데일리플랜 성취율", example = "1")
+    private String achieveRate;
 }
