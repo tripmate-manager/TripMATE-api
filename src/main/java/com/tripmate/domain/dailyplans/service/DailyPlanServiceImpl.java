@@ -57,7 +57,7 @@ public class DailyPlanServiceImpl implements DailyPlanService {
             throw new GuideMessageException("데일리플랜(북마크) 삭제 처리 중 오류가 발생하였습니다.");
         }
 
-        if (accountBookDAO.deleteAccount(Collections.singletonList(dailyPlanNo)) != 1) {
+        if (accountBookDAO.deleteAccountWithDailyPlanNo(dailyPlanNo) != 1) {
             throw new GuideMessageException("데일리플랜(북마크) 삭제 처리 중 오류가 발생하였습니다.");
         }
 

@@ -44,4 +44,8 @@ public class AccountBookDAO {
     public int updateAccountSortSequence(UpdateAccountBookDTO updateAccountBookDTO) {
         return sqlSession.getMapper(AccountBookDAOMapper.class).updateAccountSortSequence(updateAccountBookDTO);
     }
+
+    public int deleteAccountWithDailyPlanNo(String dailyPlanNo) {
+        return sqlSession.getMapper(AccountBookDAOMapper.class).deleteAccountWithDailyPlanNo(dailyPlanNo);
+    }
 }
