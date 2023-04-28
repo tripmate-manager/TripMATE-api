@@ -47,7 +47,7 @@ public class DailyPlanDAO {
         return sqlSession.getMapper(DailyPlanDAOMapper.class).searchDailyPlanCntByDay(planNo);
     }
 
-    public List<DailyPlanVO> searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO) {
+    public DailyPlanVO searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO) {
         return sqlSession.getMapper(DailyPlanDAOMapper.class).searchDailyPlanListByDay(dailyPlanByDayDTO);
     }
 

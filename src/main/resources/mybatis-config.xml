@@ -37,6 +37,7 @@
         <typeAlias type="com.tripmate.domain.dailyplans.vo.DailyPlanVO" alias="DailyPlanVO"/>
         <typeAlias type="com.tripmate.domain.dailyplans.dto.DailyPlanByDayDTO" alias="DailyPlanByDayDTO"/>
         <typeAlias type="com.tripmate.domain.dailyplans.dto.DeleteDailyPlanNotificationDTO" alias="DeleteDailyPlanNotificationDTO"/>
+        <typeAlias type="com.tripmate.domain.dailyplans.vo.DailyPlanItemVO" alias="DailyPlanItemVO"/>
         <typeAlias type="com.tripmate.domain.reviews.dto.ReviewDTO" alias="ReviewDTO"/>
         <typeAlias type="com.tripmate.domain.reviews.dto.ReviewImageDTO" alias="ReviewImageDTO"/>
         <typeAlias type="com.tripmate.domain.reviews.vo.ReviewVO" alias="ReviewVO"/>

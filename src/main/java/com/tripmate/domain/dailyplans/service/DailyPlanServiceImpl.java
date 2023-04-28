@@ -86,7 +86,7 @@ public class DailyPlanServiceImpl implements DailyPlanService {
     }
 
     @Override
-    public List<DailyPlanVO> searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO) {
+    public DailyPlanVO searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO) {
         return dailyPlanDAO.searchDailyPlanListByDay(dailyPlanByDayDTO);
     }
 
