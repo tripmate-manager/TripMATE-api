@@ -71,4 +71,8 @@ public class ReviewDAO {
     public List<String> searchReviewImageNameListWithReviewNo(String reviewNo) {
         return sqlSession.getMapper(ReviewDAOMapper.class).searchReviewImageNameListWithReviewNo(reviewNo);
     }
+
+    public int updatePlanAchieveRate(String planNo) {
+        return sqlSession.getMapper(ReviewDAOMapper.class).updatePlanAchieveRate(planNo);
+    }
 }

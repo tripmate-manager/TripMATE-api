@@ -56,6 +56,10 @@ public class ReviewServiceImpl implements ReviewService {
             throw new GuideMessageException("리뷰 평점 업데이트 처리 중 오류가 발생하였습니다.");
         }
 
+        if (reviewDAO.updatePlanAchieveRate(reviewDTO.getPlanNo()) != 1) {
+            throw new GuideMessageException("플랜 성취율 업데이트 처리 중 오류가 발생하였습니다.");
+        }
+
         return reviewDTO.getReviewNo();
     }
 
@@ -84,6 +88,11 @@ public class ReviewServiceImpl implements ReviewService {
         if (reviewDAO.updateReviewAverageScoreWithDeleteReviewDTO(deleteReviewDTO) != 1) {
             throw new GuideMessageException("리뷰 평점 업데이트 처리 중 오류가 발생하였습니다.");
         }
+
+        if (reviewDAO.updatePlanAchieveRate(deleteReviewDTO.getPlanNo()) != 1) {
+            throw new GuideMessageException("플랜 성취율 업데이트 처리 중 오류가 발생하였습니다.");
+        }
+
 
         return reviewImageNameList;
     }
