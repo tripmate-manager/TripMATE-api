@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tripmate.domain.searchplan.dao.mapper.SearchPlanDAOMapper">
+    <insert id="insertSearchKeyword" parameterType="SearchKeywordDTO">
+        INSERT INTO CT_SEARCH_KWD_MGMT(SEARCH_KWD
+                                      ,REG_NO
+                                      ,REG_DTIME
+                                      ,UPT_NO
+                                      ,UPT_DTIME)
+        VALUES (#{keyword:VARCHAR}
+                ,#{memberNo:VARCHAR}
+                ,now()
+                ,#{memberNo:VARCHAR}
+                ,now());
+    </insert>
+
+    <select id="searchPlanListByKeyword" parameterType="SearchKeywordDTO" resultType="SearchPlanResultVO">
+        SELECT cpm.PLAN_NO AS planNo
+                 ,cpm.PLAN_TITLE AS planTitle
+                 ,cpm.PLAN_DESC AS planDescription
+                 ,cpm.TRIP_START_DATE AS tripStartDate
+                 ,cpm.TRIP_END_DATE AS tripEndDate
+                 ,cpm.TRIP_TERM AS tripTerm
+                 ,cpm.LIKE_REG_CNT AS likeRegistrationCnt
+                 ,cpm.ACHV_RATE AS achieveRate
+                 ,cpm.VIEWS AS views
+                 ,cpm.REV_AVG_SCORE AS reviewAverageScore
+                 ,cam.SIDO_NM AS sidoName
+                 ,cam.SIGUNGU_NM AS sigunguName
+                 ,mmm.NICK_NM AS leaderNickName
+                 ,cpm.REG_DTIME AS registrationDateTime
+        FROM CT_PLAN_MGMT cpm
+            LEFT JOIN CT_TRIP_ADDR cta ON cpm.PLAN_NO = cta.PLAN_NO
+            LEFT JOIN CT_ADDR_MGMT cam ON cta.ADDR_NO = cam.ADDR_NO
+            LEFT JOIN CT_PLAN_MATE mate ON cpm.PLAN_NO = mate.PLAN_NO
+            LEFT JOIN MB_MBR_MGMT mmm ON mate.MBR_NO = mmm.MBR_NO
+        WHERE cpm.PUBLIC_YN = 'Y'
+          AND cpm.USE_YN = 'Y'
+          AND mate.LEAD_YN = 'Y'
+          AND cpm.PLAN_TITLE LIKE CONCAT('%', #{keyword:VARCHAR}, '%')
+           OR cpm.PLAN_DESC LIKE CONCAT('%', #{keyword:VARCHAR}, '%')
+           OR cam.SIDO_NM LIKE CONCAT('%', #{keyword:VARCHAR}, '%')
+           OR cam.SIGUNGU_NM LIKE CONCAT('%', #{keyword:VARCHAR}, '%')
+        GROUP BY cpm.PLAN_NO
+        ORDER BY cpm.REG_DTIME DESC;
+    </select>
+
+</mapper>

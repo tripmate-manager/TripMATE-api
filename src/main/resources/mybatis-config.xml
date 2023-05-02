@@ -51,6 +51,7 @@
         <typeAlias type="com.tripmate.domain.accountbook.dto.AccountBookDTO" alias="AccountBookDTO"/>
         <typeAlias type="com.tripmate.domain.accountbook.dto.UpdateAccountBookDTO" alias="UpdateAccountBookDTO"/>
         <typeAlias type="com.tripmate.domain.accountbook.vo.AccountVO" alias="AccountVO"/>
-        <typeAlias type="com.tripmate.domain.accountbook.dto.DeleteAccountBookDTO" alias="DeleteAccountBookDTO"/>
+        <typeAlias type="com.tripmate.domain.searchplan.dto.SearchKeywordDTO" alias="SearchKeywordDTO"/>
+        <typeAlias type="com.tripmate.domain.searchplan.vo.SearchPlanResultVO" alias="SearchPlanResultVO"/>
     </typeAliases>
 </configuration>
