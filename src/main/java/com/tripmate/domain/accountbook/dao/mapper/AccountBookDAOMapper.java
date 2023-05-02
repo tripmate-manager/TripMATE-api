@@ -16,4 +16,5 @@ public interface AccountBookDAOMapper {
     int updateAccountAmount(UpdateAccountBookDTO updateAccountBookDTO);
     int updatePlanDayGroupAccountSortSequence(UpdateAccountBookDTO updateAccountBookDTO);
     int updateAccountSortSequence(UpdateAccountBookDTO updateAccountBookDTO);
+    int deleteAccountWithDailyPlanNo(String dailyPlanNo);
 }

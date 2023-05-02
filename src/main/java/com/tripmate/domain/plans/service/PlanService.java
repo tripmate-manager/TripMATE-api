@@ -23,7 +23,7 @@ public interface PlanService {
     List<PlanMateVO> searchPlanMateList(String planNo);
     boolean updatePlan(String planNo, PlanDTO planDTO);
     List<PlanMateVO> searchMemberList(String searchDiviCode, String searchKeyword);
-    InviteCodeVO createInviteAuthCode(String planNo, String inviteTypeCode);
+    InviteCodeVO createInviteAuthCode(String planNo, String memberNo, String inviteTypeCode);
     boolean createNotification(NotificationDTO notificationDTO);
     List<NotificationVO> searchNotificationList(String memberNo);
     int getUnreadNotificationCnt(String memberNo);

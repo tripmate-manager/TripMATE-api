@@ -216,4 +216,10 @@
         FROM CT_REV_IMG
         WHERE REV_NO = #{reviewNo:VARCHAR};
     </select>
+
+    <update id="updatePlanAchieveRate" parameterType="String">
+        UPDATE CT_PLAN_MGMT
+        SET ACHV_RATE = TRUNCATE((SELECT COUNT(1) FROM CT_DAILYPLAN WHERE PLAN_NO = #{planNo:VARCHAR} AND REV_AVG_SCORE IS NOT NULL) / (SELECT COUNT(1) FROM CT_DAILYPLAN WHERE PLAN_NO = #{planNo:VARCHAR}) * 100, 0)
+        WHERE PLAN_NO = #{planNo:VARCHAR};
+    </update>
 </mapper>

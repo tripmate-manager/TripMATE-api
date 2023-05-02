@@ -70,11 +70,11 @@ public class DailyPlanController {
                                                                  @RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원 번호", example = "1") String memberNo,
                                                                  @RequestParam(value = "dayGroup") @NotBlank @Schema(description = "플랜 일자", example = "1") String dayGroup) {
         return ResponseWrapper.<DailyPlanVO>builder()
-                .data(dailyPlanService.searchDailyPlanListByDay(DailyPlanByDayDTO.builder()
+                .data(Collections.singletonList(dailyPlanService.searchDailyPlanListByDay(DailyPlanByDayDTO.builder()
                         .planNo(planNo)
                         .memberNo(memberNo)
                         .dayGroup(dayGroup)
-                        .build()))
+                        .build())))
                 .build();
     }
 

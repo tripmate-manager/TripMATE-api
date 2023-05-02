@@ -30,9 +30,9 @@
                 #{birthDay:VARCHAR},
                 0,
                 #{memberStatusCode:VARCHAR},
-                0,
+                #{memberNo:VARCHAR},
                 now(),
-                0,
+                #{memberNo:VARCHAR},
                 now());
     </insert>
 
@@ -65,9 +65,9 @@
                 #{to:VARCHAR},
                 #{key:VARCHAR},
                 #{mailTypeCode:VARCHAR},
-                0,
+                #{memberNo:VARCHAR},
                 now(),
-                0,
+                #{memberNo:VARCHAR},
                 now());
     </insert>
 

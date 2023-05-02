@@ -53,7 +53,7 @@
         SELECT cta.PLAN_NO
              ,#{dayGroup:VARCHAR} AS DAY_GRP
              ,cpm.TRIP_TERM
-             ,(SELECT SUM(cc.AMT) FROM CT_TRIP_ACNT cc WHERE DAY_GRP = #{dayGroup:VARCHAR}) AS DAY_AMT_SUM
+             ,(SELECT SUM(cc.AMT) FROM CT_TRIP_ACNT cc WHERE cc.PLAN_NO = #{planNo:VARCHAR} AND DAY_GRP = #{dayGroup:VARCHAR}) AS DAY_AMT_SUM
              ,SUM(cta.AMT) AS PLAN_AMT_SUM
         FROM CT_TRIP_ACNT cta, CT_PLAN_MGMT cpm
         WHERE cta.PLAN_NO = cpm.PLAN_NO
@@ -136,5 +136,10 @@
           ,UPT_DTIME = now()
         WHERE ACNT_NO = #{accountNo:VARCHAR};
     </update>
+
+    <delete id="deleteAccountWithDailyPlanNo" parameterType="String">
+        DELETE FROM CT_TRIP_ACNT
+        WHERE DAILYPLAN_NO = #{dailyPlanNo:VARCHAR};
+    </delete>
 
 </mapper>

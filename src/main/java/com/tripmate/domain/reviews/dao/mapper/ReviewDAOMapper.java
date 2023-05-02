@@ -21,4 +21,5 @@ public interface ReviewDAOMapper {
     int deleteDailyPlanReview(String dailyPlanNo);
     List<String> searchReviewImageNameListWithDailyPlanNo(String dailyPlanNo);
     List<String> searchReviewImageNameListWithReviewNo(String reviewNo);
+    int updatePlanAchieveRate(String planNo);
 }

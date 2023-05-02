@@ -14,6 +14,11 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Schema(description = "리뷰 삭제 Request DTO")
 public class DeleteReviewDTO {
+
+    @NotBlank(message = "플랜 번호를 입력해주세요.")
+    @Schema(description = "플랜 번호", example = "1")
+    private String planNo;
+
     @NotBlank(message = "리뷰 번호를 입력해주세요.")
     @Schema(description = "리뷰 번호", example = "1")
     private String reviewNo;
@@ -25,4 +30,5 @@ public class DeleteReviewDTO {
     @NotBlank(message = "데일리플랜 번호를 입력해주세요.")
     @Schema(description = "데일리플랜 번호", example = "1")
     private String dailyPlanNo;
+
 }

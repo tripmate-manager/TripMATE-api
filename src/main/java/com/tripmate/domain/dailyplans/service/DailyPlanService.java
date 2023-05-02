@@ -14,7 +14,7 @@ public interface DailyPlanService {
     boolean insertDailyPlan(DailyPlanDTO dailyPlanDTO);
     List<String> deleteDailyPlan(String dailyPlanNo, DeleteDailyPlanDTO deleteDailyPlanDTO);
     List<DailyPlanCntVO> searchDailyPlanCntByDay(String planNo);
-    List<DailyPlanVO> searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO);
+    DailyPlanVO searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO);
     boolean deleteDailyPlanNotification(DeleteDailyPlanNotificationDTO deleteDailyPlanNotificationDTO);
     boolean updateDailyPlanNotification(String dailyPlanNo, NotificationDTO notificationDTO);
 }
