@@ -64,12 +64,12 @@
             ,mmm.NICK_NM         AS leaderNickName
             ,cpm.REG_DTIME       AS registrationDateTime
         FROM CT_PLAN_MGMT cpm
-        LEFT JOIN CT_PLAN_MATE mate ON cpm.PLAN_NO = mate.PLAN_NO
-        LEFT JOIN CT_TRIP_ADDR cta ON cpm.PLAN_NO = cta.PLAN_NO
-        LEFT JOIN CT_PLAN_ATTR cpa ON cpm.PLAN_NO = cpa.PLAN_NO
-        LEFT JOIN CT_POST_MGMT post ON cpm.PLAN_NO = post.PLAN_NO
-        JOIN MB_MBR_MGMT mmm ON mate.MBR_NO = mmm.MBR_NO
-        JOIN CT_ADDR_MGMT cam ON cta.ADDR_NO = cam.ADDR_NO
+            LEFT JOIN CT_PLAN_MATE mate ON cpm.PLAN_NO = mate.PLAN_NO
+            LEFT JOIN CT_TRIP_ADDR cta ON cpm.PLAN_NO = cta.PLAN_NO
+            LEFT JOIN CT_PLAN_ATTR cpa ON cpm.PLAN_NO = cpa.PLAN_NO
+            LEFT JOIN CT_POST_MGMT post ON cpm.PLAN_NO = post.PLAN_NO
+            JOIN MB_MBR_MGMT mmm ON mate.MBR_NO = mmm.MBR_NO
+            JOIN CT_ADDR_MGMT cam ON cta.ADDR_NO = cam.ADDR_NO
         WHERE mate.LEAD_YN = 'Y'
           AND cpm.PUBLIC_YN = 'Y'
         <if test='age != null and age != ""'>
