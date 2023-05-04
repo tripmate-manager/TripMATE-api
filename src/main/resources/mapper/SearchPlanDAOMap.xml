@@ -48,4 +48,101 @@
         ORDER BY cpm.REG_DTIME DESC;
     </select>
 
+    <select id="searchPlanListByAttribute" parameterType="SearchAttributeDTO" resultType="SearchPlanResultVO">
+        SELECT cpm.PLAN_NO       AS planNo
+            ,cpm.PLAN_TITLE      AS planTitle
+            ,cpm.PLAN_DESC       AS planDescription
+            ,cpm.TRIP_START_DATE AS tripStartDate
+            ,cpm.TRIP_END_DATE   AS tripEndDate
+            ,cpm.TRIP_TERM       AS tripTerm
+            ,cpm.LIKE_REG_CNT    AS likeRegistrationCnt
+            ,cpm.ACHV_RATE       AS achieveRate
+            ,cpm.VIEWS           AS views
+            ,cpm.REV_AVG_SCORE   AS reviewAverageScore
+            ,cam.SIDO_NM         AS sidoName
+            ,cam.SIGUNGU_NM      AS sigunguName
+            ,mmm.NICK_NM         AS leaderNickName
+            ,cpm.REG_DTIME       AS registrationDateTime
+        FROM CT_PLAN_MGMT cpm
+        LEFT JOIN CT_PLAN_MATE mate ON cpm.PLAN_NO = mate.PLAN_NO
+        LEFT JOIN CT_TRIP_ADDR cta ON cpm.PLAN_NO = cta.PLAN_NO
+        LEFT JOIN CT_PLAN_ATTR cpa ON cpm.PLAN_NO = cpa.PLAN_NO
+        LEFT JOIN CT_POST_MGMT post ON cpm.PLAN_NO = post.PLAN_NO
+        JOIN MB_MBR_MGMT mmm ON mate.MBR_NO = mmm.MBR_NO
+        JOIN CT_ADDR_MGMT cam ON cta.ADDR_NO = cam.ADDR_NO
+        WHERE mate.LEAD_YN = 'Y'
+          AND cpm.PUBLIC_YN = 'Y'
+        <if test='age != null and age != ""'>
+            <choose>
+                <when test="'60'.toString() eq age">
+                    AND YEAR(NOW())-LEFT(mmm.BDAY, 4) + 1 <![CDATA[>=]]> #{age:VARCHAR}
+                </when>
+                <otherwise>
+                    AND YEAR(NOW())-LEFT(mmm.BDAY, 4) + 1 BETWEEN #{age:VARCHAR} AND #{age:VARCHAR} + 9
+                </otherwise>
+            </choose>
+        </if>
+        <if test='genderCode != null and genderCode != ""'>
+            AND mmm.GEND_CD = #{genderCode:VARCHAR}
+        </if>
+        <if test='personnel != null and personnel != ""'>
+            AND (SELECT COUNT(mate.MATE_NO) FROM CT_PLAN_MGMT plan, CT_PLAN_MATE mate WHERE plan.PLAN_NO = mate.PLAN_NO AND plan.PLAN_NO = cpm.PLAN_NO)
+            <choose>
+                <when test='"1".toString() eq personnel or "2".toString() eq personnel'>
+                    = #{personnel:VARCHAR}
+                </when>
+                <when test='personnel gt 2 and personnel lte 5'>
+                    BETWEEN 3 AND 5
+                </when>
+                <when test='personnel gt 5 and personnel lte 10'>
+                    BETWEEN 6 AND 10
+                </when>
+                <when test='personnel gt 10 and personnel lte 20'>
+                    BETWEEN 11 AND 20
+                </when>
+                <when test='personnel gt 21 and personnel lte 30'>
+                    BETWEEN 21 AND 30
+                </when>
+                <otherwise>
+                    <![CDATA[>]]> 30
+                </otherwise>
+            </choose>
+        </if>
+        <if test="tripAddressList != null and tripAddressList.size != 0">
+            AND cam.ADDR_NO IN
+            <foreach collection="tripAddressList" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tripSpotList != null and tripSpotList.size != 0">
+            AND post.SPOT_ADDR IN
+            <foreach collection="tripSpotList" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test='tripTerm != null and tripTerm != ""'>
+            <choose>
+                <when test='"7".toString() eq tripTerm or "14".toString() eq tripTerm or "21".toString() eq tripTerm'>
+                    AND cpm.TRIP_TERM BETWEEN #{tripTerm:VARCHAR} AND #{tripTerm:VARCHAR} + 6
+                </when>
+                <when test='"30".toString() eq tripTerm or "60".toString() eq tripTerm or "90".toString() eq tripTerm'>
+                    AND cpm.TRIP_TERM BETWEEN #{tripTerm:VARCHAR} - 5 AND #{tripTerm:VARCHAR} + 5
+                </when>
+                <when test='"99".toString() eq tripTerm'>
+                    AND cpm.TRIP_TERM <![CDATA[>=]]> #{tripTerm:VARCHAR}
+                </when>
+                <otherwise>
+                    AND cpm.TRIP_TERM = #{tripTerm:VARCHAR}
+                </otherwise>
+            </choose>
+        </if>
+        <if test='planThemeList != null and planThemeList.size != 0'>
+            AND cpa.ATTR_NO IN
+            <foreach collection="planThemeList" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY cpm.PLAN_NO
+        ORDER BY cpm.REG_DTIME DESC;
+    </select>
 </mapper>

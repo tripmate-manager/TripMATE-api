@@ -1,6 +1,7 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.vo.ResponseWrapper;
+import com.tripmate.domain.searchplan.dto.SearchAttributeDTO;
 import com.tripmate.domain.searchplan.dto.SearchKeywordDTO;
 import com.tripmate.domain.searchplan.service.SearchPlanService;
 import com.tripmate.domain.searchplan.vo.SearchPlanResultVO;
@@ -11,10 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -27,7 +31,7 @@ import javax.validation.constraints.Size;
 public class SearchPlanController {
     private final SearchPlanService searchPlanService;
 
-    @Operation(summary = "키워드 검색", description = "해당 키워드가 포함된 플랜 목록을 조회합니다.")
+    @Operation(summary = "일반 검색 (키워드 검색)", description = "해당 키워드가 포함된 플랜 목록을 조회합니다.")
     @GetMapping("/keyword")
     public ResponseWrapper<SearchPlanResultVO> searchPlanByKeyword(@RequestParam(value = "memberNo") @Schema(description = "회원 번호", example = "1") @NotBlank String memberNo,
                                                               @RequestParam(value = "keyword") @Schema(description = "검색어", example = "검색어") @NotBlank @Size(min = 1, max = 100) String keyword) {
@@ -36,6 +40,14 @@ public class SearchPlanController {
                         .memberNo(memberNo)
                         .keyword(keyword)
                         .build()))
+                .build();
+    }
+
+    @Operation(summary = "속성 검색", description = "속성에 부합하는 플랜 목록을 조회합니다.")
+    @PostMapping("/attribute")
+    public ResponseWrapper<SearchPlanResultVO> searchPlanByKeyword(@Valid @RequestBody SearchAttributeDTO searchAttributeDTO) {
+        return ResponseWrapper.<SearchPlanResultVO>builder()
+                .data(searchPlanService.searchPlanListByAttribute(searchAttributeDTO))
                 .build();
     }
 }
