@@ -53,7 +53,7 @@ public class MemberDTO {
     private String email;
 
     @NotBlank(message = "성별코드를 입력해주세요.", groups = ValidationGroups.NotBlankGroup.class)
-    @Pattern(regexp = "^[12]0$", message = "성별코드는 10, 20만 입력 가능랍니다.", groups = ValidationGroups.PatternCheckGroup.class)
+    @Pattern(regexp = "^[12]0$", message = "성별코드는 10, 20만 입력 가능합니다.", groups = ValidationGroups.PatternCheckGroup.class)
     @Schema(description = "성별코드(10: 남성, 20: 여성)", example = "10")
     private String genderCode;
 
