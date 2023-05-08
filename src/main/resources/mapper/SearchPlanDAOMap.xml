@@ -44,8 +44,7 @@
            OR cpm.PLAN_DESC LIKE CONCAT('%', #{keyword:VARCHAR}, '%')
            OR cam.SIDO_NM LIKE CONCAT('%', #{keyword:VARCHAR}, '%')
            OR cam.SIGUNGU_NM LIKE CONCAT('%', #{keyword:VARCHAR}, '%')
-        GROUP BY cpm.PLAN_NO
-        ORDER BY cpm.REG_DTIME DESC;
+        GROUP BY cpm.PLAN_NO;
     </select>
 
     <select id="searchPlanListByAttribute" parameterType="SearchAttributeDTO" resultType="SearchPlanResultVO">
@@ -142,7 +141,6 @@
                 #{item}
             </foreach>
         </if>
-        GROUP BY cpm.PLAN_NO
-        ORDER BY cpm.REG_DTIME DESC;
+        GROUP BY cpm.PLAN_NO;
     </select>
 </mapper>
