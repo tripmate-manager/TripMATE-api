@@ -1,6 +1,7 @@
 package com.tripmate.domain.searchplan.dao;
 
 import com.tripmate.domain.searchplan.dao.mapper.SearchPlanDAOMapper;
+import com.tripmate.domain.searchplan.dto.SearchAttributeDTO;
 import com.tripmate.domain.searchplan.dto.SearchKeywordDTO;
 import com.tripmate.domain.searchplan.vo.SearchPlanResultVO;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,9 @@ public class SearchPlanDAO {
 
     public List<SearchPlanResultVO> searchPlanListByKeyword(SearchKeywordDTO searchKeywordDTO) {
         return sqlSession.getMapper(SearchPlanDAOMapper.class).searchPlanListByKeyword(searchKeywordDTO);
+    }
+
+    public List<SearchPlanResultVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO) {
+        return sqlSession.getMapper(SearchPlanDAOMapper.class).searchPlanListByAttribute(searchAttributeDTO);
     }
 }

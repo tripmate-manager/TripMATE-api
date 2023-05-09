@@ -2,6 +2,7 @@ package com.tripmate.domain.searchplan.service;
 
 import com.tripmate.common.exception.GuideMessageException;
 import com.tripmate.domain.searchplan.dao.SearchPlanDAO;
+import com.tripmate.domain.searchplan.dto.SearchAttributeDTO;
 import com.tripmate.domain.searchplan.dto.SearchKeywordDTO;
 import com.tripmate.domain.searchplan.vo.SearchPlanResultVO;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,10 @@ public class SearchPlanServiceImpl implements SearchPlanService {
         }
 
         return searchPlanDAO.searchPlanListByKeyword(searchKeywordDTO);
+    }
+
+    @Override
+    public List<SearchPlanResultVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO) {
+        return searchPlanDAO.searchPlanListByAttribute(searchAttributeDTO);
     }
 }

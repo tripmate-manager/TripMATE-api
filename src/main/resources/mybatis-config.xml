@@ -53,5 +53,6 @@
         <typeAlias type="com.tripmate.domain.accountbook.vo.AccountVO" alias="AccountVO"/>
         <typeAlias type="com.tripmate.domain.searchplan.dto.SearchKeywordDTO" alias="SearchKeywordDTO"/>
         <typeAlias type="com.tripmate.domain.searchplan.vo.SearchPlanResultVO" alias="SearchPlanResultVO"/>
+        <typeAlias type="com.tripmate.domain.searchplan.dto.SearchAttributeDTO" alias="SearchAttributeDTO"/>
     </typeAliases>
 </configuration>
