@@ -13,6 +13,7 @@ import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 
@@ -48,4 +49,7 @@ public interface PlanDAOMapper {
     int getPlanMateCntWithMateNoAndPlanNo(ExitPlanDTO exitPlanDTO);
     InviteCodeVO getPlanInviteInfoWithInviteCodeNo(String inviteCodeNo);
     int getPlanMateCntWithMemberNoAndPlanNo(PlanMateDTO planMateDTO);
+    int insertPlanLike(MemberPlanDTO memberPlanDTO);
+    int deletePlanLike(MemberPlanDTO memberPlanDTO);
+    List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo);
 }

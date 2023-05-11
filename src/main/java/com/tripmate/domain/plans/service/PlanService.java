@@ -9,6 +9,7 @@ import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 
@@ -32,4 +33,7 @@ public interface PlanService {
     boolean exitPlan(ExitPlanDTO exitPlanDTO);
     InviteCodeVO getPlanInviteInfoWithInviteCodeNo(String inviteCodeNo);
     boolean insertPlanMate(PlanMateDTO planMateDTO);
+    boolean insertPlanLike(MemberPlanDTO memberPlanDTO);
+    boolean deletePlanLike(MemberPlanDTO memberPlanDTO);
+    List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo);
 }

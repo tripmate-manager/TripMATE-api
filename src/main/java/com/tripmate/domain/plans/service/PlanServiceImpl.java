@@ -21,6 +21,7 @@ import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -341,5 +342,20 @@ public class PlanServiceImpl implements PlanService {
         if (planDAO.insertPlanAttribute(planAttributeVOList) < 1) {
             throw new GuideMessageException("플랜 생성 처리 중 오류가 발생하였습니다.");
         }
+    }
+
+    @Override
+    public boolean insertPlanLike(MemberPlanDTO memberPlanDTO) {
+        return planDAO.insertPlanLike(memberPlanDTO) == 1;
+    }
+
+    @Override
+    public boolean deletePlanLike(MemberPlanDTO memberPlanDTO) {
+        return planDAO.deletePlanLike(memberPlanDTO) > 0;
+    }
+
+    @Override
+    public List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo) {
+        return planDAO.searchMyPlanLikeList(memberNo);
     }
 }
