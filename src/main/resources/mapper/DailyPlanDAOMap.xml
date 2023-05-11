@@ -63,48 +63,24 @@
         GROUP BY DAY_GRP;
     </select>
 
-    <resultMap id="searchDailyPlanListByDay" type="DailyPlanVO">
-        <result property="memberNo" column="MBR_NO"/>
-        <result property="planNo" column="PLAN_NO"/>
-        <result property="dayGroup" column="DAY_GRP"/>
-        <result property="achieveRate" column="ACHV_RATE"/>
-        <collection property="dailyPlanItemList" column="{memberNo=MBR_NO,planNo=PLAN_NO,dayGroup=DAY_GRP}" javaType="List" ofType="DailyPlanItemVO" select="getDailyPlanItemList"/>
-    </resultMap>
-
-    <select id="searchDailyPlanListByDay" parameterType="DailyPlanByDayDTO" resultMap="searchDailyPlanListByDay">
-        SELECT #{memberNo:VARCHAR} AS MBR_NO
-             , #{planNo:VARCHAR} AS PLAN_NO
-             , #{dayGroup:VARCHAR} AS DAY_GRP
-             ,TRUNCATE((SELECT COUNT(1) FROM CT_DAILYPLAN WHERE PLAN_NO = #{planNo:VARCHAR} AND DAY_GRP = #{dayGroup:VARCHAR} AND REV_AVG_SCORE IS NOT NULL) / COUNT(1) * 100, 0) AS ACHV_RATE
+    <select id="getPlanAchieveRate" parameterType="DailyPlanByDayDTO" resultType="int">
+        SELECT TRUNCATE((SELECT COUNT(1) FROM CT_DAILYPLAN WHERE PLAN_NO = #{planNo:VARCHAR} AND DAY_GRP = #{dayGroup:VARCHAR} AND REV_AVG_SCORE IS NOT NULL) / COUNT(1) * 100, 0) AS ACHV_RATE
         FROM CT_DAILYPLAN cd
         WHERE cd.PLAN_NO = #{planNo:VARCHAR}
           AND cd.DAY_GRP = #{dayGroup:VARCHAR};
     </select>
 
-    <resultMap id="getDailyPlanItemList" type="DailyPlanItemVO">
-        <result property="dailyPlanNo" column="DAILYPLAN_NO"/>
-        <result property="postNo" column="POST_NO"/>
-        <result property="dailyPlanDateTime" column="DAILYPLAN_DTIME"/>
-        <result property="notificationYn" column="NOTI_YN"/>
-        <result property="reviewAverageScore" column="REV_AVG_SCORE"/>
-        <result property="postTypeCode" column="POST_TP_CD"/>
-        <result property="postTitle" column="POST_TITLE"/>
-        <result property="postContents" column="POST_CONTS"/>
-        <result property="spotAddress" column="SPOT_ADDR"/>
-        <result property="registrationNo" column="REG_NO"/>
-    </resultMap>
-
-    <select id="getDailyPlanItemList" parameterType="DailyPlanByDayDTO" resultMap="getDailyPlanItemList">
-        SELECT cd.DAILYPLAN_NO
-             ,cd.POST_NO
-             ,cd.DAILYPLAN_DTIME
-             ,(SELECT IF((SELECT COUNT(1) FROM CT_NOTI_MGMT WHERE DAILYPLAN_NO = cd.DAILYPLAN_NO AND RCVER_NO = #{memberNo:VARCHAR}) > 0, 'Y', 'N')) AS NOTI_YN
-             ,ROUND(cd.REV_AVG_SCORE, 1) AS REV_AVG_SCORE
-             ,cpm.POST_TP_CD
-             ,cpm.POST_TITLE
-             ,cpm.POST_CONTS
-             ,cpm.SPOT_ADDR
-             ,cpm.REG_NO
+    <select id="searchDailyPlanListByDay" parameterType="DailyPlanByDayDTO" resultType="DailyPlanItemVO">
+        SELECT cd.DAILYPLAN_NO AS dailyPlanNo
+             ,cd.POST_NO AS postNo
+             ,cd.DAILYPLAN_DTIME AS dailyPlanDateTime
+             ,(SELECT IF((SELECT COUNT(1) FROM CT_NOTI_MGMT WHERE DAILYPLAN_NO = cd.DAILYPLAN_NO AND RCVER_NO = #{memberNo:VARCHAR}) > 0, 'Y', 'N')) AS notificationYn
+             ,ROUND(cd.REV_AVG_SCORE, 1) AS reviewAverageScore
+             ,cpm.POST_TP_CD AS postTypeCode
+             ,cpm.POST_TITLE AS postTitle
+             ,cpm.POST_CONTS AS postContents
+             ,cpm.SPOT_ADDR AS spotAddress
+             ,cpm.REG_NO AS registrationNo
         FROM CT_DAILYPLAN cd, CT_POST_MGMT cpm
         WHERE cd.POST_NO = cpm.POST_NO
           AND cd.PLAN_NO = #{planNo:VARCHAR}
