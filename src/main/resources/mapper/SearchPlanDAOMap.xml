@@ -17,7 +17,7 @@
                 ,now());
     </insert>
 
-    <select id="searchPlanListByKeyword" parameterType="SearchKeywordDTO" resultType="SearchPlanResultVO">
+    <select id="searchPlanListByKeyword" parameterType="SearchKeywordDTO" resultType="PlanBasicInfoVO">
         SELECT cpm.PLAN_NO AS planNo
                  ,cpm.PLAN_TITLE AS planTitle
                  ,cpm.PLAN_DESC AS planDescription
@@ -47,7 +47,7 @@
         GROUP BY cpm.PLAN_NO;
     </select>
 
-    <select id="searchPlanListByAttribute" parameterType="SearchAttributeDTO" resultType="SearchPlanResultVO">
+    <select id="searchPlanListByAttribute" parameterType="SearchAttributeDTO" resultType="PlanBasicInfoVO">
         SELECT cpm.PLAN_NO       AS planNo
             ,cpm.PLAN_TITLE      AS planTitle
             ,cpm.PLAN_DESC       AS planDescription

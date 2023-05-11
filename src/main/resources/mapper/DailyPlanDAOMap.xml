@@ -73,8 +73,8 @@
 
     <select id="searchDailyPlanListByDay" parameterType="DailyPlanByDayDTO" resultMap="searchDailyPlanListByDay">
         SELECT #{memberNo:VARCHAR} AS MBR_NO
-             ,cd.PLAN_NO
-             ,cd.DAY_GRP
+             , #{planNo:VARCHAR} AS PLAN_NO
+             , #{dayGroup:VARCHAR} AS DAY_GRP
              ,TRUNCATE((SELECT COUNT(1) FROM CT_DAILYPLAN WHERE PLAN_NO = #{planNo:VARCHAR} AND DAY_GRP = #{dayGroup:VARCHAR} AND REV_AVG_SCORE IS NOT NULL) / COUNT(1) * 100, 0) AS ACHV_RATE
         FROM CT_DAILYPLAN cd
         WHERE cd.PLAN_NO = #{planNo:VARCHAR}

@@ -1,4 +1,4 @@
-package com.tripmate.domain.searchplan.vo;
+package com.tripmate.domain.plans.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Schema(description = "플랜 검색 Response VO")
-public class SearchPlanResultVO {
+@Schema(description = "플랜 기본 정보 조회 Response VO")
+public class PlanBasicInfoVO {
     @Schema(description = "플랜 번호", example = "1")
     private int planNo;
 
@@ -53,4 +53,7 @@ public class SearchPlanResultVO {
 
     @Schema(description = "등록일시", example = "2023-01-01 15:00:00")
     private String registrationDateTime;
+
+    @Schema(description = "플랜 찜 여부(카운트)", example = "1")
+    private int planLikeCnt;
 }
