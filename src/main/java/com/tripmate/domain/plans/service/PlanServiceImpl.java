@@ -13,6 +13,7 @@ import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
 import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
@@ -110,14 +111,14 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public PlanVO getPlanInfo(String planNo) {
-        List<PlanVO> planVO = planDAO.getPlanInfoWithPlanNo(planNo);
+    public PlanVO getPlanInfo(MemberPlanDTO memberPlanDTO) {
+        List<PlanVO> planVO = planDAO.getPlanInfoWithPlanNo(memberPlanDTO);
 
         if (planVO.isEmpty()) {
             throw new NoResultException("해당 플랜 정보가 존재하지 않습니다.");
         }
 
-        return planDAO.getPlanInfoWithPlanNo(planNo).get(0);
+        return planDAO.getPlanInfoWithPlanNo(memberPlanDTO).get(0);
     }
 
     @Override
@@ -128,7 +129,10 @@ public class PlanServiceImpl implements PlanService {
     @Override
     @Transactional
     public boolean updatePlan(String planNo, PlanDTO planDTO) {
-        List<PlanVO> planVO = planDAO.getPlanInfoWithPlanNo(planNo);
+        List<PlanVO> planVO = planDAO.getPlanInfoWithPlanNo(MemberPlanDTO.builder()
+                .planNo(planNo)
+                .memberNo(String.valueOf(planDTO.getMemberNo()))
+                .build());
 
         if (planVO == null) {
             throw new NoResultException("해당 플랜 정보가 존재하지 않습니다.");

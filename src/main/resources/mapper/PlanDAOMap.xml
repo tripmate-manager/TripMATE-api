@@ -142,6 +142,7 @@
         <result property="reviewAverageScore" column="REV_AVG_SCORE"/>
         <result property="leadYn" column="LEAD_YN"/>
         <result property="registrationDateTime" column="REG_DTIME"/>
+        <result property="planLikeCnt" column="LIKE_CNT"/>
         <collection property="planAddressList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAddressVO" select="getPlanAddressWithPlanNo"/>
         <collection property="planAttributeList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAttributeVO" select="getPlanAttributeWithPlanNo"/>
     </resultMap>
@@ -195,21 +196,24 @@
           AND plan.PLAN_NO = #{planNo:NUMERIC};
     </select>
 
-    <select id="getPlanInfoWithPlanNo" parameterType="String" resultMap="searchPlanList">
-        SELECT plan.PLAN_NO,
-               plan.PLAN_TITLE,
-               plan.PLAN_DESC,
-               plan.PUBLIC_YN,
-               plan.TRIP_START_DATE,
-               plan.TRIP_END_DATE,
-               plan.TRIP_TERM,
-               plan.LIKE_REG_CNT,
-               plan.ACHV_RATE,
-               plan.VIEWS,
-               plan.REV_AVG_SCORE,
-               plan.REG_DTIME
-        FROM CT_PLAN_MGMT plan
-        WHERE plan.PLAN_NO = #{planNo:VARCHAR}
+    <select id="getPlanInfoWithPlanNo" parameterType="MemberPlanDTO" resultMap="searchPlanList">
+        SELECT plan.PLAN_NO
+             ,plan.PLAN_TITLE
+             ,plan.PLAN_DESC
+             ,plan.PUBLIC_YN
+             ,plan.TRIP_START_DATE
+             ,plan.TRIP_END_DATE
+             ,plan.TRIP_TERM
+             ,plan.LIKE_REG_CNT
+             ,plan.ACHV_RATE
+             ,plan.VIEWS
+             ,plan.REV_AVG_SCORE
+             ,plan.REG_DTIME
+             ,COUNT(cpl.PLAN_NO) AS LIKE_CNT
+        FROM CT_PLAN_MGMT plan, CT_PLAN_LIKE cpl
+        WHERE plan.PLAN_NO = cpl.PLAN_NO
+          AND plan.PLAN_NO = #{planNo:VARCHAR}
+          AND cpl.MBR_NO = #{memberNo:VARCHAR}
           AND plan.USE_YN = 'Y';
     </select>
 

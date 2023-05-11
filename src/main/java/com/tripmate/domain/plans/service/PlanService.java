@@ -3,6 +3,7 @@ package com.tripmate.domain.plans.service;
 import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
@@ -19,7 +20,7 @@ public interface PlanService {
     List<PlanAddressVO> searchAddressList();
     int createPlan(PlanDTO planDTO);
     List<PlanVO> searchMemberPlanList(String memberNo);
-    PlanVO getPlanInfo(String planNo);
+    PlanVO getPlanInfo(MemberPlanDTO memberPlanDTO);
     List<PlanMateVO> searchPlanMateList(String planNo);
     boolean updatePlan(String planNo, PlanDTO planDTO);
     List<PlanMateVO> searchMemberList(String searchDiviCode, String searchKeyword);

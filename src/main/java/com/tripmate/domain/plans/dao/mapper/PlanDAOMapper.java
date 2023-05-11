@@ -5,6 +5,7 @@ import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
 import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
@@ -28,7 +29,7 @@ public interface PlanDAOMapper {
     int insertPlanAttributeMgmt(PlanAttributeVO planAttributeVO);
     int insertPlanMate(PlanMateDTO planMateDTO);
     List<PlanVO> searchPlanListWithMemberNo(String memberNo);
-    List<PlanVO> getPlanInfoWithPlanNo(String planNo);
+    List<PlanVO> getPlanInfoWithPlanNo(MemberPlanDTO memberPlanDTO);
     List<PlanMateVO> searchPlanMateListWithPlanNo(String planNo);
     int updatePlan(PlanDTO planDTO);
     int deletePlanAddressWithPlanNo(String planNo);
