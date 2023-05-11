@@ -1,10 +1,10 @@
 package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.vo.ResponseWrapper;
+import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.searchplan.dto.SearchAttributeDTO;
 import com.tripmate.domain.searchplan.dto.SearchKeywordDTO;
 import com.tripmate.domain.searchplan.service.SearchPlanService;
-import com.tripmate.domain.searchplan.vo.SearchPlanResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,9 +33,9 @@ public class SearchPlanController {
 
     @Operation(summary = "일반 검색 (키워드 검색)", description = "해당 키워드가 포함된 플랜 목록을 조회합니다.")
     @GetMapping("/keyword")
-    public ResponseWrapper<SearchPlanResultVO> searchPlanByKeyword(@RequestParam(value = "memberNo") @Schema(description = "회원 번호", example = "1") @NotBlank String memberNo,
-                                                              @RequestParam(value = "keyword") @Schema(description = "검색어", example = "검색어") @NotBlank @Size(min = 1, max = 100) String keyword) {
-        return ResponseWrapper.<SearchPlanResultVO>builder()
+    public ResponseWrapper<PlanBasicInfoVO> searchPlanByKeyword(@RequestParam(value = "memberNo") @Schema(description = "회원 번호", example = "1") @NotBlank String memberNo,
+                                                                @RequestParam(value = "keyword") @Schema(description = "검색어", example = "검색어") @NotBlank @Size(min = 1, max = 100) String keyword) {
+        return ResponseWrapper.<PlanBasicInfoVO>builder()
                 .data(searchPlanService.searchPlanListByKeyword(SearchKeywordDTO.builder()
                         .memberNo(memberNo)
                         .keyword(keyword)
@@ -45,8 +45,8 @@ public class SearchPlanController {
 
     @Operation(summary = "속성 검색", description = "속성에 부합하는 플랜 목록을 조회합니다.")
     @PostMapping("/attribute")
-    public ResponseWrapper<SearchPlanResultVO> searchPlanByKeyword(@Valid @RequestBody SearchAttributeDTO searchAttributeDTO) {
-        return ResponseWrapper.<SearchPlanResultVO>builder()
+    public ResponseWrapper<PlanBasicInfoVO> searchPlanByKeyword(@Valid @RequestBody SearchAttributeDTO searchAttributeDTO) {
+        return ResponseWrapper.<PlanBasicInfoVO>builder()
                 .data(searchPlanService.searchPlanListByAttribute(searchAttributeDTO))
                 .build();
     }

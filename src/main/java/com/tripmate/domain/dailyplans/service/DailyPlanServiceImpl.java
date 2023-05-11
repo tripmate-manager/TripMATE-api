@@ -87,7 +87,13 @@ public class DailyPlanServiceImpl implements DailyPlanService {
 
     @Override
     public DailyPlanVO searchDailyPlanListByDay(DailyPlanByDayDTO dailyPlanByDayDTO) {
-        return dailyPlanDAO.searchDailyPlanListByDay(dailyPlanByDayDTO);
+        return DailyPlanVO.builder()
+                .planNo(dailyPlanByDayDTO.getPlanNo())
+                .memberNo(dailyPlanByDayDTO.getMemberNo())
+                .dayGroup(dailyPlanByDayDTO.getDayGroup())
+                .achieveRate(String.valueOf(dailyPlanDAO.getPlanAchieveRate(dailyPlanByDayDTO)))
+                .dailyPlanItemList(dailyPlanDAO.searchDailyPlanListByDay(dailyPlanByDayDTO))
+                .build();
     }
 
     @Override

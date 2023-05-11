@@ -17,6 +17,9 @@ import java.util.List;
 @Getter
 public class SearchAttributeDTO {
 
+    @Schema(description = "회원 번호", example = "1")
+    private String memberNo;
+
     @Pattern(regexp = "^[123456]0$", message = "연령대는 10, 20, 30, 40, 50, 60만 입력 가능합니다.")
     @Schema(description = "연령대")
     private String age;

@@ -3,11 +3,13 @@ package com.tripmate.domain.plans.service;
 import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 
@@ -19,7 +21,7 @@ public interface PlanService {
     List<PlanAddressVO> searchAddressList();
     int createPlan(PlanDTO planDTO);
     List<PlanVO> searchMemberPlanList(String memberNo);
-    PlanVO getPlanInfo(String planNo);
+    PlanVO getPlanInfo(MemberPlanDTO memberPlanDTO);
     List<PlanMateVO> searchPlanMateList(String planNo);
     boolean updatePlan(String planNo, PlanDTO planDTO);
     List<PlanMateVO> searchMemberList(String searchDiviCode, String searchKeyword);
@@ -31,4 +33,7 @@ public interface PlanService {
     boolean exitPlan(ExitPlanDTO exitPlanDTO);
     InviteCodeVO getPlanInviteInfoWithInviteCodeNo(String inviteCodeNo);
     boolean insertPlanMate(PlanMateDTO planMateDTO);
+    boolean insertPlanLike(MemberPlanDTO memberPlanDTO);
+    boolean deletePlanLike(MemberPlanDTO memberPlanDTO);
+    List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo);
 }

@@ -53,6 +53,9 @@ public class PlanVO {
     @Schema(description = "등록일시", example = "2023-01-01 15:00:00")
     private String registrationDateTime;
 
+    @Schema(description = "플랜 찜 여부(카운트)", example = "1")
+    private int planLikeCnt;
+
     @Schema(description = "플랜 지역 리스트")
     private List<PlanAddressVO> planAddressList;
 

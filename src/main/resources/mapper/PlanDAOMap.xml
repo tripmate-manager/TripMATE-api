@@ -142,6 +142,7 @@
         <result property="reviewAverageScore" column="REV_AVG_SCORE"/>
         <result property="leadYn" column="LEAD_YN"/>
         <result property="registrationDateTime" column="REG_DTIME"/>
+        <result property="planLikeCnt" column="LIKE_CNT"/>
         <collection property="planAddressList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAddressVO" select="getPlanAddressWithPlanNo"/>
         <collection property="planAttributeList" column="planNo = PLAN_NO" javaType="List" ofType="PlanAttributeVO" select="getPlanAttributeWithPlanNo"/>
     </resultMap>
@@ -195,21 +196,24 @@
           AND plan.PLAN_NO = #{planNo:NUMERIC};
     </select>
 
-    <select id="getPlanInfoWithPlanNo" parameterType="String" resultMap="searchPlanList">
-        SELECT plan.PLAN_NO,
-               plan.PLAN_TITLE,
-               plan.PLAN_DESC,
-               plan.PUBLIC_YN,
-               plan.TRIP_START_DATE,
-               plan.TRIP_END_DATE,
-               plan.TRIP_TERM,
-               plan.LIKE_REG_CNT,
-               plan.ACHV_RATE,
-               plan.VIEWS,
-               plan.REV_AVG_SCORE,
-               plan.REG_DTIME
-        FROM CT_PLAN_MGMT plan
-        WHERE plan.PLAN_NO = #{planNo:VARCHAR}
+    <select id="getPlanInfoWithPlanNo" parameterType="MemberPlanDTO" resultMap="searchPlanList">
+        SELECT plan.PLAN_NO
+             ,plan.PLAN_TITLE
+             ,plan.PLAN_DESC
+             ,plan.PUBLIC_YN
+             ,plan.TRIP_START_DATE
+             ,plan.TRIP_END_DATE
+             ,plan.TRIP_TERM
+             ,plan.LIKE_REG_CNT
+             ,plan.ACHV_RATE
+             ,plan.VIEWS
+             ,plan.REV_AVG_SCORE
+             ,plan.REG_DTIME
+             ,COUNT(cpl.PLAN_NO) AS LIKE_CNT
+        FROM CT_PLAN_MGMT plan, CT_PLAN_LIKE cpl
+        WHERE plan.PLAN_NO = cpl.PLAN_NO
+          AND plan.PLAN_NO = #{planNo:VARCHAR}
+          AND cpl.MBR_NO = #{memberNo:VARCHAR}
           AND plan.USE_YN = 'Y';
     </select>
 
@@ -469,4 +473,54 @@
         WHERE MBR_NO = #{memberNo:VARCHAR}
           AND PLAN_NO = #{planNo:VARCHAR};
     </select>
+
+    <insert id="insertPlanLike" parameterType="MemberPlanDTO">
+        INSERT INTO CT_PLAN_LIKE (PLAN_NO
+                                 ,MBR_NO
+                                 ,REG_NO
+                                 ,REG_DTIME
+                                 ,UPT_NO
+                                 ,UPT_DTIME)
+        VALUES (#{planNo:VARCHAR}
+                ,#{memberNo:VARCHAR}
+                ,#{memberNo:VARCHAR}
+                ,now()
+                ,#{memberNo:VARCHAR}
+                ,now());
+    </insert>
+
+    <delete id="deletePlanLike" parameterType="MemberPlanDTO">
+        DELETE FROM CT_PLAN_LIKE
+        WHERE PLAN_NO = #{planNo:VARCHAR}
+          AND MBR_NO = #{memberNo:VARCHAR};
+    </delete>
+
+    <select id="searchMyPlanLikeList" parameterType="String" resultType="PlanBasicInfoVO">
+        SELECT cpm.PLAN_NO AS planNo
+             ,cpm.PLAN_TITLE AS planTitle
+             ,cpm.PLAN_DESC AS planDescription
+             ,cpm.TRIP_START_DATE AS tripStartDate
+             ,cpm.TRIP_END_DATE AS tripEndDate
+             ,cpm.TRIP_TERM AS tripTerm
+             ,cpm.LIKE_REG_CNT AS likeRegistrationCnt
+             ,cpm.ACHV_RATE AS achieveRate
+             ,cpm.VIEWS AS views
+             ,cpm.REV_AVG_SCORE AS reviewAverageScore
+             ,cam.SIDO_NM AS sidoName
+             ,cam.SIGUNGU_NM AS sigunguName
+             ,mmm.NICK_NM AS leaderNickName
+             ,cpm.REG_DTIME AS registrationDateTime
+             ,COUNT(cpl.LIKE_NO) AS planLikeCnt
+        FROM CT_PLAN_MGMT cpm
+                 LEFT JOIN CT_TRIP_ADDR cta ON cpm.PLAN_NO = cta.PLAN_NO
+                 LEFT JOIN CT_ADDR_MGMT cam ON cta.ADDR_NO = cam.ADDR_NO
+                 LEFT JOIN CT_PLAN_MATE mate ON cpm.PLAN_NO = mate.PLAN_NO
+                 LEFT JOIN MB_MBR_MGMT mmm ON mate.MBR_NO = mmm.MBR_NO
+                 LEFT JOIN CT_PLAN_LIKE cpl ON cpm.PLAN_NO = cpl.PLAN_NO
+        WHERE cpm.USE_YN = 'Y'
+          AND mate.LEAD_YN = 'Y'
+          AND cpl.MBR_NO = #{memberNo:VARCHAR}
+        GROUP BY cpm.PLAN_NO;
+    </select>
+
 </mapper>

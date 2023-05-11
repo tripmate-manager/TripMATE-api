@@ -4,12 +4,14 @@ import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.plans.dto.ExitPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.service.PlanService;
 import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -84,9 +87,13 @@ public class PlanController {
 
     @Operation(summary = "플랜 상세 조회", description = "플랜 상세 정보를 조회합니다. (return: 플랜 정보)")
     @GetMapping("/plan-detail/{planNo}")
-    public ResponseWrapper<PlanVO> getPlanInfo(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo) {
+    public ResponseWrapper<PlanVO> getPlanInfo(@PathVariable(value = "planNo") @Schema(description = "플랜번호", example = "1") String planNo,
+                                               @RequestParam(value = "memberNo") @Schema(description = "회원번호", example = "1") String memberNo) {
         return ResponseWrapper.<PlanVO>builder()
-                .data(Collections.singletonList(planService.getPlanInfo(planNo)))
+                .data(Collections.singletonList(planService.getPlanInfo(MemberPlanDTO.builder()
+                        .planNo(planNo)
+                        .memberNo(memberNo)
+                        .build())))
                 .build();
     }
 
@@ -179,6 +186,38 @@ public class PlanController {
     public ResponseWrapper<Boolean> insertPlanMate(@Valid @RequestBody PlanMateDTO planMateDTO) {
         return ResponseWrapper.<Boolean>builder()
                 .data(Collections.singletonList(planService.insertPlanMate(planMateDTO)))
+                .build();
+    }
+
+    @Operation(summary = "찜한 플랜 추가", description = "찜한 플랜을 추가합니다.(플랜 찜 설정)")
+    @PostMapping("/plan-like")
+    public ResponseWrapper<Boolean> insertPlanLike(@RequestParam(value = "planNo") @NotBlank @Schema(description = "플랜번호", example = "1") String planNo,
+                                                   @RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.insertPlanLike(MemberPlanDTO.builder()
+                        .planNo(planNo)
+                        .memberNo(memberNo)
+                        .build())))
+                .build();
+    }
+
+    @Operation(summary = "찜한 플랜 삭제", description = "찜한 플랜을 삭제합니다.(플랜 찜 해제)")
+    @DeleteMapping("/plan-like")
+    public ResponseWrapper<Boolean> deletePlanLike(@RequestParam(value = "planNo") @NotBlank @Schema(description = "플랜번호", example = "1") String planNo,
+                                                   @RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.deletePlanLike(MemberPlanDTO.builder()
+                        .planNo(planNo)
+                        .memberNo(memberNo)
+                        .build())))
+                .build();
+    }
+
+    @Operation(summary = "찜한 플랜 조회", description = "찜한 플랜 목록을 조회합니다.")
+    @GetMapping("/plan-like/{memberNo}")
+    public ResponseWrapper<PlanBasicInfoVO> searchMyPlanLikeList(@PathVariable(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
+        return ResponseWrapper.<PlanBasicInfoVO>builder()
+                .data(planService.searchMyPlanLikeList(memberNo))
                 .build();
     }
 }

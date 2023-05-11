@@ -5,6 +5,7 @@ import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
 import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
@@ -12,6 +13,7 @@ import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 
@@ -28,7 +30,7 @@ public interface PlanDAOMapper {
     int insertPlanAttributeMgmt(PlanAttributeVO planAttributeVO);
     int insertPlanMate(PlanMateDTO planMateDTO);
     List<PlanVO> searchPlanListWithMemberNo(String memberNo);
-    List<PlanVO> getPlanInfoWithPlanNo(String planNo);
+    List<PlanVO> getPlanInfoWithPlanNo(MemberPlanDTO memberPlanDTO);
     List<PlanMateVO> searchPlanMateListWithPlanNo(String planNo);
     int updatePlan(PlanDTO planDTO);
     int deletePlanAddressWithPlanNo(String planNo);
@@ -47,4 +49,7 @@ public interface PlanDAOMapper {
     int getPlanMateCntWithMateNoAndPlanNo(ExitPlanDTO exitPlanDTO);
     InviteCodeVO getPlanInviteInfoWithInviteCodeNo(String inviteCodeNo);
     int getPlanMateCntWithMemberNoAndPlanNo(PlanMateDTO planMateDTO);
+    int insertPlanLike(MemberPlanDTO memberPlanDTO);
+    int deletePlanLike(MemberPlanDTO memberPlanDTO);
+    List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo);
 }

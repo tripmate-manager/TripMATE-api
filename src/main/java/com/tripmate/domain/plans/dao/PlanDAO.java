@@ -6,6 +6,7 @@ import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
+import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
 import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
@@ -13,6 +14,7 @@ import com.tripmate.domain.plans.vo.InviteCodeVO;
 import com.tripmate.domain.plans.vo.NotificationVO;
 import com.tripmate.domain.plans.vo.PlanAddressVO;
 import com.tripmate.domain.plans.vo.PlanAttributeVO;
+import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 import org.apache.ibatis.session.SqlSession;
@@ -72,8 +74,8 @@ public class PlanDAO {
         return sqlSession.getMapper(PlanDAOMapper.class).searchPlanListWithMemberNo(memberNo);
     }
 
-    public List<PlanVO> getPlanInfoWithPlanNo(String planNo) {
-        return sqlSession.getMapper(PlanDAOMapper.class).getPlanInfoWithPlanNo(planNo);
+    public List<PlanVO> getPlanInfoWithPlanNo(MemberPlanDTO memberPlanDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).getPlanInfoWithPlanNo(memberPlanDTO);
     }
 
     public List<PlanMateVO> searchPlanMateListWithPlanNo(String planNo) {
@@ -146,5 +148,17 @@ public class PlanDAO {
 
     public int getPlanMateCntWithMemberNoAndPlanNo(PlanMateDTO planMateDTO) {
         return sqlSession.getMapper(PlanDAOMapper.class).getPlanMateCntWithMemberNoAndPlanNo(planMateDTO);
+    }
+
+    public int insertPlanLike(MemberPlanDTO memberPlanDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).insertPlanLike(memberPlanDTO);
+    }
+
+    public int deletePlanLike(MemberPlanDTO memberPlanDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).deletePlanLike(memberPlanDTO);
+    }
+
+    public List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchMyPlanLikeList(memberNo);
     }
 }

@@ -1,10 +1,10 @@
 package com.tripmate.domain.searchplan.service;
 
 import com.tripmate.common.exception.GuideMessageException;
+import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.searchplan.dao.SearchPlanDAO;
 import com.tripmate.domain.searchplan.dto.SearchAttributeDTO;
 import com.tripmate.domain.searchplan.dto.SearchKeywordDTO;
-import com.tripmate.domain.searchplan.vo.SearchPlanResultVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class SearchPlanServiceImpl implements SearchPlanService {
 
     @Override
     @Transactional
-    public List<SearchPlanResultVO> searchPlanListByKeyword(SearchKeywordDTO searchKeywordDTO) {
+    public List<PlanBasicInfoVO> searchPlanListByKeyword(SearchKeywordDTO searchKeywordDTO) {
         if (searchPlanDAO.insertSearchKeyword(searchKeywordDTO) != 1) {
             throw new GuideMessageException("검색 중 오류가 발생했습니다.");
         }
@@ -29,7 +29,7 @@ public class SearchPlanServiceImpl implements SearchPlanService {
     }
 
     @Override
-    public List<SearchPlanResultVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO) {
+    public List<PlanBasicInfoVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO) {
         return searchPlanDAO.searchPlanListByAttribute(searchAttributeDTO);
     }
 }
