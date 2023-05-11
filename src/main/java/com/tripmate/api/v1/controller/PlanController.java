@@ -189,7 +189,7 @@ public class PlanController {
                 .build();
     }
 
-    @Operation(summary = "찜한 플랜 추가", description = "플랜 메이트를 추가합니다.")
+    @Operation(summary = "찜한 플랜 추가", description = "찜한 플랜을 추가합니다.(플랜 찜 설정)")
     @PostMapping("/plan-like")
     public ResponseWrapper<Boolean> insertPlanLike(@RequestParam(value = "planNo") @NotBlank @Schema(description = "플랜번호", example = "1") String planNo,
                                                    @RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
@@ -201,7 +201,7 @@ public class PlanController {
                 .build();
     }
 
-    @Operation(summary = "찜한 플랜 삭제", description = "플랜 메이트를 추가합니다.")
+    @Operation(summary = "찜한 플랜 삭제", description = "찜한 플랜을 삭제합니다.(플랜 찜 해제)")
     @DeleteMapping("/plan-like")
     public ResponseWrapper<Boolean> deletePlanLike(@RequestParam(value = "planNo") @NotBlank @Schema(description = "플랜번호", example = "1") String planNo,
                                                    @RequestParam(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
