@@ -28,6 +28,7 @@
         <typeAlias type="com.tripmate.domain.plans.dto.PlanMateDTO" alias="PlanMateDTO"/>
         <typeAlias type="com.tripmate.domain.plans.dto.MemberPlanDTO" alias="MemberPlanDTO"/>
         <typeAlias type="com.tripmate.domain.plans.vo.PlanBasicInfoVO" alias="PlanBasicInfoVO"/>
+        <typeAlias type="com.tripmate.domain.plans.vo.PopualrPlanVO" alias="PopualrPlanVO"/>
         <typeAlias type="com.tripmate.domain.wishlist.dto.PostDTO" alias="PostDTO"/>
         <typeAlias type="com.tripmate.domain.wishlist.vo.PostVO" alias="PostVO"/>
         <typeAlias type="com.tripmate.domain.wishlist.dto.CommentDTO" alias="CommentDTO"/>

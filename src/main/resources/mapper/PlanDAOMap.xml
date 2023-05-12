@@ -523,4 +523,17 @@
         GROUP BY cpm.PLAN_NO;
     </select>
 
+    <select id="searchPopualrPlanList" resultType="PopualrPlanVO">
+        SELECT cpm.PLAN_NO AS planNo
+             ,cpm.PLAN_TITLE AS planTitle
+             ,mmm.NICK_NM AS leaderNickName
+        FROM CT_STAT_PLAN_LIKE stat
+            LEFT JOIN CT_PLAN_MGMT cpm ON stat.PLAN_NO = cpm.PLAN_NO
+            LEFT JOIN CT_TRIP_ADDR cta ON stat.PLAN_NO = cta.PLAN_NO
+            LEFT JOIN CT_PLAN_MATE mate ON stat.PLAN_NO = mate.PLAN_NO
+            LEFT JOIN MB_MBR_MGMT mmm ON mate.MBR_NO = mmm.MBR_NO
+        WHERE mate.LEAD_YN = 'Y'
+          AND DATE_FORMAT(stat.REG_DTIME, '%Y-%m-%d') = CURDATE();
+    </select>
+
 </mapper>

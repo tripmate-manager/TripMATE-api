@@ -10,4 +10,6 @@ public interface SearchPlanDAOMapper {
     int insertSearchKeyword(SearchKeywordDTO searchKeywordDTO);
     List<PlanBasicInfoVO> searchPlanListByKeyword(SearchKeywordDTO searchKeywordDTO);
     List<PlanBasicInfoVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO);
+    List<String> searchPopularSearchKeyword();
+    List<String> searchPopularHashtag();
 }

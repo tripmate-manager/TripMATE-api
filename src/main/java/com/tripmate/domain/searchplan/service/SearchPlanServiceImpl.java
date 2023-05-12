@@ -32,4 +32,14 @@ public class SearchPlanServiceImpl implements SearchPlanService {
     public List<PlanBasicInfoVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO) {
         return searchPlanDAO.searchPlanListByAttribute(searchAttributeDTO);
     }
+
+    @Override
+    public List<String> searchPopularSearchKeyword() {
+        return searchPlanDAO.searchPopularSearchKeyword();
+    }
+
+    @Override
+    public List<String> searchPopularHashtag() {
+        return searchPlanDAO.searchPopularHashtag();
+    }
 }

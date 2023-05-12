@@ -24,6 +24,7 @@ import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
+import com.tripmate.domain.plans.vo.PopualrPlanVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -357,5 +358,10 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo) {
         return planDAO.searchMyPlanLikeList(memberNo);
+    }
+
+    @Override
+    public List<PopualrPlanVO> searchPopualrPlanList() {
+        return planDAO.searchPopualrPlanList();
     }
 }

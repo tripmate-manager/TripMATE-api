@@ -149,4 +149,20 @@
         </if>
         GROUP BY cpm.PLAN_NO;
     </select>
+
+    <select id="searchPopularSearchKeyword" resultType="String">
+        SELECT SEARCH_KWD
+        FROM CT_STAT_SEARCH_KWD
+        WHERE DATE_FORMAT(REG_DTIME, '%Y-%m-%d') = CURDATE()
+        ORDER BY SEARCH_CNT DESC;
+    </select>
+
+    <select id="searchPopularHashtag" resultType="String">
+        SELECT mgmt.ATTR_NM
+        FROM CT_STAT_PLAN_ATTR attr, CT_PLAN_ATTR_MGMT mgmt
+        WHERE attr.ATTR_NO = mgmt.ATTR_NO
+          AND DATE_FORMAT(attr.REG_DTIME, '%Y-%m-%d') = CURDATE()
+          AND attr.ATTR_TP_CD = '10'
+        ORDER BY attr.ATTR_REG_CNT DESC;
+    </select>
 </mapper>

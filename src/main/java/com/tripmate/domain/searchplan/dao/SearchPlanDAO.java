@@ -26,4 +26,12 @@ public class SearchPlanDAO {
     public List<PlanBasicInfoVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO) {
         return sqlSession.getMapper(SearchPlanDAOMapper.class).searchPlanListByAttribute(searchAttributeDTO);
     }
+
+    public List<String> searchPopularSearchKeyword() {
+        return sqlSession.getMapper(SearchPlanDAOMapper.class).searchPopularSearchKeyword();
+    }
+
+    public List<String> searchPopularHashtag() {
+        return sqlSession.getMapper(SearchPlanDAOMapper.class).searchPopularHashtag();
+    }
 }

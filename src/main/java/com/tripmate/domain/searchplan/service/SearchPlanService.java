@@ -9,4 +9,6 @@ import java.util.List;
 public interface SearchPlanService {
     List<PlanBasicInfoVO> searchPlanListByKeyword(SearchKeywordDTO searchKeywordDTO);
     List<PlanBasicInfoVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO);
+    List<String> searchPopularSearchKeyword();
+    List<String> searchPopularHashtag();
 }
