@@ -66,4 +66,13 @@ public class SearchPlanController {
                 .data(searchPlanService.searchPopularHashtag())
                 .build();
     }
+
+    @Operation(summary = "사용자 맞춤 추천 플랜 조회", description = "사용자 맞춤 추천 플랜 목록을 조회합니다.")
+    @GetMapping("/user-recommendation")
+    public ResponseWrapper<PlanBasicInfoVO> searchUserRecommendationPlanList(@RequestParam(value = "memberNo") @Schema(description = "회원 번호", example = "1") @NotBlank String memberNo) {
+        return ResponseWrapper.<PlanBasicInfoVO>builder()
+                .data(searchPlanService.searchUserRecommendationPlanList(memberNo))
+                .build();
+
+    }
 }

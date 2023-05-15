@@ -11,4 +11,5 @@ public interface SearchPlanService {
     List<PlanBasicInfoVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO);
     List<String> searchPopularSearchKeyword();
     List<String> searchPopularHashtag();
+    List<PlanBasicInfoVO> searchUserRecommendationPlanList(String memberNo);
 }
