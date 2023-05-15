@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Schema(description = "인기 플랜 조회 Response VO")
-public class PopualrPlanVO {
+public class PopularPlanVO {
 
     @Schema(description = "플랜 번호", example = "1")
     private int planNo;
@@ -21,5 +21,8 @@ public class PopualrPlanVO {
 
     @Schema(description = "플랜 리더 이름", example = "Y")
     private String leaderNickName;
+
+    @Schema(description = "플랜 찜 여부(카운트)", example = "1")
+    private int planLikeCnt;
 
 }

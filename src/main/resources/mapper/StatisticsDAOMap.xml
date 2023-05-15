@@ -25,10 +25,10 @@
           AND cpm.USE_YN = 'Y'
               <choose>
                   <when test="statisticsTermCode != null and '10'.toString() eq statisticsTermCode ">
-                    AND cpl.REG_DTIME BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH ) AND NOW()
+                    AND cpl.REG_DTIME BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()
                   </when>
                   <when test="statisticsTermCode != null and '20'.toString() eq statisticsTermCode ">
-                    AND cpl.REG_DTIME BETWEEN DATE_ADD(NOW(), INTERVAL -3 MONTH ) AND NOW()
+                    AND cpl.REG_DTIME BETWEEN DATE_ADD(NOW(), INTERVAL -3 MONTH) AND NOW()
                   </when>
               </choose>
         GROUP BY cpl.PLAN_NO

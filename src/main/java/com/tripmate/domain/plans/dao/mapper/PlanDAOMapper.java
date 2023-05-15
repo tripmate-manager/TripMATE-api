@@ -16,7 +16,7 @@ import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
-import com.tripmate.domain.plans.vo.PopualrPlanVO;
+import com.tripmate.domain.plans.vo.PopularPlanVO;
 
 import java.util.List;
 
@@ -53,5 +53,6 @@ public interface PlanDAOMapper {
     int insertPlanLike(MemberPlanDTO memberPlanDTO);
     int deletePlanLike(MemberPlanDTO memberPlanDTO);
     List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo);
-    List<PopualrPlanVO> searchPopualrPlanList();
+    List<PopularPlanVO> searchPopularPlanList(String memberNo);
+    List<PopularPlanVO> searchPopularPlanList();
 }

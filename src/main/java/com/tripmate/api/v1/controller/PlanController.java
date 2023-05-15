@@ -14,7 +14,7 @@ import com.tripmate.domain.plans.vo.PlanAttributeVO;
 import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
-import com.tripmate.domain.plans.vo.PopualrPlanVO;
+import com.tripmate.domain.plans.vo.PopularPlanVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -222,11 +222,19 @@ public class PlanController {
                 .build();
     }
 
-    @Operation(summary = "인기 플랜 조회", description = "인기 플랜 목록을 조회합니다.")
+    @Operation(summary = "인기 플랜 조회(로그인)", description = "인기 플랜 목록을 조회합니다.(로그인)")
+    @GetMapping("/popular-plan/{memberNo}")
+    public ResponseWrapper<PopularPlanVO> searchPopularPlanList(@PathVariable(value = "memberNo") @NotBlank @Schema(description = "회원번호", example = "1") String memberNo) {
+        return ResponseWrapper.<PopularPlanVO>builder()
+                .data(planService.searchPopularPlanList(memberNo))
+                .build();
+    }
+
+    @Operation(summary = "인기 플랜 조회(비로그인)", description = "인기 플랜 목록을 조회합니다.(비로그인)")
     @GetMapping("/popular-plan")
-    public ResponseWrapper<PopualrPlanVO> searchPopularPlanList() {
-        return ResponseWrapper.<PopualrPlanVO>builder()
-                .data(planService.searchPopualrPlanList())
+    public ResponseWrapper<PopularPlanVO> searchPopularPlanList() {
+        return ResponseWrapper.<PopularPlanVO>builder()
+                .data(planService.searchPopularPlanList())
                 .build();
     }
 }
