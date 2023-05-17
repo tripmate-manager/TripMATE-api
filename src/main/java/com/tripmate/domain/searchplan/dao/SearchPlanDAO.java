@@ -35,8 +35,4 @@ public class SearchPlanDAO {
     public List<String> searchPopularHashtag() {
         return sqlSession.getMapper(SearchPlanDAOMapper.class).searchPopularHashtag();
     }
-
-    public List<PlanBasicInfoVO> searchUserRecommendationPlanList(SearchUserRecommendationDTO searchUserRecommendationDTO) {
-        return sqlSession.getMapper(SearchPlanDAOMapper.class).searchUserRecommendationPlanList(searchUserRecommendationDTO);
-    }
 }
