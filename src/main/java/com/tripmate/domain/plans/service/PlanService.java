@@ -39,4 +39,7 @@ public interface PlanService {
     List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo);
     List<PopularPlanVO> searchPopularPlanList(String memberNo);
     List<PopularPlanVO> searchPopularPlanList();
+    boolean updatePlanViews(String planNo);
+    List<PlanBasicInfoVO> searchUserRecommendationPlanList(String memberNo);
+    List<PlanBasicInfoVO> searchRecommendationPlanList();
 }

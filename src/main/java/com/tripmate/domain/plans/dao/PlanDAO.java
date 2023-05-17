@@ -18,6 +18,7 @@ import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 import com.tripmate.domain.plans.vo.PopularPlanVO;
+import com.tripmate.domain.searchplan.dto.SearchUserRecommendationDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -169,5 +170,21 @@ public class PlanDAO {
 
     public List<PopularPlanVO> searchPopularPlanList() {
         return sqlSession.getMapper(PlanDAOMapper.class).searchPopularPlanList();
+    }
+
+    public List<PlanBasicInfoVO> searchUserRecommendationPlanList(SearchUserRecommendationDTO searchUserRecommendationDTO) {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchUserRecommendationPlanList(searchUserRecommendationDTO);
+    }
+
+    public int updatePlanViews(String planNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).updatePlanViews(planNo);
+    }
+
+    public List<PlanBasicInfoVO> searchHighestViewsPlanList(String memberNo) {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchHighestViewsPlanList(memberNo);
+    }
+
+    public List<PlanBasicInfoVO> searchHighestViewsPlanList() {
+        return sqlSession.getMapper(PlanDAOMapper.class).searchHighestViewsPlanList();
     }
 }

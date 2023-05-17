@@ -17,6 +17,7 @@ import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 import com.tripmate.domain.plans.vo.PopularPlanVO;
+import com.tripmate.domain.searchplan.dto.SearchUserRecommendationDTO;
 
 import java.util.List;
 
@@ -55,4 +56,8 @@ public interface PlanDAOMapper {
     List<PlanBasicInfoVO> searchMyPlanLikeList(String memberNo);
     List<PopularPlanVO> searchPopularPlanList(String memberNo);
     List<PopularPlanVO> searchPopularPlanList();
+    List<PlanBasicInfoVO> searchUserRecommendationPlanList(SearchUserRecommendationDTO searchUserRecommendationDTO);
+    int updatePlanViews(String planNo);
+    List<PlanBasicInfoVO> searchHighestViewsPlanList(String memberNo);
+    List<PlanBasicInfoVO> searchHighestViewsPlanList();
 }

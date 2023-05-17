@@ -536,7 +536,71 @@
             LEFT JOIN CT_PLAN_MATE mate ON stat.PLAN_NO = mate.PLAN_NO
             LEFT JOIN MB_MBR_MGMT mmm ON mate.MBR_NO = mmm.MBR_NO
         WHERE mate.LEAD_YN = 'Y'
-          AND DATE_FORMAT(stat.REG_DTIME, '%Y-%m-%d') = CURDATE();
+          AND DATE_FORMAT(stat.REG_DTIME, '%Y-%m-%d') = CURDATE() LIMIT 3;
     </select>
 
+    <select id="searchUserRecommendationPlanList" parameterType="SearchUserRecommendationDTO" resultType="PlanBasicInfoVO">
+        SELECT cpm.PLAN_NO AS planNo
+             ,cpm.PLAN_TITLE AS planTitle
+             ,cpm.PLAN_DESC AS planDescription
+             ,cpm.TRIP_START_DATE AS tripStartDate
+             ,cpm.TRIP_END_DATE AS tripEndDate
+             ,cpm.TRIP_TERM AS tripTerm
+             ,cpm.LIKE_REG_CNT AS likeRegistrationCnt
+             ,cpm.ACHV_RATE AS achieveRate
+             ,cpm.VIEWS AS views
+             ,cpm.REV_AVG_SCORE AS reviewAverageScore
+             ,cam.SIDO_NM AS sidoName
+             ,cam.SIGUNGU_NM AS sigunguName
+             ,mmm.NICK_NM AS leaderNickName
+             ,cpm.REG_DTIME AS registrationDateTime
+             ,(SELECT COUNT(cpl.LIKE_NO) FROM CT_PLAN_MGMT plan, CT_PLAN_LIKE cpl WHERE plan.PLAN_NO = cpl.PLAN_NO AND cpl.PLAN_NO = cpm.PLAN_NO AND cpl.MBR_NO = #{memberNo:VARCHAR}) AS planLikeCnt
+        FROM CT_PLAN_LIKE cpl, CT_PLAN_MGMT cpm, MB_MBR_MGMT mmm, CT_TRIP_ADDR cta, CT_ADDR_MGMT cam
+        WHERE cpl.PLAN_NO = cpm.PLAN_NO
+            AND cpl.PLAN_NO = cta.PLAN_NO
+            AND cta.ADDR_NO = cam.ADDR_NO
+            AND cpl.MBR_NO = mmm.MBR_NO
+            AND cpm.PUBLIC_YN = 'Y'
+            AND cpm.USE_YN = 'Y'
+            AND cpl.REG_DTIME BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()
+            AND mmm.GEND_CD = #{genderCode:VARCHAR}
+            AND YEAR(NOW())-LEFT(mmm.BDAY, 4) + 1 BETWEEN #{age:VARCHAR} AND #{age:VARCHAR} + 9
+        GROUP BY cpl.PLAN_NO
+        ORDER BY COUNT(cpl.PLAN_NO) DESC LIMIT 2;
+    </select>
+
+    <update id="updatePlanViews" parameterType="String">
+        UPDATE CT_PLAN_MGMT
+           SET VIEWS = VIEWS + 1
+         WHERE PLAN_NO = #{planNo:VARCHAR};
+    </update>
+
+    <select id="searchHighestViewsPlanList" parameterType="String" resultType="PlanBasicInfoVO">
+        SELECT cpm.PLAN_NO AS planNo
+            ,cpm.PLAN_TITLE AS planTitle
+            ,cpm.PLAN_DESC AS planDescription
+            ,cpm.TRIP_START_DATE AS tripStartDate
+            ,cpm.TRIP_END_DATE AS tripEndDate
+            ,cpm.TRIP_TERM AS tripTerm
+            ,cpm.LIKE_REG_CNT AS likeRegistrationCnt
+            ,cpm.ACHV_RATE AS achieveRate
+            ,cpm.VIEWS AS views
+            ,cpm.REV_AVG_SCORE AS reviewAverageScore
+            ,cam.SIDO_NM AS sidoName
+            ,cam.SIGUNGU_NM AS sigunguName
+            ,mmm.NICK_NM AS leaderNickName
+            ,cpm.REG_DTIME AS registrationDateTime
+        <if test="memberNo != null">
+            ,(SELECT COUNT(cpl.LIKE_NO) FROM CT_PLAN_MGMT plan, CT_PLAN_LIKE cpl WHERE plan.PLAN_NO = cpl.PLAN_NO AND cpl.PLAN_NO = cpm.PLAN_NO AND cpl.MBR_NO = #{memberNo:VARCHAR}) AS planLikeCnt
+        </if>
+        FROM CT_PLAN_MGMT cpm, MB_MBR_MGMT mmm, CT_TRIP_ADDR cta, CT_ADDR_MGMT cam, CT_PLAN_MATE mate
+        WHERE cpm.PLAN_NO = cta.PLAN_NO
+        AND cta.ADDR_NO = cam.ADDR_NO
+        AND cpm.PLAN_NO = mate.PLAN_NO
+        AND mate.MBR_NO = mmm.MBR_NO
+        AND cpm.PUBLIC_YN = 'Y'
+        AND cpm.USE_YN = 'Y'
+        GROUP BY cpm.PLAN_NO
+        ORDER BY cpm.VIEWS DESC LIMIT 3;
+    </select>
 </mapper>

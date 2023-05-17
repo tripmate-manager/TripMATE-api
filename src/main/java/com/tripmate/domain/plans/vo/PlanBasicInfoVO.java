@@ -15,10 +15,10 @@ public class PlanBasicInfoVO {
     @Schema(description = "플랜 번호", example = "1")
     private int planNo;
 
-    @Schema(description = "플랜제목", example = "플랜제목")
+    @Schema(description = "플랜 제목", example = "플랜제목")
     private String planTitle;
 
-    @Schema(description = "플랜설명", pattern = "yyyy.MM.dd", example = "2023.01.01")
+    @Schema(description = "플랜 설명", pattern = "yyyy.MM.dd", example = "2023.01.01")
     private String planDescription;
 
     @Schema(description = "여행 시작 일자", pattern = "yyyy.MM.dd", example = "2023.01.01")

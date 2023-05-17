@@ -2,9 +2,9 @@ package com.tripmate.api.v1.controller;
 
 import com.tripmate.domain.common.vo.ResponseWrapper;
 import com.tripmate.domain.plans.dto.ExitPlanDTO;
+import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
-import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.service.PlanService;
 import com.tripmate.domain.plans.vo.InviteCodeVO;
@@ -235,6 +235,30 @@ public class PlanController {
     public ResponseWrapper<PopularPlanVO> searchPopularPlanList() {
         return ResponseWrapper.<PopularPlanVO>builder()
                 .data(planService.searchPopularPlanList())
+                .build();
+    }
+
+    @Operation(summary = "플랜 조회수 업데이트 api", description = "플랜 조회수를 업데이트합니다.")
+    @PutMapping("/plan-views/{planNo}")
+    public ResponseWrapper<Boolean> updatePlanViews(@PathVariable(value = "planNo") @NotBlank @Schema(description = "플랜번호", example = "1") String planNo) {
+        return ResponseWrapper.<Boolean>builder()
+                .data(Collections.singletonList(planService.updatePlanViews(planNo)))
+                .build();
+    }
+
+    @Operation(summary = "사용자 맞춤 추천 플랜 조회(로그인)", description = "사용자 맞춤 추천 플랜 목록을 조회합니다.(로그인)")
+    @GetMapping("/user-recommendation/{memberNo}")
+    public ResponseWrapper<PlanBasicInfoVO> searchUserRecommendationPlanList(@PathVariable(value = "memberNo") @Schema(description = "회원 번호", example = "1") @NotBlank String memberNo) {
+        return ResponseWrapper.<PlanBasicInfoVO>builder()
+                .data(planService.searchUserRecommendationPlanList(memberNo))
+                .build();
+    }
+
+    @Operation(summary = "추천 플랜 조회(비로그인)", description = "추천 플랜 목록을 조회합니다.(비로그인)")
+    @GetMapping("/user-recommendation")
+    public ResponseWrapper<PlanBasicInfoVO> searchRecommendationPlanList() {
+        return ResponseWrapper.<PlanBasicInfoVO>builder()
+                .data(planService.searchRecommendationPlanList())
                 .build();
     }
 }

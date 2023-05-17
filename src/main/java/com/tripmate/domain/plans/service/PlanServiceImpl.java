@@ -9,11 +9,11 @@ import com.tripmate.domain.members.dao.MemberDAO;
 import com.tripmate.domain.members.dto.MemberDTO;
 import com.tripmate.domain.plans.dao.PlanDAO;
 import com.tripmate.domain.plans.dto.ExitPlanDTO;
+import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.NotificationDTO;
 import com.tripmate.domain.plans.dto.PlanAttributeDTO;
 import com.tripmate.domain.plans.dto.PlanAuthCodeDTO;
 import com.tripmate.domain.plans.dto.PlanDTO;
-import com.tripmate.domain.plans.dto.MemberPlanDTO;
 import com.tripmate.domain.plans.dto.PlanMateDTO;
 import com.tripmate.domain.plans.dto.SearchMemberDTO;
 import com.tripmate.domain.plans.dto.UpdateNotificationReadDateTimeDTO;
@@ -25,12 +25,16 @@ import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.plans.vo.PlanMateVO;
 import com.tripmate.domain.plans.vo.PlanVO;
 import com.tripmate.domain.plans.vo.PopularPlanVO;
+import com.tripmate.domain.searchplan.dto.SearchUserRecommendationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PlanServiceImpl implements PlanService {
@@ -362,11 +366,75 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public List<PopularPlanVO> searchPopularPlanList(String memberNo) {
-        return planDAO.searchPopularPlanList(memberNo);
+        List<PopularPlanVO> popularPlanList = planDAO.searchPopularPlanList(memberNo);
+
+        if (!popularPlanList.isEmpty()) {
+            return popularPlanList;
+        }
+
+        popularPlanList = planDAO.searchHighestViewsPlanList(memberNo).stream()
+                .map(highestViewsPlanVO -> PopularPlanVO.builder()
+                        .planNo(highestViewsPlanVO.getPlanNo())
+                        .planTitle(highestViewsPlanVO.getPlanTitle())
+                        .leaderNickName(highestViewsPlanVO.getPlanDescription())
+                        .planLikeCnt(highestViewsPlanVO.getPlanLikeCnt())
+                        .build())
+                .collect(Collectors.toList());
+
+
+        return popularPlanList;
     }
 
     @Override
     public List<PopularPlanVO> searchPopularPlanList() {
-        return planDAO.searchPopularPlanList();
+        List<PopularPlanVO> popularPlanList = planDAO.searchPopularPlanList();
+
+        if (!popularPlanList.isEmpty()) {
+            return popularPlanList;
+        }
+
+        popularPlanList = planDAO.searchHighestViewsPlanList().stream()
+                .map(highestViewsPlanVO -> PopularPlanVO.builder()
+                        .planNo(highestViewsPlanVO.getPlanNo())
+                        .planTitle(highestViewsPlanVO.getPlanTitle())
+                        .leaderNickName(highestViewsPlanVO.getPlanDescription())
+                        .planLikeCnt(highestViewsPlanVO.getPlanLikeCnt())
+                        .build())
+                .collect(Collectors.toList());
+
+
+        return popularPlanList;
+    }
+
+    @Override
+    public boolean updatePlanViews(String planNo) {
+        return planDAO.updatePlanViews(planNo) == 1;
+    }
+
+    @Override
+    public List<PlanBasicInfoVO> searchUserRecommendationPlanList(String memberNo) {
+        MemberDTO memberInfo = memberDAO.getMemberInfoWithMemberNo(Integer.parseInt(memberNo));
+
+        Date date = new Date();
+        SimpleDateFormat year = new SimpleDateFormat("yyyy");
+        int age = (Integer.parseInt(year.format(date)) - Integer.parseInt(memberInfo.getBirthDay().substring(0, 4))) / 10 * 10;
+        age = age == 0 ? 10 : age;
+
+        List<PlanBasicInfoVO> userRecommendationPlanList = planDAO.searchUserRecommendationPlanList(SearchUserRecommendationDTO.builder()
+                .memberNo(memberNo)
+                .age(String.valueOf(age))
+                .genderCode(memberInfo.getGenderCode())
+                .build());
+
+        if (userRecommendationPlanList.isEmpty()) {
+            return planDAO.searchHighestViewsPlanList(memberNo);
+        }
+
+        return userRecommendationPlanList;
+    }
+
+    @Override
+    public List<PlanBasicInfoVO> searchRecommendationPlanList() {
+        return planDAO.searchHighestViewsPlanList();
     }
 }
