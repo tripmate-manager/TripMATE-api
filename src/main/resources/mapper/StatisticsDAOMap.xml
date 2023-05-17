@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tripmate.domain.statistics.dao.mapper.StatisticsDAOMapper">
+    <insert id="insertPlanLikeStatistics" parameterType="String">
+        INSERT INTO CT_STAT_PLAN_LIKE (PLAN_NO
+                                      ,STAT_TERM_CD
+                                      ,LIKE_REG_CNT
+                                      ,REG_NO
+                                      ,REG_DTIME
+                                      ,UPT_NO
+                                      ,UPT_DTIME)
+        SELECT cpl.PLAN_NO
+             ,#{statisticsTermCode:VARCHAR}
+             ,COUNT(cpl.PLAN_NO)
+             ,0
+             ,NOW()
+             ,0
+             ,NOW()
+        FROM CT_PLAN_LIKE cpl, CT_PLAN_MGMT cpm
+        WHERE cpl.PLAN_NO = cpm.PLAN_NO
+          AND cpm.PUBLIC_YN = 'Y'
+          AND cpm.USE_YN = 'Y'
+              <choose>
+                  <when test="statisticsTermCode != null and '10'.toString() eq statisticsTermCode ">
+                    AND cpl.REG_DTIME BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()
+                  </when>
+                  <when test="statisticsTermCode != null and '20'.toString() eq statisticsTermCode ">
+                    AND cpl.REG_DTIME BETWEEN DATE_ADD(NOW(), INTERVAL -3 MONTH) AND NOW()
+                  </when>
+              </choose>
+        GROUP BY cpl.PLAN_NO
+        ORDER BY COUNT(cpl.PLAN_NO) DESC LIMIT 3;
+    </insert>
+
+    <insert id="insertSearchKeywordStatistics" parameterType="String">
+        INSERT INTO CT_STAT_SEARCH_KWD (STAT_TERM_CD
+                                       ,SEARCH_KWD
+                                       ,SEARCH_CNT
+                                       ,REG_NO
+                                       ,REG_DTIME
+                                       ,UPT_NO
+                                       ,UPT_DTIME)
+        SELECT #{statisticsTermCode:VARCHAR}
+             ,kwd.SEARCH_KWD
+             ,COUNT(kwd.SEARCH_KWD)
+             ,0
+             ,NOW()
+             ,0
+             ,NOW()
+        FROM CT_SEARCH_KWD_MGMT kwd
+        WHERE kwd.REG_DTIME BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()
+        GROUP BY kwd.SEARCH_KWD
+        ORDER BY COUNT(kwd.SEARCH_KWD) DESC LIMIT 5;
+    </insert>
+    
+    <insert id="insertPlanAttributeStatistics" parameterType="String">
+        INSERT INTO CT_STAT_PLAN_ATTR (ATTR_NO
+                                      ,ATTR_REG_CNT
+                                      ,STAT_TERM_CD
+                                      ,ATTR_TP_CD
+                                      ,REG_NO
+                                      ,REG_DTIME
+                                      ,UPT_NO
+                                      ,UPT_DTIME)
+        SELECT attr.ATTR_NO
+             ,COUNT(attr.ATTR_NO)
+             ,#{statisticsTermCode:VARCHAR}
+             ,'10'
+             ,0
+             ,NOW()
+             ,0
+             ,NOW()
+        FROM CT_PLAN_ATTR attr, CT_PLAN_ATTR_MGMT mgmt
+        WHERE attr.ATTR_NO = mgmt.ATTR_NO
+          AND attr.REG_DTIME BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()
+          AND mgmt.ATTR_TP_CD = '10'
+        GROUP BY attr.ATTR_NO
+        ORDER BY COUNT(attr.ATTR_NO) DESC LIMIT 5;
+    </insert>
+</mapper>

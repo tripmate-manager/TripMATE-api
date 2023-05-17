@@ -4,6 +4,7 @@ import com.tripmate.domain.plans.vo.PlanBasicInfoVO;
 import com.tripmate.domain.searchplan.dao.mapper.SearchPlanDAOMapper;
 import com.tripmate.domain.searchplan.dto.SearchAttributeDTO;
 import com.tripmate.domain.searchplan.dto.SearchKeywordDTO;
+import com.tripmate.domain.searchplan.dto.SearchUserRecommendationDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -25,5 +26,17 @@ public class SearchPlanDAO {
 
     public List<PlanBasicInfoVO> searchPlanListByAttribute(SearchAttributeDTO searchAttributeDTO) {
         return sqlSession.getMapper(SearchPlanDAOMapper.class).searchPlanListByAttribute(searchAttributeDTO);
+    }
+
+    public List<String> searchPopularSearchKeyword() {
+        return sqlSession.getMapper(SearchPlanDAOMapper.class).searchPopularSearchKeyword();
+    }
+
+    public List<String> searchPopularHashtag() {
+        return sqlSession.getMapper(SearchPlanDAOMapper.class).searchPopularHashtag();
+    }
+
+    public List<PlanBasicInfoVO> searchUserRecommendationPlanList(SearchUserRecommendationDTO searchUserRecommendationDTO) {
+        return sqlSession.getMapper(SearchPlanDAOMapper.class).searchUserRecommendationPlanList(searchUserRecommendationDTO);
     }
 }

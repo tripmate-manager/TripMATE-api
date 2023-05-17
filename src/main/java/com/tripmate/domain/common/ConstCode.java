@@ -28,4 +28,8 @@ public interface ConstCode {
     String CHECKLIST_TYPE_CODE = "CT004";
     String CHECKLIST_TYPE_CODE_MY = "10";
     String CHECKLIST_TYPE_CODE_TOGETHER = "20";
+
+    String  STATISTICS_TERM_CODE = "CT005";
+    String  STATISTICS_TERM_CODE_1_MONTH = "10";
+    String  STATISTICS_TERM_CODE_3_MONTH = "20";
 }

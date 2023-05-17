@@ -50,4 +50,29 @@ public class SearchPlanController {
                 .data(searchPlanService.searchPlanListByAttribute(searchAttributeDTO))
                 .build();
     }
+
+    @Operation(summary = "인기 검색어(추천 검색어) 조회", description = "인기 검색어(추천 검색어)를 조회합니다.")
+    @GetMapping("/popular-keyword")
+    public ResponseWrapper<String> searchPopularSearchKeyword() {
+        return ResponseWrapper.<String>builder()
+                .data(searchPlanService.searchPopularSearchKeyword())
+                .build();
+    }
+
+    @Operation(summary = "인기 해시태그 조회", description = "인기 검색 키워드를 조회합니다.")
+    @GetMapping("/popular-hashtag")
+    public ResponseWrapper<String> searchPopularHashtag() {
+        return ResponseWrapper.<String>builder()
+                .data(searchPlanService.searchPopularHashtag())
+                .build();
+    }
+
+    @Operation(summary = "사용자 맞춤 추천 플랜 조회", description = "사용자 맞춤 추천 플랜 목록을 조회합니다.")
+    @GetMapping("/user-recommendation")
+    public ResponseWrapper<PlanBasicInfoVO> searchUserRecommendationPlanList(@RequestParam(value = "memberNo") @Schema(description = "회원 번호", example = "1") @NotBlank String memberNo) {
+        return ResponseWrapper.<PlanBasicInfoVO>builder()
+                .data(searchPlanService.searchUserRecommendationPlanList(memberNo))
+                .build();
+
+    }
 }

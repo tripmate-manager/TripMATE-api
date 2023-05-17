@@ -523,4 +523,20 @@
         GROUP BY cpm.PLAN_NO;
     </select>
 
+    <select id="searchPopularPlanList" parameterType="String" resultType="PopularPlanVO">
+        SELECT cpm.PLAN_NO AS planNo
+             ,cpm.PLAN_TITLE AS planTitle
+             ,mmm.NICK_NM AS leaderNickName
+        <if test="memberNo != null">
+            ,(SELECT COUNT(cpl.LIKE_NO) FROM CT_PLAN_MGMT plan, CT_PLAN_LIKE cpl WHERE plan.PLAN_NO = cpl.PLAN_NO AND cpl.PLAN_NO = cpm.PLAN_NO AND cpl.MBR_NO = #{memberNo:VARCHAR}) AS planLikeCnt
+        </if>
+        FROM CT_STAT_PLAN_LIKE stat
+            LEFT JOIN CT_PLAN_MGMT cpm ON stat.PLAN_NO = cpm.PLAN_NO
+            LEFT JOIN CT_TRIP_ADDR cta ON stat.PLAN_NO = cta.PLAN_NO
+            LEFT JOIN CT_PLAN_MATE mate ON stat.PLAN_NO = mate.PLAN_NO
+            LEFT JOIN MB_MBR_MGMT mmm ON mate.MBR_NO = mmm.MBR_NO
+        WHERE mate.LEAD_YN = 'Y'
+          AND DATE_FORMAT(stat.REG_DTIME, '%Y-%m-%d') = CURDATE();
+    </select>
+
 </mapper>
